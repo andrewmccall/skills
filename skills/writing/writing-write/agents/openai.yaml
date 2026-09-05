@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Write"
+  short_description: "Route and complete substantial writing work"
+  default_prompt: "Use $writing-write to help me develop or improve this piece."

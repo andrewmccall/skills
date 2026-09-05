@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Impact"
+  short_description: "Make a draft more consequential and useful"
+  default_prompt: "Use $writing-impact to find the highest-value improvements to this draft."

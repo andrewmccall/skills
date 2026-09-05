@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Elements"
+  short_description: "Improve sentence-level clarity and economy"
+  default_prompt: "Use $writing-elements for a careful sentence-level edit of this piece."

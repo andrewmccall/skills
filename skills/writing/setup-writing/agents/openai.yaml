@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Setup"
+  short_description: "Initialise a shared writing profile"
+  default_prompt: "Use $setup-writing to initialise the writing profile for this project."
