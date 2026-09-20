@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Itch"
+  short_description: "Find the worthwhile idea inside a topic"
+  default_prompt: "Use $writing-itch to find the strongest idea or decision in this material."

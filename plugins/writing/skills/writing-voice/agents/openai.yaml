@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Voice"
+  short_description: "Preserve or restore the active writing voice"
+  default_prompt: "Use $writing-voice to check this text against my active writing profile."

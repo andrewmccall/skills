@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Learn"
+  short_description: "Propose evidence-based profile improvements"
+  default_prompt: "Use $writing-learn to identify what my profile should learn from this editing session."

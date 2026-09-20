@@ -59,11 +59,13 @@ This repository also provides a GitHub-importable marketplace at
 members. Leave the import path blank because the marketplace manifest is at the
 repository root.
 
-The marketplace package and the `npx skills` catalogue share the same canonical
-`skills/writing/` files. Marketplace sync checks GitHub for updates daily; it does
-not update copies installed previously with `npx skills`. Use `npx skills update`
-in each CLI-installed project or global installation when you want those copies to
-receive repository changes.
+The marketplace package contains a release copy of the writing skills, while
+`skills/writing/` remains the canonical source used by the `npx skills` catalogue.
+Keep the packaged copy aligned whenever the canonical writing skills change.
+Marketplace sync checks GitHub for updates daily; it does not update copies
+installed previously with `npx skills`. Use `npx skills update` in each
+CLI-installed project or global installation when you want those copies to receive
+repository changes.
 
 Plugin and skill availability can vary by ChatGPT plan, workspace role and surface.
 The plugin has no connected apps or MCP servers, so it is intended to remain usable
@@ -115,7 +117,7 @@ skills/
 |   `-- writing/
 |       |-- plugin.json
 |       |-- .codex-plugin/plugin.json
-|       `-- skills -> ../../skills/writing
+|       `-- skills/
 `-- examples/
     `-- writing/
 ```

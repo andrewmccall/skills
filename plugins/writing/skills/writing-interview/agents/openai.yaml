@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Interview"
+  short_description: "Extract the author's concrete experience"
+  default_prompt: "Use $writing-interview to interview me for the original material this piece needs."

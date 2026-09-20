@@ -1,0 +1,4 @@
+interface:
+  display_name: "Writing: Bullshit"
+  short_description: "Attack weak reasoning before polishing prose"
+  default_prompt: "Use $writing-bullshit to challenge the reasoning and unsupported claims in this piece."
