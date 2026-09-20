@@ -4,7 +4,7 @@ A personal repository of small, composable agent skills. It begins with a writin
 
 The skills use the open `SKILL.md` format and can be installed with the [`skills` CLI](https://github.com/vercel-labs/skills) into Codex, Claude Code, Cursor and other compatible agents.
 
-## Install
+## Install with `npx skills`
 
 From the project where you want to use the skills:
 
@@ -50,6 +50,25 @@ npx skills@latest add /absolute/path/to/skills
 
 See [Installation](docs/installation.md) for scopes, individual skills and local development.
 
+## Install from a ChatGPT plugin marketplace
+
+This repository also provides a GitHub-importable marketplace at
+`.agents/plugins/marketplace.json`. A workspace owner or administrator can import
+`https://github.com/andrewmccall/skills` from **Workspace settings → Plugins → Add
+→ Import marketplace**, then make **Writing Skills** available to the appropriate
+members. Leave the import path blank because the marketplace manifest is at the
+repository root.
+
+The marketplace package and the `npx skills` catalogue share the same canonical
+`skills/writing/` files. Marketplace sync checks GitHub for updates daily; it does
+not update copies installed previously with `npx skills`. Use `npx skills update`
+in each CLI-installed project or global installation when you want those copies to
+receive repository changes.
+
+Plugin and skill availability can vary by ChatGPT plan, workspace role and surface.
+The plugin has no connected apps or MCP servers, so it is intended to remain usable
+where skills are supported rather than being desktop-only.
+
 ## Collections
 
 ### Writing
@@ -83,6 +102,7 @@ Keep each skill focused on one job. Use a setup skill only when a collection nee
 ```text
 skills/
 |-- README.md
+|-- .agents/plugins/marketplace.json
 |-- skills/
 |   `-- writing/
 |       |-- README.md
@@ -91,6 +111,11 @@ skills/
 |-- docs/
 |   |-- installation.md
 |   `-- PROFILE.md
+|-- plugins/
+|   `-- writing/
+|       |-- plugin.json
+|       |-- .codex-plugin/plugin.json
+|       `-- skills -> ../../skills/writing
 `-- examples/
     `-- writing/
 ```

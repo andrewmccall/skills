@@ -61,3 +61,18 @@ Use `npx skills@latest add andrewmccall/skills --list` to inspect the repository
 ## Other compatible tools
 
 The source format is still ordinary `SKILL.md`. If a host is not supported by the CLI, copy an individual directory under `skills/writing/` into the host's skill discovery directory. Run `setup-writing` or copy its bundled profile asset to `.writing/` separately.
+
+## ChatGPT plugin marketplace
+
+For a ChatGPT workspace, an owner or administrator can import this GitHub repository
+as a plugin marketplace from **Workspace settings → Plugins → Add → Import
+marketplace**. Use `https://github.com/andrewmccall/skills` as the source, leave
+the import path blank, and choose the branch or revision to track. The repository
+manifest is `.agents/plugins/marketplace.json` and publishes the `writing` plugin.
+
+The plugin reads the same canonical source directories as the CLI catalogue; the
+`plugins/writing/skills` path is a tracked relative link to `skills/writing` rather
+than a second copy. GitHub marketplace sync is separate from `npx skills update`:
+marketplace imports sync from GitHub on their own schedule, while CLI installations
+are updated explicitly in each destination. Availability still depends on the
+ChatGPT plan, workspace controls, role and product surface.

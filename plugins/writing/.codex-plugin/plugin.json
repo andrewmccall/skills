@@ -1,0 +1,28 @@
+{
+  "name": "writing",
+  "version": "1.0.0",
+  "description": "Composable writing workflows for developing ideas, drafting, reviewing, editing and preserving author voice.",
+  "author": {
+    "name": "Andrew McCall",
+    "url": "https://github.com/andrewmccall"
+  },
+  "homepage": "https://github.com/andrewmccall/skills",
+  "repository": "https://github.com/andrewmccall/skills",
+  "license": "MIT",
+  "keywords": ["writing", "editing", "voice", "review"],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Writing Skills",
+    "shortDescription": "Composable workflows for stronger, more distinctive writing.",
+    "longDescription": "A collection of focused writing skills for developing ideas, interviewing an author, drafting, reviewing, editing and maintaining an approved writing profile.",
+    "developerName": "Andrew McCall",
+    "category": "Productivity",
+    "capabilities": ["Writing", "Editing", "Review"],
+    "websiteURL": "https://github.com/andrewmccall/skills",
+    "defaultPrompt": [
+      "Help me develop and draft a strong article.",
+      "Review this draft for weak claims and vague language.",
+      "Edit this text while preserving my writing voice."
+    ]
+  }
+}
