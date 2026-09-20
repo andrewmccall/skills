@@ -71,10 +71,10 @@ the import path blank, and choose the branch or revision to track. The repositor
 manifest is `.agents/plugins/marketplace.json` and publishes the `writing` plugin.
 
 The CLI catalogue remains canonical at `skills/writing/`. The marketplace plugin
-contains a packaged copy at `plugins/writing/skills/`, because GitHub marketplace
-imports must be able to read every skill within the plugin package itself. Keep that
-copy aligned whenever the canonical source changes. GitHub marketplace sync is
-separate from `npx skills update`: marketplace imports sync from GitHub on their
-own schedule, while CLI installations are updated explicitly in each destination.
-Availability still depends on the ChatGPT plan, workspace controls, role and product
-surface.
+contains a generated package at `plugins/writing/skills/`, because GitHub
+marketplace imports must be able to read every skill within the plugin package
+itself. Do not edit that package: GitHub Actions regenerates it whenever the
+canonical collection changes. GitHub marketplace sync is separate from `npx skills
+update`: marketplace imports sync from GitHub on their own schedule, while CLI
+installations are updated explicitly in each destination. Availability still depends
+on the ChatGPT plan, workspace controls, role and product surface.

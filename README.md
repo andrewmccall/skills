@@ -59,9 +59,10 @@ This repository also provides a GitHub-importable marketplace at
 members. Leave the import path blank because the marketplace manifest is at the
 repository root.
 
-The marketplace package contains a release copy of the writing skills, while
-`skills/writing/` remains the canonical source used by the `npx skills` catalogue.
-Keep the packaged copy aligned whenever the canonical writing skills change.
+The marketplace package contains a generated release copy of the writing skills,
+while `skills/writing/` remains the only canonical source used by the `npx skills`
+catalogue. Do not edit the packaged copy: GitHub Actions regenerates it whenever the
+canonical collection changes.
 Marketplace sync checks GitHub for updates daily; it does not update copies
 installed previously with `npx skills`. Use `npx skills update` in each
 CLI-installed project or global installation when you want those copies to receive
