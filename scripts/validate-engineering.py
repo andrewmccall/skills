@@ -42,7 +42,8 @@ def validate():
     matches=[p for p in catalog['plugins'] if p['name']=='engineering']
     if len(matches)!=1 or matches[0]['source']['path']!='./plugins/engineering':
         raise ValueError('Engineering marketplace entry missing or ambiguous')
-    print('Validated 2 authored skills, generated package and manifests')
+    count=sum(p.is_dir() and (p/'SKILL.md').is_file() for p in source.iterdir())
+    print(f'Validated {count} authored skills, generated package and manifests')
 
 if __name__=='__main__':
     try:validate()

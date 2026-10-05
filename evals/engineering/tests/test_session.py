@@ -4,9 +4,11 @@ import subprocess
 import sys
 import tempfile
 import unittest
+from unittest.mock import patch
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parents[1]
+SKILL = Path(__file__).resolve().parents[3] / 'skills/engineering/auto-drew-eval'
+BASE = SKILL / 'scripts'
 sys.path.insert(0, str(BASE))
 import evaluate
 
@@ -68,7 +70,7 @@ class SessionTests(unittest.TestCase):
             todo = Path(temp) / 'TODO.md'
             todo.write_text('- [x] Claimed done\n')
             self.write(path, [{'type': 'thread.started', 'thread_id': 'thread'}, {'type': 'turn.completed'}])
-            suite = evaluate.load(BASE / 'scenarios.json')
+            suite = evaluate.load(SKILL / 'assets/scenarios.json')
             case = suite['scenarios'][0]
             packet, obs = session.prepare([path], 'exec', case, 'test', [todo])
             self.assertFalse(obs['complete'])
@@ -113,6 +115,37 @@ class SessionTests(unittest.TestCase):
                 session.extract(path, 'rollout')
             with self.assertRaises(ValueError):
                 session.prepare([path, path], 'exec', {'id': 'case'}, 'test')
+
+    def test_default_store_is_shared_and_project_paths_do_not_collide(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            with patch.object(Path, 'home', return_value=root):
+                first = session.review_directory(root / 'a/repo', '../../case', 'baseline')
+                second = session.review_directory(root / 'b/repo', '../../case', 'baseline')
+            store = (root / '.agent/auto-drew').resolve()
+            self.assertTrue(first.is_relative_to(store))
+            self.assertTrue(second.is_relative_to(store))
+            self.assertNotEqual(first.parent.parent, second.parent.parent)
+            self.assertNotIn('..', first.relative_to(store).parts)
+            self.assertFalse(store.exists())
+
+    def test_cli_default_layout_with_explicit_store_leaves_project_untouched(self):
+        with tempfile.TemporaryDirectory() as temp:
+            root = Path(temp)
+            project = root / 'project'
+            project.mkdir()
+            raw = root / 'exec.jsonl'
+            self.write(raw, [{'type': 'thread.started', 'thread_id': 'test'}])
+            store = root / 'shared'
+            subprocess.run([sys.executable, str(BASE / 'session.py'), '--format', 'exec',
+                            '--session', str(raw), '--case-id', 'queue-walkthrough',
+                            '--label', 'baseline', '--store', str(store)],
+                           cwd=project, check=True, capture_output=True)
+            observations = list(store.rglob('observation.json'))
+            self.assertEqual(len(observations), 1)
+            packet = json.loads(observations[0].with_name('evidence.json').read_text())
+            self.assertEqual(packet['project'], str(project.resolve()))
+            self.assertEqual(list(project.iterdir()), [])
 
 
 if __name__ == '__main__':

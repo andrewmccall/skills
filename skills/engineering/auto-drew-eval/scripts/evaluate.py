@@ -9,8 +9,9 @@ import subprocess
 import sys
 from pathlib import Path
 
-DEFAULT_SUITE = Path(__file__).with_name('scenarios.json')
-DEFAULT_CEREMONY = Path(__file__).with_name('ceremony.json')
+ASSETS = Path(__file__).resolve().parents[1] / 'assets'
+DEFAULT_SUITE = ASSETS / 'scenarios.json'
+DEFAULT_CEREMONY = ASSETS / 'ceremony.json'
 
 
 def load(path):

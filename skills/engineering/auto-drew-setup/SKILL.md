@@ -1,5 +1,5 @@
 ---
-name: setup-auto-drew
+name: auto-drew-setup
 description: Set up or update Auto Drew's selected engineering capabilities using the skills CLI and current upstream dependencies. Use when the user asks for installation or setup, not during ordinary engineering work.
 ---
 
@@ -20,7 +20,7 @@ or maintain our own dependency manifest, copier or installation database.
 Install the user-facing bundle with the existing CLI:
 
 ```sh
-npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew setup-auto-drew --yes
+npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew auto-drew-setup auto-drew-eval --yes
 npx skills@latest add mattpocock/skills --agent codex --skill grilling domain-modeling codebase-design tdd retro --yes
 npx skills@latest add backnotprop/pstack --agent codex --skill how why architect arena interrogate reflect show-me-your-work create-verification-skill maintain-verification-skill --yes
 ```

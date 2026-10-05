@@ -1,6 +1,6 @@
 interface:
-  display_name: "Set up Auto Drew"
+  display_name: "Auto Drew Setup"
   short_description: "Install the selected engineering capabilities"
-  default_prompt: "Use $setup-auto-drew to install the bundle in this project."
+  default_prompt: "Use $auto-drew-setup to install the bundle in this project."
 policy:
   allow_implicit_invocation: false

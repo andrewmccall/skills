@@ -1,14 +1,14 @@
 # Auto Drew installation
 
-Install the entry point and setup helper using the skills CLI:
+Install the mode, setup and evaluation skills using the skills CLI:
 
 ```sh
-npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew setup-auto-drew --yes
+npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew auto-drew-setup auto-drew-eval --yes
 ```
 
 Use a local repository path during development. The marketplace package exposes
-the same two skills, generated from the canonical source. Invoke
-`$setup-auto-drew` in the target project to inspect the current upstream README,
+the same three skills, generated from the canonical source. Invoke
+`$auto-drew-setup` in the target project to inspect the current upstream README,
 selected skills and supporting references, then install the selected bundle and
 its required dependencies with `npx skills`. Installation requires local tools and
 network access. Add `--global` only when global installation is requested.
@@ -42,7 +42,7 @@ skills and local edits. Check the selected names with `npx skills@latest list
 Auto Drew's trigger/exclusion table is in its `SKILL.md`. Discovery remains
 available; invocation is earned by the task. Evaluate actual routing collisions
 before changing upstream descriptions. Eval costs and nested accounting are
-internal to `evals/engineering/ceremony.json`.
+internal to `skills/engineering/auto-drew-eval/assets/ceremony.json`.
 
 ## Repository validation
 
@@ -50,9 +50,9 @@ internal to `evals/engineering/ceremony.json`.
 bash scripts/package-engineering-plugin.sh
 python3 scripts/validate-engineering.py
 python3 -m unittest discover -s evals/engineering/tests -v
-python3 evals/engineering/evaluate.py validate
-python3 evals/engineering/evaluate.py score \
-  --observations evals/engineering/fixtures/contract.jsonl \
+python3 skills/engineering/auto-drew-eval/scripts/evaluate.py validate
+python3 skills/engineering/auto-drew-eval/scripts/evaluate.py score \
+  --observations skills/engineering/auto-drew-eval/assets/contract.jsonl \
   --report /tmp/engineering-contract.md --strict
 ```
 
@@ -69,7 +69,13 @@ state and verification/session references before replacing it for unrelated work
 Use saved sessions for detailed history and Git references for recoverable code;
 the TODO alone cannot recreate every action or earlier dirty code.
 
-Follow [Evaluate real engineering sessions](../evals/engineering/session-review.md)
+Invoke `$auto-drew-eval` to run the bundled extraction/scoring scripts and choose
+retro/reflect when required. Review artifacts live in `~/.agent/auto-drew/`, grouped
+by project, task and run, with an explicit path override. Follow [Evaluate real engineering sessions](../skills/engineering/auto-drew-eval/references/session-review.md)
 to extract public evidence offline, judge a task-specific rubric, generate a report
 and feed observed friction into retro. Test a proposed harness change on paired
 tasks before claiming improvement. Routine trace calls are not required.
+
+If you installed the former `setup-auto-drew`, use the skills CLI to remove that
+old name in the matching project/global scope and add `auto-drew-setup`. Inspect
+local edits before removal; keep one setup entry in discovery.

@@ -81,7 +81,7 @@ on the ChatGPT plan, workspace controls, role and product surface.
 
 ## Engineering collection
 
-Install `auto-drew` and `setup-auto-drew`, then run setup in the target project to
-install the pinned specialist allowlist. See [Auto Drew installation](engineering.md)
+Install `auto-drew`, `auto-drew-setup` and `auto-drew-eval`, then run setup in the target project to
+install the selected specialists and current support dependencies. See [Auto Drew installation](engineering.md)
 for normal specialist discovery, support references, conflict preservation and
 validation.

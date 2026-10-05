@@ -1,7 +1,7 @@
 {
   "name": "engineering",
   "version": "0.1.0",
-  "description": "Auto Drew: minimum sufficient engineering with adaptive routing, evidence of completion and pinned specialist setup.",
+  "description": "Auto Drew: minimum sufficient engineering, specialist setup and evidence-led session evaluations.",
   "author": {
     "name": "Andrew McCall",
     "url": "https://github.com/andrewmccall"
@@ -19,7 +19,7 @@
   "interface": {
     "displayName": "Auto Drew",
     "shortDescription": "Minimum sufficient engineering, backed by evidence.",
-    "longDescription": "One adaptive operating mode plus setup for selected Matt Pocock and pstack specialist capabilities.",
+    "longDescription": "An adaptive engineering mode, setup for selected Matt Pocock and pstack capabilities, and session evaluation with conditional retro and reflect.",
     "developerName": "Andrew McCall",
     "category": "Productivity",
     "capabilities": [

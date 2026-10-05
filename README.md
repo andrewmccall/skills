@@ -102,17 +102,20 @@ Change → Verify loop that returns to Choose Work until done, Markdown TODO sta
 when needed, and evidence of completion.
 Specialists are earned by uncertainty rather than task keywords.
 
-Install `auto-drew` and `setup-auto-drew`, then run setup once in the target
+Install `auto-drew`, `auto-drew-setup` and `auto-drew-eval`, then run setup once in the target
 project. Setup installs selected Matt Pocock and pstack specialists in normal
 skill discovery through `npx skills`, using current upstream instructions to find
 required support dependencies. Upstream skills stay unchanged; installation and
 updates remain owned by the skills CLI.
 
+Use `$auto-drew-eval` to review sessions, run its bundled scripts and invoke
+retro/reflect when the evidence earns them.
+
 See [engineering installation](docs/engineering.md) and the
 [first-class eval framework](evals/engineering/README.md). The JSON
 scenario corpus includes positive, negative, boundary and composition cases; the
 scorer emits Markdown metrics and accepts judged session observations or blind
-harness adapters. [Review real sessions](evals/engineering/session-review.md) using
+harness adapters. [Review real sessions](skills/engineering/auto-drew-eval/references/session-review.md) using
 saved public activity, retained TODO state and verified outcomes, then test changes
 suggested by retro.
 

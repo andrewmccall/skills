@@ -33,6 +33,8 @@ by `npx skills`.
 `bash scripts/package-engineering-plugin.sh`, then run
 `python3 scripts/validate-engineering.py`. Keep upstream capabilities unchanged; setup uses the skills CLI for the selected
 bundle and dependencies discovered from current upstream instructions.
+`auto-drew-eval` owns the runtime eval scripts, rubric assets and reference guides;
+`evals/engineering/` contains repository tests and development dependencies.
 
 Run `python3 -m unittest discover -s evals/engineering/tests -v` and the documented
 contract eval before finishing changes. Synthetic fixture success validates the

@@ -22,10 +22,11 @@ child sessions or attachments leave coverage unknown; an absent trace does not
 prove zero ceremony. Use ordinary updates to explain consequential choices when
 they occur, without extra per-invocation logging calls.
 
-The repository's `evals/engineering/session.py` prepares public evidence and an
-unjudged observation for an existing or task-specific scenario. Its eval README
-and `session-review.md` explain extraction, judging, scoring and the retro feedback
-loop. It runs offline; it is not installed as a runtime hook or an orchestrator.
+Use `auto-drew-eval` for an evaluation request. Its bundled scripts prepare public
+evidence, score judged observations and compare paired reports; its guides explain
+task boundaries, judgement and conditional retro/reflect. Offline extraction and
+scoring require no live agent adapter. The evaluator is a specialist capability,
+not a runtime hook or an orchestrator.
 Keep raw sessions/review packets private by default: tool outputs may contain
 sensitive project data. Retain only evidence needed for the review.
 
@@ -49,9 +50,9 @@ skill. Its timestamps are record-writing times, not proof of invocation timing.
 Each file has one writer; source evidence determines invocation start order.
 
 ```sh
-python3 scripts/trace.py init --trace /project/.engineering/review/task.jsonl \
+python3 scripts/trace.py init --trace ~/.agent/auto-drew/project-id/task-id/explicit.jsonl \
   --case-id task --label auto-drew --provenance session-review:/path/session.jsonl
-python3 scripts/trace.py record --trace /project/.engineering/review/task.jsonl \
+python3 scripts/trace.py record --trace ~/.agent/auto-drew/project-id/task-id/explicit.jsonl \
   --event '{"kind":"checkpoint","evidence":["commit-reference"]}' \
   --repo /project --state /project/.engineering/TODO.md
 ```

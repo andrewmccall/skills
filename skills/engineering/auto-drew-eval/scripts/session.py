@@ -5,9 +5,23 @@ import collections
 import datetime
 import hashlib
 import json
+import re
 from pathlib import Path
 
 from evaluate import DEFAULT_SUITE, expand, load
+
+
+def review_directory(project, case_id, label, store=None):
+    def name(value):
+        safe = re.sub(r'[^a-zA-Z0-9._-]+', '-', value).strip('.-')[:64] or 'task'
+        if safe != value:
+            safe += '-' + hashlib.sha256(value.encode()).hexdigest()[:8]
+        return safe
+    project = project.expanduser().resolve()
+    project_id = name(project.name) + '-' + hashlib.sha256(str(project).encode()).hexdigest()[:8]
+    root = (store or Path.home() / '.agent/auto-drew').expanduser().resolve()
+    run = name(label) + '-' + datetime.datetime.now(datetime.timezone.utc).strftime('%Y%m%dT%H%M%S%fZ')
+    return root / project_id / name(case_id) / run
 
 
 def extract(path, format):
@@ -136,19 +150,23 @@ def main():
     parser.add_argument('--case-id', required=True)
     parser.add_argument('--label', required=True)
     parser.add_argument('--todo', type=Path, action='append', default=[])
-    parser.add_argument('--output', type=Path, required=True, help='New private review directory; never overwritten')
+    parser.add_argument('--project', type=Path, default=Path.cwd(), help='Target project identity; defaults to the working directory')
+    parser.add_argument('--store', type=Path, help='Artifact store; defaults to ~/.agent/auto-drew')
+    parser.add_argument('--output', type=Path, help='Explicit new review directory, overriding the store layout; never overwritten')
     args = parser.parse_args()
     try:
         cases = [c for c in expand(load(args.suite)) if c['id'] == args.case_id]
         if len(cases) != 1:
             raise ValueError('Case id must identify exactly one scenario in the supplied suite')
         packet, observation = prepare(args.session, args.format, cases[0], args.label, args.todo)
-        args.output.mkdir(parents=True, exist_ok=False)
+        output = args.output.expanduser() if args.output else review_directory(args.project, args.case_id, args.label, args.store)
+        packet['project'] = str(args.project.expanduser().resolve())
+        output.mkdir(parents=True, exist_ok=False)
         for name, value in [('evidence.json', packet), ('observation.json', observation)]:
-            (args.output / name).write_text(json.dumps(value, indent=2) + '\n')
+            (output / name).write_text(json.dumps(value, indent=2) + '\n')
     except (ValueError, OSError, KeyError, TypeError) as error:
         parser.exit(2, f'{error}\n')
-    print(f'{args.output}: evidence extracted; observation is unjudged, coverage remains false')
+    print(f'{output}: evidence extracted; observation is unjudged, coverage remains false')
 
 
 if __name__ == '__main__':

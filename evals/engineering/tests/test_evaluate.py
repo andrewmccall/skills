@@ -7,7 +7,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
-BASE = Path(__file__).resolve().parents[1]
+SKILL = Path(__file__).resolve().parents[3] / 'skills/engineering/auto-drew-eval'
+BASE = SKILL / 'scripts'
 spec = importlib.util.spec_from_file_location('evaluate', BASE / 'evaluate.py')
 evalmod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(evalmod)
@@ -15,9 +16,9 @@ spec.loader.exec_module(evalmod)
 
 class EvaluationTests(unittest.TestCase):
     def setUp(self):
-        self.suite = evalmod.load(BASE / 'scenarios.json')
+        self.suite = evalmod.load(SKILL / 'assets/scenarios.json')
         self.routes = evalmod.load(evalmod.DEFAULT_CEREMONY)
-        self.observations = evalmod.read_observations(BASE / 'fixtures/contract.jsonl')
+        self.observations = evalmod.read_observations(SKILL / 'assets/contract.jsonl')
 
     def only(self, id):
         c = copy.deepcopy(next(c for c in self.suite['scenarios'] if c['id'] == id))

@@ -34,6 +34,6 @@ jobs:
       - run: git diff --exit-code -- plugins/engineering/skills
       - run: python scripts/validate-engineering.py
       - run: python -m unittest discover -s evals/engineering/tests -v
-      - run: python evals/engineering/evaluate.py validate
+      - run: python skills/engineering/auto-drew-eval/scripts/evaluate.py validate
       - name: Score synthetic contract fixtures (not agent performance)
-        run: python evals/engineering/evaluate.py score --observations evals/engineering/fixtures/contract.jsonl --report /tmp/contract-report.md --strict
+        run: python skills/engineering/auto-drew-eval/scripts/evaluate.py score --observations skills/engineering/auto-drew-eval/assets/contract.jsonl --report /tmp/contract-report.md --strict

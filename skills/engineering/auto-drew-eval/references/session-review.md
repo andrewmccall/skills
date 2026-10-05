@@ -45,8 +45,8 @@ completion. Keep relevant continuations and child sessions, or mark affected
 observation categories incomplete.
 
 Use a case from `scenarios.json` only when the actual task matches its prompt,
-constraints and outcomes. Otherwise make a small local suite; `--suite` accepts
-real task definitions. For example, save this as `.engineering/review/suite.json`:
+constraints and outcomes. Otherwise make a small task-specific suite; `--suite` accepts real task definitions.
+Keep it in the shared store, for example `~/.agent/auto-drew/<project-id>/fix-queue/suite.json`.
 
 ```json
 {
@@ -65,7 +65,7 @@ real task definitions. For example, save this as `.engineering/review/suite.json
 ```
 
 Replace this illustrative request/rubric with the real task. Costs are relative
-weights in `ceremony.json`; budget the workflows the task can earn. Allowed means
+weights in `assets/ceremony.json`; budget the workflows the task can earn. Allowed means
 potentially useful, not automatically justified. Mark permitted but unnecessary
 calls `justified: false`. Support calls need their real parent and a permitted
 scenario route; include support names in `allowed` when earned. Unlisted routes
@@ -80,14 +80,15 @@ budgets and judge criteria.
 
 ## Extract public evidence offline
 
-From this skills repository, with an explicit saved-session path:
+The scripts live in the installed skill; artifacts live in `~/.agent/auto-drew/`,
+independent of the working checkout. Run from the target project with the script's
+absolute installed path (the example supplies an explicit suite and project):
 
 ```sh
-python3 evals/engineering/session.py \
+python3 /installed/auto-drew-eval/scripts/session.py \
   --format rollout --session /absolute/path/to/rollout.jsonl \
-  --suite /project/.engineering/review/suite.json --case-id fix-queue \
-  --label auto-drew-baseline --todo /project/.engineering/TODO.md \
-  --output /project/.engineering/review/baseline
+  --suite ~/.agent/auto-drew/project-id/fix-queue/suite.json --case-id fix-queue \
+  --label auto-drew-baseline --project /project --todo /project/.engineering/TODO.md
 ```
 
 Repeat `--session` for continuations/child sessions in review order, and `--todo`
@@ -95,8 +96,13 @@ for retained state files. Identify task start/end evidence in the review if a
 source contains several tasks. Cross-file order is reviewer supplied, not a merged
 chronological action count.
 
-The command creates `evidence.json` and `observation.json` in a **new** directory,
-refuses overwrites, makes no model calls and changes no source files or Git state.
+The command prints its **new** run directory under
+`~/.agent/auto-drew/<project-id>/<task-id>/<label>-<timestamp>/` and creates
+`evidence.json` and `observation.json` there. The project id includes a hash of the
+resolved project path, so equal directory names in different checkouts do not
+collide. `--store` selects another shared root; `--output` selects an exact new
+directory. It refuses overwrites, makes no model calls and changes no source
+files or Git state.
 Source paths, SHA-256 hashes and line references connect the packet to captured
 bytes. TODO snapshots are current at extraction time, not historical snapshots.
 Extract after a session stops writing, or retain a stable copy.
@@ -128,7 +134,7 @@ tests where they can decide outcomes.
 
 The extractor emits **no inferred invocations or success**, and coverage starts
 false. Empty arrays are unjudged, not proof of no calls. Use the
-[observation format and metrics](README.md):
+[observation format and metrics](scoring.md):
 
 | Field | Judgement required |
 |---|---|
@@ -162,14 +168,17 @@ the existing eval tool and explain the consequential findings.
 ## Score and interpret
 
 ```sh
-python3 evals/engineering/evaluate.py \
-  --suite /project/.engineering/review/suite.json score \
-  --observations /project/.engineering/review/baseline/observation.json \
-  --report /project/.engineering/review/baseline/report.md \
-  --json /project/.engineering/review/baseline/score.json
+python3 /installed/auto-drew-eval/scripts/evaluate.py \
+  --suite ~/.agent/auto-drew/project-id/fix-queue/suite.json score \
+  --observations /absolute/printed/run-directory/observation.json \
+  --report /absolute/printed/run-directory/report.md \
+  --json /absolute/printed/run-directory/score.json
 ```
 
-The scorer accepts a single JSON observation, arrays or JSONL. Read task outcomes
+Use the directory printed by extraction for those paths; keep review notes and
+reports beside the observation. Comparisons belong beside the paired runs in the
+same shared task directory. The scorer accepts a single JSON observation, arrays
+or JSONL. Read task outcomes
 and coverage before trigger metrics/ceremony. N/A means unobserved, not perfect or
 zero. Lower ceremony is not improvement if task success falls. Counts and
 denominators matter: one task is a diagnosis, not a reliable performance estimate.

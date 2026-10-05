@@ -150,7 +150,9 @@ Installation alone never earns invocation. Support dependencies such as
 `writing-for-agents` and upstream principle references may join normal discovery,
 but this mode does not route to them independently. Consult them only when a
 selected capability needs them. If a skill is missing, explain the gap and use
-ordinary engineering judgement where feasible; use `setup-auto-drew` for setup.
+ordinary engineering judgement where feasible; use `auto-drew-setup` for setup.
+Use `auto-drew-eval` for requested session evaluations or harness comparisons;
+ordinary completion checks remain part of Change ↔ Verify.
 
 Respect the host's available tools and explicit user model choices. Upstream
 model suggestions describe intended roles, not proof that those models are available.
