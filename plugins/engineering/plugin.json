@@ -1,0 +1,34 @@
+{
+  "name": "engineering",
+  "version": "0.1.0",
+  "description": "Auto Drew: minimum sufficient engineering with adaptive routing, evidence of completion and pinned specialist setup.",
+  "author": {
+    "name": "Andrew McCall",
+    "url": "https://github.com/andrewmccall"
+  },
+  "homepage": "https://github.com/andrewmccall/skills",
+  "repository": "https://github.com/andrewmccall/skills",
+  "license": "MIT",
+  "keywords": [
+    "engineering",
+    "verification",
+    "routing",
+    "evals"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Auto Drew",
+    "shortDescription": "Minimum sufficient engineering, backed by evidence.",
+    "longDescription": "One adaptive operating mode plus setup for selected Matt Pocock and pstack specialist capabilities.",
+    "developerName": "Andrew McCall",
+    "category": "Productivity",
+    "capabilities": [
+      "Engineering",
+      "Verification"
+    ],
+    "websiteURL": "https://github.com/andrewmccall/skills",
+    "defaultPrompt": [
+      "Use auto-drew to complete this engineering task."
+    ]
+  }
+}

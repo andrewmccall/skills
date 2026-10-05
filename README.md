@@ -1,6 +1,6 @@
 # Skills
 
-A personal repository of small, composable agent skills. It begins with a writing collection and is structured to accept other skill families later.
+A personal repository of small, composable agent skills. It contains writing and engineering collections.
 
 The skills use the open `SKILL.md` format and can be installed with the [`skills` CLI](https://github.com/vercel-labs/skills) into Codex, Claude Code, Cursor and other compatible agents.
 
@@ -93,6 +93,23 @@ skills/
 ```
 
 The workflows are generic. `setup-writing` carries the initial Andrew McCall profile as an optional asset; it installs that profile separately into `.writing/`. This keeps personal taste out of reusable skill logic.
+
+### Engineering
+
+[Auto Drew](skills/engineering/auto-drew/SKILL.md) is the engineering entry point:
+minimum sufficient systems, an adaptive Understand → Define Done → Choose Work →
+Change ↔ Verify loop, Markdown TODO state when needed, and evidence of completion.
+Specialists are earned by uncertainty rather than task keywords.
+
+Install `auto-drew` and `setup-auto-drew`, then run setup once in the target
+project. Setup installs selected Matt Pocock and pstack specialists in normal
+skill discovery from a pinned allowlist. Upstream instructions stay
+unchanged and pinned; supporting principles remain references outside discovery.
+
+See [engineering installation](docs/engineering.md) and the
+[first-class eval framework](evals/engineering/README.md). The JSON
+scenario corpus includes positive, negative, boundary and composition cases; the
+scorer emits Markdown metrics and accepts observed traces or blind harness adapters.
 
 ## Adding another collection
 

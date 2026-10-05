@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto Drew"
+  short_description: "Small sufficient changes, backed by evidence"
+  default_prompt: "Use $auto-drew to complete this engineering task."

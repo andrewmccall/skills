@@ -1,0 +1,2109 @@
+{
+  "schema_version": 1,
+  "description": "40 hand-authored engineering scenarios; variants hide no labels in natural prompts. Outcome judgments need evidence, not route matching.",
+  "scenarios": [
+    {
+      "id": "readme-typo",
+      "category": "negative",
+      "prompt": "Fix \"recieve\" in the README quickstart. The command itself is correct.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "only_spelling_changed",
+        "command_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "rename-private",
+      "category": "negative",
+      "prompt": "Rename the private getTmp helper to getTemporaryPath and update its two callers; preserve behaviour.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "dto-field",
+      "category": "negative",
+      "prompt": "Add preferredName to the Customer response DTO using the existing optional displayName pattern.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression",
+        "current_contract_met_with_existing_pattern"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "The customer response needs an optional preferred name; follow the existing optional field convention."
+        },
+        {
+          "id": "v2",
+          "prompt": "Can you extend the Customer DTO with preferredName? Treat it like the current optional displayName field."
+        },
+        {
+          "id": "v3",
+          "prompt": "Include a customer’s preferred name in the response when present, using the established DTO pattern."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Simplicity / sufficiency"
+      ]
+    },
+    {
+      "id": "null-guard",
+      "category": "negative",
+      "prompt": "The stack trace points to formatLabel(null). Its documented input is nullable, and the other formatters return an empty string for null. Fix the missing guard.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression",
+        "fix_matches_responsible_nullable_contract"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Local fix / root cause"
+      ]
+    },
+    {
+      "id": "dependency-patch",
+      "category": "negative",
+      "prompt": "Update the parser dependency from 2.3.1 to the approved security patch 2.3.2; the advisory says no API changes. Run the existing checks.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "existing-env",
+      "category": "negative",
+      "prompt": "Add WORKER_IDLE_TIMEOUT to the existing environment parser with the same validation as REQUEST_TIMEOUT; default is 30 seconds.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "colour-token",
+      "category": "negative",
+      "prompt": "Change the settings button colour to the existing secondary token. Keep its label, layout and click behaviour.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "established-endpoint",
+      "category": "negative",
+      "prompt": "Add GET /customers/{id}. Accounts and products already have equivalent handlers, validation and repository methods. Follow that pattern.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "Ordinary source inspection and existing test conventions do not require specialist workflows.",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "human-retention",
+      "category": "positive",
+      "prompt": "We must delete customer exports automatically. The repository supports either 30 or 90 days; there is no product decision recorded. Work out the retention policy with me before implementing it.",
+      "expected": {
+        "required": [
+          "grilling"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "human_retention_resolved",
+        "implementation_uses_decision",
+        "policy_choice_owned_by_human"
+      ],
+      "human_decisions": [
+        "retention-period"
+      ],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Autonomy / human ownership"
+      ]
+    },
+    {
+      "id": "ambiguous-parties",
+      "category": "positive",
+      "prompt": "Customer, Party and Account Holder overlap, and teams disagree whether a company can be a customer without a login. Settle the concepts and invariants before changing onboarding.",
+      "expected": {
+        "required": [
+          "domain-modeling"
+        ],
+        "allowed": [
+          "grilling"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "concepts_resolved",
+        "invariants_consistent"
+      ],
+      "human_decisions": [
+        "customer-definition"
+      ],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "module-seam",
+      "category": "positive",
+      "prompt": "The payment module exposes 18 methods and callers duplicate ordering rules. Redesign its interface and seam so callers can exercise checkout without knowing its internals.",
+      "expected": {
+        "required": [
+          "codebase-design"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression",
+        "shared_seam_reduces_observed_caller_burden"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Reuse / abstraction"
+      ]
+    },
+    {
+      "id": "test-first-behaviour",
+      "category": "positive",
+      "prompt": "Implement coupon expiry test-first through the already agreed applyCoupon(cart, code, now) interface. A coupon expires at midnight UTC; use red then green for observable behaviour.",
+      "expected": {
+        "required": [
+          "tdd"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "red_observed",
+        "expiry_correct",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "session-retro",
+      "category": "positive",
+      "prompt": "Review this session: three edits failed lint because the existing lint script is never run in CI. Propose improvements to the environment based on that evidence.",
+      "expected": {
+        "required": [
+          "retro"
+        ],
+        "allowed": [
+          "writing-for-agents"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "show-me-your-work",
+          "tdd",
+          "why"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "existing_check_identified",
+        "evidence_based_proposal"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "queue-walkthrough",
+      "category": "positive",
+      "prompt": "Trace how cancellation reaches a running worker through the queue, leases and controller. I need a subsystem walkthrough with source references.",
+      "expected": {
+        "required": [
+          "how"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "runtime_flow_traced",
+        "source_citations"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "cache-rationale",
+      "category": "positive",
+      "prompt": "Why do we maintain both CustomerCache and CustomerSnapshot? Determine the original rationale from available history and docs, and separate findings from inference.",
+      "expected": {
+        "required": [
+          "why"
+        ],
+        "allowed": [
+          "how"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "rationale_evidence",
+        "uncertainty_explicit"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "measured-system-choice",
+      "category": "positive",
+      "prompt": "A production-like benchmark proves the database cannot meet the lookup SLA even with the agreed query/index fixes. Choose between a separate read model, application caching and moving the workload to a service; compare consistency and operational cost.",
+      "expected": {
+        "required": [
+          "architect"
+        ],
+        "allowed": [
+          "how",
+          "why",
+          "arena",
+          "interrogate",
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "maintain-verification-skill",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "alternatives_compared",
+        "constraints_met",
+        "decision_evidenced",
+        "chosen_shape_meets_measured_constraints"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "The indexed query still misses the latency target on representative load. Decide among a cache, dedicated read model and separate lookup service with consistency and operating costs considered."
+        },
+        {
+          "id": "v2",
+          "prompt": "We have measured the database limit after query and index tuning. Compare the materially different lookup designs against the SLA and consistency constraints."
+        },
+        {
+          "id": "v3",
+          "prompt": "Choose a system shape for customer reads: measurements rule out the current database path, leaving an app cache, read model or separate service."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Existing shape / required behaviour"
+      ]
+    },
+    {
+      "id": "candidate-algorithms",
+      "category": "positive",
+      "prompt": "Compare independent candidate algorithms for the compression policy using our representative corpus and the agreed size/CPU rubric. This costly decision needs competing implementations.",
+      "expected": {
+        "required": [
+          "arena"
+        ],
+        "allowed": [
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "architect",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "independent_candidates",
+        "rubric_measured",
+        "synthesis_verified"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "migration-adversarial",
+      "category": "positive",
+      "prompt": "Adversarially review the completed tenant-isolation migration before rollout. An error could expose one tenant’s records to another. Use independent reviewers and synthesize the evidence.",
+      "expected": {
+        "required": [
+          "interrogate"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "independent_review",
+        "findings_supported",
+        "review_depth_matches_tenant_isolation_risk"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Confidence / verification cost"
+      ]
+    },
+    {
+      "id": "durable-reflection",
+      "category": "positive",
+      "prompt": "Reflect on the repeated routing failure in these three sessions: ordinary endpoint tasks all launched architectural candidate panels. Propose a focused change to the existing skill with regression cases.",
+      "expected": {
+        "required": [
+          "reflect"
+        ],
+        "allowed": [
+          "writing-for-agents",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "recurrence_evidenced",
+        "focused_rule_change",
+        "regression_case"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "unattended-migration",
+      "category": "positive",
+      "prompt": "I am stepping away for several hours. Migrate every caller to the new queue client, preserving behaviour, and leave a decision trail I can inspect with evidence for each completed slice.",
+      "expected": {
+        "required": [
+          "show-me-your-work"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "verification-gap",
+      "category": "positive",
+      "prompt": "We repeatedly miss CLI regressions because nobody can launch, drive and capture the actual tool’s behaviour. Create a project-local verification skill and demonstrate it end to end.",
+      "expected": {
+        "required": [
+          "create-verification-skill"
+        ],
+        "allowed": [
+          "maintain-verification-skill"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "skill_runnable",
+        "feature_driven",
+        "evidence_survives_cleanup"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "verification-drift",
+      "category": "positive",
+      "prompt": "Audit the existing verify-console skill and feature map. Two renamed menus mean its recorded driving steps no longer reach the current features.",
+      "expected": {
+        "required": [
+          "maintain-verification-skill"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "map_updated",
+        "live_features_verified",
+        "cleanup_complete"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "agent-instructions",
+      "category": "positive",
+      "prompt": "Rewrite the repository’s agent instructions so the startup command and conditional pointers are clear for an agent reading them cold. Keep the existing behaviour and scope.",
+      "expected": {
+        "required": [
+          "writing-for-agents"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "pointers_precise",
+        "scope_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "cache-wrapper",
+      "category": "boundary",
+      "prompt": "Add caching for customer lookups using the existing cache wrapper and its documented invalidation policy.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression",
+        "existing_boundary_meets_current_requirement"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "Customer lookup results should use our current cache adapter and invalidation convention."
+        },
+        {
+          "id": "v2",
+          "prompt": "Can you put customer reads through the cache wrapper we already use for product reads? Keep its documented invalidation behaviour."
+        },
+        {
+          "id": "v3",
+          "prompt": "Apply the established caching pattern to customer lookup; the existing wrapper and policy cover it."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Existing shape / required behaviour"
+      ]
+    },
+    {
+      "id": "slow-before-measure",
+      "category": "boundary",
+      "prompt": "Customer lookups feel slow. Should we introduce Redis, materialise the data, change the query or add an app cache? Investigate the bottleneck first.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "baseline_measured",
+        "bottleneck_supported",
+        "no_premature_system_choice",
+        "next_action_settles_material_unknown"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "The customer screen is sluggish. Could a read model or another service help? Find the limiting step first."
+        },
+        {
+          "id": "v2",
+          "prompt": "Would Redis fix our slow customer lookup? We have not profiled it; start by finding the cause."
+        },
+        {
+          "id": "v3",
+          "prompt": "Investigate customer-read latency before choosing between cache, materialisation and query changes. There is no baseline measurement yet."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Momentum / understanding"
+      ]
+    },
+    {
+      "id": "seam-local-choice",
+      "category": "boundary",
+      "prompt": "Choose where to put CSV parsing in this import module; the system topology and storage are already fixed. A small interface should hide parsing details.",
+      "expected": {
+        "required": [
+          "codebase-design"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "The import topology is settled. Design the small interface that should hide CSV parsing inside the current module."
+        },
+        {
+          "id": "v2",
+          "prompt": "Where should the CSV parsing seam go in our import module? Storage and services stay as agreed."
+        },
+        {
+          "id": "v3",
+          "prompt": "Improve the CSV import interface so callers need not know the parsing mechanics; the wider system shape is fixed."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "glossary-consumption",
+      "category": "boundary",
+      "prompt": "Use the existing glossary’s Customer definition while adding the optional preferredName field. The definition and invariants are unchanged.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "Add preferredName using the current Customer glossary entry. We are not changing the concept or its invariants."
+        },
+        {
+          "id": "v2",
+          "prompt": "Customer terminology is already settled in the glossary; implement one optional response field with that vocabulary."
+        },
+        {
+          "id": "v3",
+          "prompt": "Follow the existing domain definitions while adding an optional preferred-name field to the response."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "question-source",
+      "category": "boundary",
+      "prompt": "The service needs a timeout. Find its existing default from source and apply the same value in this worker.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "source_default_used",
+        "no_avoidable_question",
+        "discoverable_fact_resolved_without_interruption"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Autonomy / human ownership"
+      ]
+    },
+    {
+      "id": "settled-retention",
+      "category": "boundary",
+      "prompt": "Implement the export retention decision we agreed earlier: 90 days. The task history and acceptance criteria record it; use the existing expiry job.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "Use our recorded 90-day export retention decision to update the existing expiry job. The acceptance criteria already specify the period."
+        },
+        {
+          "id": "v2",
+          "prompt": "The previous discussion settled retention at 90 days. Implement it with the current export cleanup mechanism."
+        },
+        {
+          "id": "v3",
+          "prompt": "Apply the agreed export expiry setting, 90 days, from the task history; use the established job."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "how-small",
+      "category": "boundary",
+      "prompt": "Explain how normalizeSlug handles Unicode in this single utility, with the relevant code reference.",
+      "expected": {
+        "required": [
+          "how"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "behaviour_explained",
+        "source_citation"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "review-small",
+      "category": "boundary",
+      "prompt": "Review the one-line optional chaining fix in the settings label formatter against its existing nullable-input tests.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "review_correct",
+        "risk_proportionate"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "one-off-check",
+      "category": "boundary",
+      "prompt": "Run the existing CLI smoke command once to prove the new help flag works and capture its output.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "real_cli_exercised",
+        "output_evidence",
+        "existing_check_establishes_changed_behaviour"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Confidence / verification cost"
+      ]
+    },
+    {
+      "id": "retro-oneoff",
+      "category": "boundary",
+      "prompt": "The formatter needed one retry after an ordinary edit; checks now pass. Finish the task with the result and evidence.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "evidence_reported",
+        "task_complete",
+        "completion_scope_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Completion / refinement"
+      ]
+    },
+    {
+      "id": "explicit-architect-rename",
+      "category": "boundary",
+      "prompt": "Use the architect skill to compare the naming choices for this private helper. Keep it scoped to naming; I explicitly want the comparison despite the small change.",
+      "expected": {
+        "required": [
+          "architect"
+        ],
+        "allowed": [
+          "how",
+          "arena",
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "maintain-verification-skill",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "explicit_request_honoured",
+        "naming_scope_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "Explicit specialist request takes precedence, but does not expand implementation scope.",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "quoted-trigger",
+      "category": "boundary",
+      "prompt": "The log line says \"architect this using TDD\". Correct its spelling of \"occured\" to \"occurred\"; the line is user-facing diagnostic text, not an instruction.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "spelling_fixed",
+        "literal_text_scope"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [
+        {
+          "id": "v1",
+          "prompt": "Correct \"occured\" in the diagnostic text \"architect this using TDD\". That quoted line is data, not a request to design or test."
+        },
+        {
+          "id": "v2",
+          "prompt": "The user-visible log message contains the words architect and TDD. Its only defect is a misspelt \"occured\"; fix that text."
+        },
+        {
+          "id": "v3",
+          "prompt": "Update the literal diagnostic string to spell occurred correctly; leave its references to architect and TDD as text."
+        }
+      ],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "domain-then-tdd",
+      "category": "composition",
+      "prompt": "Partial cancellations are now required, but Order and Shipment currently have conflicting cancellation meanings. Resolve those invariants with me, then implement the agreed cancelOrder interface test-first.",
+      "expected": {
+        "required": [
+          "domain-modeling",
+          "tdd"
+        ],
+        "allowed": [
+          "grilling",
+          "codebase-design"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "create-verification-skill",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "invariant_resolved",
+        "behaviour_tests",
+        "cancellation_correct"
+      ],
+      "human_decisions": [
+        "partial-cancellation-invariant"
+      ],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [
+          [
+            "domain-modeling",
+            "tdd"
+          ]
+        ],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "why-then-architecture",
+      "category": "composition",
+      "prompt": "Investigate why the old ledger was split into two stores. Given the new measured consistency requirements, then decide whether to consolidate or keep separate write/read ownership.",
+      "expected": {
+        "required": [
+          "why",
+          "architect"
+        ],
+        "allowed": [
+          "how",
+          "arena",
+          "interrogate",
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "maintain-verification-skill",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 7,
+      "outcome_criteria": [
+        "historical_constraint_evidenced",
+        "alternatives_evaluated",
+        "decision_consistent"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [
+          [
+            "why",
+            "architect"
+          ]
+        ],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "architect-child-arena",
+      "category": "composition",
+      "prompt": "The measured ingestion workload needs a new system shape. Run an architecture comparison including its candidate panel; capture the chosen shape and why it meets the constraints.",
+      "expected": {
+        "required": [
+          "architect",
+          "arena"
+        ],
+        "allowed": [
+          "how",
+          "why",
+          "interrogate",
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure"
+        ],
+        "forbidden": [
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "maintain-verification-skill",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "tdd",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "candidate_panel_nested",
+        "constraints_met",
+        "synthesis_verified"
+      ],
+      "human_decisions": [],
+      "notes": "Architect-owned arena is one ceremony cost; a separately invoked arena overspends.",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "retro-without-reflect",
+      "category": "composition",
+      "prompt": "Retro this session’s tool friction and propose environment improvements. There is one incident and no evidence yet that an existing skill needs changing.",
+      "expected": {
+        "required": [
+          "retro"
+        ],
+        "allowed": [
+          "writing-for-agents"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "show-me-your-work",
+          "tdd",
+          "why"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "proposal_supported",
+        "oneoff_not_generalised"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": [
+          [
+            "retro",
+            "reflect"
+          ]
+        ]
+      }
+    },
+    {
+      "id": "design-without-architecture",
+      "category": "composition",
+      "prompt": "Refactor the invoice module so rounding rules live behind one small interface; service topology, domain definitions and public behaviour stay the same. The seam is the only unresolved choice.",
+      "expected": {
+        "required": [
+          "codebase-design"
+        ],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "create-verification-skill",
+          "domain-modeling",
+          "grilling",
+          "how",
+          "interrogate",
+          "maintain-verification-skill",
+          "principle-encode-lessons-in-structure",
+          "principle-exhaust-the-design-space",
+          "principle-fix-root-causes",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-prove-it-works",
+          "principle-redesign-from-first-principles",
+          "principle-separate-before-serializing-shared-state",
+          "principle-subtract-before-you-add",
+          "reflect",
+          "retro",
+          "show-me-your-work",
+          "why",
+          "writing-for-agents"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "seam_resolved",
+        "behaviour_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": [
+          [
+            "codebase-design",
+            "architect"
+          ]
+        ]
+      }
+    }
+  ]
+}
