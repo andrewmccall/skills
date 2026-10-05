@@ -59,5 +59,17 @@ python3 evals/engineering/evaluate.py score \
 Commit canonical changes and their generated marketplace copies together. CI
 checks package equality and the scorer's contract; it does not install moving
 upstream sources or measure real-agent performance. Synthetic fixture success is
-scorer validation. Recorded task outcomes and traces are needed to claim actual
+scorer validation. Recorded task outcomes and session evidence are needed to claim actual
 routing improvement.
+
+## Review sessions and improve the harness
+
+Keep the active Markdown TODO across sessions of the same task. Retain its final
+state and verification/session references before replacing it for unrelated work.
+Use saved sessions for detailed history and Git references for recoverable code;
+the TODO alone cannot recreate every action or earlier dirty code.
+
+Follow [Evaluate real engineering sessions](../evals/engineering/session-review.md)
+to extract public evidence offline, judge a task-specific rubric, generate a report
+and feed observed friction into retro. Test a proposed harness change on paired
+tasks before claiming improvement. Routine trace calls are not required.

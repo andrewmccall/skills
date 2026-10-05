@@ -81,11 +81,18 @@ def expand(suite):
 
 def read_observations(path):
     if path.suffix in {'.yaml', '.yml'}:
-        return load(path)
-    content = path.read_text().strip()
-    if content.startswith('['):
-        return json.loads(content)
-    return [json.loads(line) for line in content.splitlines() if line.strip()]
+        value = load(path)
+    else:
+        content = path.read_text().strip()
+        try:
+            value = json.loads(content)
+        except json.JSONDecodeError:
+            value = [json.loads(line) for line in content.splitlines() if line.strip()]
+    if isinstance(value, dict):
+        return [value]
+    if not isinstance(value, list) or any(not isinstance(row, dict) for row in value):
+        raise ValueError('Observations must be an object, array of objects or JSONL objects')
+    return value
 
 
 def invocations(observation, skills):

@@ -1,5 +1,11 @@
 # Engineering routing evaluations
 
+For normal coding sessions, start with [Evaluate real engineering sessions](session-review.md).
+It covers TODO retention across sessions, public evidence extraction, task-specific
+rubrics, judging, scoring and the retro/change/retest loop. No per-skill trace call
+is required. `session.py` prepares evidence and an unjudged observation offline;
+reviewed coverage and outcome evidence are required before metrics mean anything.
+
 This scorer and blind adapter runner evaluates the current engineering bundle. The
 suite contains 42 hand-authored scenarios and 24 paraphrases (66 prompts): 8
 negative, 14 positive, 15 boundary and 5 composition cases. The JSON format works
@@ -115,10 +121,13 @@ not successful when required capabilities or task outcomes are missed.
 
 ## Replay and comparison
 
-The mode's [trace helper](../../skills/engineering/auto-drew/references/tracing.md)
-exports cooperative JSONL traces into observations. Rescore the same observations
-for deterministic replay. Preserve logs, commits/retained worktrees and explicit
-TODO state to restart an experiment without claiming a model-state rewind.
+Saved sessions are the primary activity record. The
+[session review guide](session-review.md) prepares observations after the work.
+The optional [explicit-record helper](../../skills/engineering/auto-drew/references/tracing.md)
+can export adapter records or annotations when needed; it is not a per-invocation
+requirement. Rescore the same judged observations for deterministic replay.
+Preserve logs, commits/retained worktrees and explicit TODO state to restart an
+experiment without claiming a model-state rewind.
 
 ```sh
 python3 evals/engineering/evaluate.py compare \

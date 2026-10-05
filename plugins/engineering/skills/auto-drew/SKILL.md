@@ -80,13 +80,14 @@ a trivial edit, conversation state is sufficient. Record only:
 
 ```markdown
 # Task
-Goal and observable done criteria.
+Task identity, goal and observable done criteria.
 
 - [ ] Next verifiable slice
 - [ ] Remaining work
 
 ## Evidence
 - Criterion → command/artifact/result, with limitations
+- Completed slice → change/commit and verification reference
 
 ## Decisions / blockers
 - Active tension → choice → supporting evidence
@@ -94,7 +95,13 @@ Goal and observable done criteria.
 ```
 
 Update it as evidence arrives, mark items done only with evidence, and use it to
-resume. Keep one source of task state; specialist phase lists belong inside it.
+resume across sessions. Read it at pickup and check its claims against current
+code and evidence; reopen work invalidated by later changes. Keep completed items
+and consequential decisions until the task is reviewed. Before replacing it with
+an unrelated task, retain the completed TODO with that task's session/artifact
+references. Keep one active source of task state; specialist phase lists belong
+inside it. The TODO explains progress and intent; session records and Git history
+supply the detailed action and code history.
 
 ## Specialist routing
 
@@ -138,18 +145,19 @@ Never invent model identifiers or claim identical performance. If capability
 information is insufficient, omit the model override and inherit the parent model
 rather than guessing. Preserve independent reviewer roles even when they use the
 same model family. Report substitutions, their reasons and any lost model diversity
-in the result or an already-active invocation trace. Existing user decisions satisfy
+in the ordinary result. Existing user decisions satisfy
 upstream confirmation steps when they actually resolve that decision.
 
 ## Evidence and checkpoints
 
-For evals, unattended work or requested replay, use
-[trace instructions](references/tracing.md). Record each specialist invocation and
-its result, parent invocation and trigger evidence. Add a Git/state checkpoint
-when resuming or comparing this point has concrete value. Logs and Git/state
-references are the normal checkpoint. Simple work needs no logging ceremony.
-A reference to a dirty worktree is not a restorable
-snapshot, and a Git reference cannot rewind a model's hidden state.
+Use saved sessions, the TODO and verification artifacts as the normal evidence.
+Explain consequential capability choices and results in ordinary work updates;
+do not call a trace helper after every invocation. For session review or evals,
+read [session evidence guidance](references/tracing.md): extract observable records
+after the work, then judge routing and outcomes with explicit evidence and coverage.
+Retain a Git commit or worktree reference when resuming or comparing that point
+has concrete value. A TODO or dirty-tree reference alone cannot restore earlier
+code, and a Git reference cannot rewind a model's hidden state.
 
 Declare completion against done criteria, with what changed, verification evidence
 and material limitations. A plan, generated test, green build or another agent's

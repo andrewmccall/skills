@@ -110,7 +110,10 @@ updates remain owned by the skills CLI.
 See [engineering installation](docs/engineering.md) and the
 [first-class eval framework](evals/engineering/README.md). The JSON
 scenario corpus includes positive, negative, boundary and composition cases; the
-scorer emits Markdown metrics and accepts observed traces or blind harness adapters.
+scorer emits Markdown metrics and accepts judged session observations or blind
+harness adapters. [Review real sessions](evals/engineering/session-review.md) using
+saved public activity, retained TODO state and verified outcomes, then test changes
+suggested by retro.
 
 ## Adding another collection
 
