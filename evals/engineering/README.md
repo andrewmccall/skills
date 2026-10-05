@@ -1,14 +1,14 @@
 # Engineering routing evaluations
 
 This scorer and blind adapter runner evaluates the current engineering bundle. The
-suite contains 40 hand-authored scenarios and 24 paraphrases (64 prompts): 8
-negative, 15 positive, 12 boundary and 5 composition cases. The JSON format works
+suite contains 42 hand-authored scenarios and 24 paraphrases (66 prompts): 8
+negative, 14 positive, 15 boundary and 5 composition cases. The JSON format works
 without dependencies. YAML suites/observations also work with PyYAML installed
 from `requirements-dev.txt`.
 
-Each case has a realistic prompt, required/allowed/forbidden routes that partition
-the catalog, numeric ceremony budget, outcome criteria, and any human-owned
-decisions. Decision cases name the active tension and include an outcome criterion
+Each case has a realistic prompt, required/allowed/forbidden route lists, a numeric
+ceremony budget, outcome criteria and any human-owned decisions. Unlisted
+capabilities default to forbidden. Decision cases name the active tension and include an outcome criterion
 for the evidenced choice. The adapter receives the natural task, while the judge
 checks the choice against current constraints. Tension names are not extra agent
 steps or mandatory documents. Composition adds required/forbidden ordered subsequences. An explicit
@@ -81,7 +81,8 @@ Observation format (criterion names are scenario-specific):
 ```
 
 Invocation ids and parents form a validated forest. Only catalogued dependency
-edges may receive a nested cost discount. Record every actual invocation,
+edges may receive a nested cost discount. Support-only references need a parent invocation and are not independent routes.
+Record every actual invocation,
 including repeats and support calls. A tool reading a reference is a support call
 only when it actually consulted that capability, not merely mentioned its name.
 For composition, invocation array order is start order, even if a nested call
@@ -89,8 +90,8 @@ finishes first. Each run is single-writer; export/reorder observed invocation
 records by start order when needed.
 
 An external judge (or deterministic task tests) assesses outcome criteria, whether
-a question was avoidable, whether human decisions were respected, and whether an
-action was useful. Evidence fields are pointers/attestations, not automatically
+a question was avoidable, whether human decisions were answered by their owner, escalated or guessed,
+and whether an action was useful. Evidence fields are pointers/attestations, not automatically
 verified artifacts. Missing evidence never produces a success; false outcomes
 remain failures. Set coverage true only when the full category was observable;
 unjudged values may be null. Incomplete coverage is N/A, not zero. `--strict`
@@ -99,13 +100,13 @@ success, avoidable questions, missed decisions or absent useful-action evidence.
 
 ## Metrics
 
-- **Per-skill precision:** justified required/allowed invocations divided by all observed invocations, as a binary task/skill classification.
+- **Per-skill precision:** justified required/allowed invocations divided by all observed invocations, counting each call, including repeats. A judge can mark a permitted but unnecessary call with `justified: false`; it becomes a false positive and a routing failure.
 - **Per-skill required recall:** required hits divided by required hits plus misses. Allowed invocations never inflate recall.
-- **Zero-ceremony pass rate:** zero-budget cases with no capability calls. It is separate from outcomes and routing success.
-- **Ceremony ratio:** summed root workflow cost / summed positive case budgets. Costs are a rough relative model from the mode's `routes.json`, not dollars or tokens. Nested supported calls cost once; repeated independent calls cost again. Every call still undergoes route checks.
+- **Zero-ceremony pass rate:** fully observed zero-budget cases that succeeded, met routing expectations and used no capability calls. Failed tasks fail this metric; unverified outcomes are N/A.
+- **Ceremony ratio:** summed root workflow cost / summed positive case budgets. Costs are a rough relative model from eval-only `ceremony.json`, not dollars or tokens. The operating mode does not read this data. Nested supported calls cost once; repeated independent calls cost again. Every call still undergoes route checks.
 - **Task success:** evidenced success on all scenario criteria, among complete outcome-observed runs. Report coverage alongside it.
 - **Avoidable human questions per task:** questions the agent could have answered through available evidence / fully question-observed tasks. Legitimate preferences are not penalised.
-- **Missed human decision rate:** unresolved or guessed required decisions / observed required decisions. Missing a decision record counts as missed only with full decision coverage.
+- **Missed human decision rate:** guessed or unaddressed required decisions / fully observed required decisions. Record `handling: answered|escalated|guessed` with evidence. Correctly escalating an unanswered decision is not a miss; missing records count as unaddressed only in completed, fully decision-observed runs. Unjudged handling or missing evidence is N/A. Outcome success remains a separate question.
 - **Steps to first useful action:** mean/median of the first evidenced useful harness step, where the producer could observe and classify all actions. No logging-row or timing proxy.
 
 Every report includes observation coverage and missing case ids. Compare identical

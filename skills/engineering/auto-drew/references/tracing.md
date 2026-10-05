@@ -19,8 +19,9 @@ python3 scripts/trace.py record --trace /project/.engineering/runs/task.jsonl \
 
 Record an invocation after each completed call (including nested support calls),
 with a unique `id`, `skill`, optional `parent` invocation id, reason, evidence and
-result. Attach `--repo` after each call for a checkpoint; attach `--state` when a
-TODO exists. Record failed calls too. `step` is the observable harness action
+result. A judge may add `justified: false` for a permitted but unnecessary call. Attach `--repo` when that point has concrete resumption/comparison value;
+attach `--state` when preserving an existing TODO helps. Do not snapshot each
+call mechanically. Record failed calls too. `step` is the observable harness action
 number, not the number of log rows. Do not count logging as a useful action.
 
 Checkpoints record the worktree path, HEAD, dirty status, tracked diff hash and an
@@ -35,7 +36,7 @@ costs belong to the harness and must be measured separately.
 Additional event payloads for evals:
 
 - `question`: `avoidable: true|false|null`, with judgment/evidence. Null means unjudged.
-- `decision`: `decision_id`, `resolved: true|false|null`, evidence. Identify human-owned decisions from the scenario; unresolved is not assumed resolved.
+- `decision`: `decision_id`, `handling: "answered"|"escalated"|"guessed"|null`, evidence. "Answered" means the human supplied or previously settled the decision; "escalated" means it was put to the human and may still await an answer. A guessed decision is a miss even if implementation continued. Null means unjudged.
 - `outcome`: `checks` maps criterion names to `{ "passed": true|false|null, "evidence": ["reference"] }`.
 - `finish`: `coverage` maps `invocations`, `questions`, `decisions`, `actions` to booleans. Set true only when the producer observed that whole category.
 

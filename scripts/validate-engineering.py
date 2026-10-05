@@ -42,18 +42,7 @@ def validate():
     matches=[p for p in catalog['plugins'] if p['name']=='engineering']
     if len(matches)!=1 or matches[0]['source']['path']!='./plugins/engineering':
         raise ValueError('Engineering marketplace entry missing or ambiguous')
-    lock=json.loads((source/'setup-auto-drew/references/upstream.json').read_text())
-    routes=json.loads((source/'auto-drew/references/routes.json').read_text())['skills']
-    names={n for s in lock['sources'].values() for n in s['skills']}
-    if names!=set(routes):
-        raise ValueError('Upstream/routing catalog mismatch')
-    for parent,children in lock['dependencies'].items():
-        if not set(children)<=set(routes[parent]['children']):
-            raise ValueError(f'Missing routing dependency: {parent}')
-    for provider,s in lock['sources'].items():
-        if not re.fullmatch('[0-9a-f]{40}',s['commit']) or not s['url'].startswith('https://github.com/'):
-            raise ValueError(f'Invalid pin: {provider}')
-    print('Validated 2 authored skills, generated package, manifests and 24 capability routes')
+    print('Validated 2 authored skills, generated package and manifests')
 
 if __name__=='__main__':
     try:validate()

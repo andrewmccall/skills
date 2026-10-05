@@ -31,8 +31,8 @@ by `npx skills`.
 `skills/engineering/` is the only authored engineering source.
 `plugins/engineering/skills/` is generated; regenerate with
 `bash scripts/package-engineering-plugin.sh`, then run
-`python3 scripts/validate-engineering.py`. Keep upstream capabilities pinned and
-unchanged; setup installs only the reviewed allowlist.
+`python3 scripts/validate-engineering.py`. Keep upstream capabilities unchanged; setup uses the skills CLI for the selected
+bundle and dependencies discovered from current upstream instructions.
 
 Run `python3 -m unittest discover -s evals/engineering/tests -v` and the documented
 contract eval before finishing changes. Synthetic fixture success validates the

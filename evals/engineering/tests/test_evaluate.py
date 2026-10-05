@@ -16,7 +16,7 @@ spec.loader.exec_module(evalmod)
 class EvaluationTests(unittest.TestCase):
     def setUp(self):
         self.suite = evalmod.load(BASE / 'scenarios.json')
-        self.routes = evalmod.load(evalmod.DEFAULT_ROUTES)
+        self.routes = evalmod.load(evalmod.DEFAULT_CEREMONY)
         self.observations = evalmod.read_observations(BASE / 'fixtures/contract.jsonl')
 
     def only(self, id):
@@ -27,7 +27,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_contract_is_synthetic_and_full(self):
         report = evalmod.score(self.suite, self.routes, self.observations)
-        self.assertEqual(report['summary']['expected_cases'], 64)
+        self.assertEqual(report['summary']['expected_cases'], 66)
         self.assertEqual(report['summary']['routing_pass_rate'], 1)
         self.assertEqual(report['summary']['zero_ceremony_pass_rate'], 1)
         self.assertIn('not measured agent performance', evalmod.markdown(report))
@@ -72,7 +72,7 @@ class EvaluationTests(unittest.TestCase):
         o['invocations'].append({'id':'repeat','skill':'how'})
         report = evalmod.score(suite, self.routes, [o])
         self.assertEqual(report['cases'][0]['cost'], 2)
-        self.assertEqual(report['per_skill']['how']['justified'], 1)
+        self.assertEqual(report['per_skill']['how']['justified'], 2)
 
     def test_parent_cycle_and_unsupported_discount_fail(self):
         suite, o = self.only('architect-child-arena')
@@ -95,6 +95,46 @@ class EvaluationTests(unittest.TestCase):
         self.assertEqual(report['summary']['zero_ceremony_pass_rate'],0)
         self.assertIsNone(report['summary']['ceremony_ratio'])
         self.assertEqual(report['per_skill']['architect']['precision'],0)
+
+    def test_zero_ceremony_requires_success_and_observation(self):
+        suite, o = self.only('readme-typo')
+        o['outcome']['only_spelling_changed']['passed'] = False
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertTrue(report['cases'][0]['routing_pass'])
+        self.assertEqual(report['summary']['zero_ceremony_pass_rate'], 0)
+        o['outcome'] = {}
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertIsNone(report['summary']['zero_ceremony_pass_rate'])
+        self.assertEqual(report['summary']['zero_ceremony_observed'], 0)
+
+    def test_precision_counts_unnecessary_repeat_without_inflating_recall(self):
+        suite, o = self.only('queue-walkthrough')
+        o['invocations'].append({'id': 'repeat', 'skill': 'how', 'justified': False})
+        report = evalmod.score(suite, self.routes, [o])
+        skill = report['per_skill']['how']
+        self.assertEqual(skill['justified'], 1)
+        self.assertEqual(skill['false_positive'], 1)
+        self.assertEqual(skill['precision'], 0.5)
+        self.assertEqual(skill['required_hit'], 1)
+        self.assertEqual(skill['recall'], 1)
+        self.assertEqual(report['cases'][0]['unnecessary'], ['repeat'])
+        self.assertFalse(report['cases'][0]['routing_pass'])
+
+    def test_support_dependency_is_not_an_independent_route(self):
+        suite, o = self.only('retro-without-reflect')
+        o['invocations'].append({'id': 'standalone', 'skill': 'writing-for-agents'})
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertIn('writing-for-agents', report['cases'][0]['forbidden'])
+        self.assertFalse(report['cases'][0]['routing_pass'])
+        self.assertEqual(report['per_skill']['writing-for-agents']['false_positive'], 1)
+
+    def test_unlisted_route_is_forbidden_without_exhaustive_catalog(self):
+        suite, o = self.only('readme-typo')
+        suite['scenarios'][0]['expected']['forbidden'] = []
+        o['invocations'] = [{'id': 'unlisted', 'skill': 'how'}]
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertEqual(report['cases'][0]['forbidden'], ['how'])
+        self.assertEqual(report['per_skill']['how']['precision'], 0)
 
     def test_outcome_needs_all_evidence(self):
         suite,o=self.only('readme-typo')
@@ -133,6 +173,41 @@ class EvaluationTests(unittest.TestCase):
         o['questions'].append({'avoidable':None})
         self.assertIsNone(evalmod.score(suite,self.routes,[o])['summary']['avoidable_human_questions_per_task'])
 
+    def test_escalating_pending_decision_is_not_a_miss(self):
+        suite, o = self.only('human-retention')
+        o['decisions'] = [{'decision_id': 'retention-period', 'handling': 'escalated',
+                          'evidence': ['question-put-to-owner']}]
+        o['outcome'] = {}
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertEqual(report['summary']['missed_human_decision_rate'], 0)
+        self.assertIsNone(report['summary']['task_success_rate'])
+
+    def test_guessing_decision_is_a_miss_even_with_successful_outcome(self):
+        suite, o = self.only('human-retention')
+        o['decisions'][0]['handling'] = 'guessed'
+        report = evalmod.score(suite, self.routes, [o])
+        self.assertEqual(report['summary']['missed_human_decision_rate'], 1)
+        self.assertEqual(report['summary']['task_success_rate'], 1)
+
+    def test_unjudged_or_unevidenced_decision_is_unknown(self):
+        suite, o = self.only('human-retention')
+        o['decisions'][0]['handling'] = None
+        self.assertIsNone(evalmod.score(suite, self.routes, [o])['summary']['missed_human_decision_rate'])
+        o['decisions'][0]['handling'] = 'answered'
+        o['decisions'][0]['evidence'] = []
+        self.assertIsNone(evalmod.score(suite, self.routes, [o])['summary']['missed_human_decision_rate'])
+
+    def test_resolution_alone_cannot_identify_human_ownership(self):
+        suite, o = self.only('human-retention')
+        o['decisions'][0]['resolved'] = True
+        with self.assertRaises(ValueError):
+            evalmod.score(suite, self.routes, [o])
+
+    def test_observed_first_action_survives_incomplete_run(self):
+        suite, o = self.only('readme-typo')
+        o['complete'] = False
+        self.assertEqual(evalmod.score(suite, self.routes, [o])['summary']['steps_to_first_useful_action_mean'], 1)
+
     def test_first_useful_action_is_observed_not_inferred(self):
         suite,o=self.only('readme-typo')
         o['actions']=[{'step':1,'useful':False},{'step':5,'useful':True,'evidence':['repro']}]
@@ -150,10 +225,10 @@ class EvaluationTests(unittest.TestCase):
 
     def test_missing_observations_are_explicit(self):
         report=evalmod.score(self.suite,self.routes,[])
-        self.assertEqual(len(report['summary']['missing_observations']),64)
+        self.assertEqual(len(report['summary']['missing_observations']),66)
         self.assertIsNone(report['summary']['routing_pass_rate'])
 
-    def test_partition_and_budget_validation(self):
+    def test_route_overlap_and_budget_validation(self):
         suite,o=self.only('readme-typo')
         suite['scenarios'][0]['ceremony_budget']=-1
         with self.assertRaises(ValueError): evalmod.score(suite,self.routes,[o])

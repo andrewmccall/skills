@@ -1,0 +1,165 @@
+{
+  "schema_version": 1,
+  "notes": "Eval-only relative costs and supported parent edges; not runtime routing or an installation manifest. Unlisted scenario routes default to forbidden.",
+  "skills": {
+    "grilling": {
+      "cost": 2,
+      "children": []
+    },
+    "domain-modeling": {
+      "cost": 3,
+      "children": []
+    },
+    "codebase-design": {
+      "cost": 2,
+      "children": []
+    },
+    "tdd": {
+      "cost": 2,
+      "children": [
+        "codebase-design"
+      ]
+    },
+    "retro": {
+      "cost": 2,
+      "children": [
+        "writing-for-agents"
+      ]
+    },
+    "how": {
+      "cost": 1,
+      "children": []
+    },
+    "why": {
+      "cost": 2,
+      "children": [
+        "how"
+      ]
+    },
+    "architect": {
+      "cost": 5,
+      "children": [
+        "how",
+        "why",
+        "arena",
+        "interrogate",
+        "principle-exhaust-the-design-space",
+        "principle-foundational-thinking",
+        "principle-outcome-oriented-execution",
+        "principle-redesign-from-first-principles",
+        "principle-fix-root-causes",
+        "principle-subtract-before-you-add",
+        "principle-separate-before-serializing-shared-state",
+        "principle-encode-lessons-in-structure",
+        "principle-boundary-discipline",
+        "principle-make-operations-idempotent",
+        "principle-laziness-protocol",
+        "principle-minimize-reader-load"
+      ]
+    },
+    "arena": {
+      "cost": 5,
+      "children": [
+        "principle-separate-before-serializing-shared-state",
+        "principle-redesign-from-first-principles",
+        "principle-prove-it-works"
+      ]
+    },
+    "interrogate": {
+      "cost": 4,
+      "children": []
+    },
+    "reflect": {
+      "cost": 4,
+      "children": [
+        "principle-encode-lessons-in-structure"
+      ]
+    },
+    "show-me-your-work": {
+      "cost": 2,
+      "children": [
+        "principle-encode-lessons-in-structure"
+      ]
+    },
+    "create-verification-skill": {
+      "cost": 3,
+      "children": [
+        "maintain-verification-skill"
+      ]
+    },
+    "maintain-verification-skill": {
+      "cost": 3,
+      "children": []
+    },
+    "writing-for-agents": {
+      "cost": 1,
+      "children": [],
+      "support_only": true
+    },
+    "principle-exhaust-the-design-space": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-foundational-thinking": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-outcome-oriented-execution": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-redesign-from-first-principles": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-fix-root-causes": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-subtract-before-you-add": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-separate-before-serializing-shared-state": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-prove-it-works": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-encode-lessons-in-structure": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-boundary-discipline": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-make-operations-idempotent": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-laziness-protocol": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    },
+    "principle-minimize-reader-load": {
+      "cost": 0,
+      "children": [],
+      "support_only": true
+    }
+  }
+}

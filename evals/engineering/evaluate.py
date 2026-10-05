@@ -9,9 +9,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_SUITE = Path(__file__).with_name('scenarios.json')
-DEFAULT_ROUTES = ROOT / 'skills/engineering/auto-drew/references/routes.json'
+DEFAULT_CEREMONY = Path(__file__).with_name('ceremony.json')
 
 
 def load(path):
@@ -30,7 +29,7 @@ def number(value):
 
 def validate_suite(suite, routes):
     if suite.get('schema_version') != 1 or routes.get('schema_version') != 1:
-        raise ValueError('Unsupported suite/routes schema')
+        raise ValueError('Unsupported suite/ceremony schema')
     skills = routes['skills']
     for name, rule in skills.items():
         if not number(rule['cost']) or not set(rule['children']) <= skills.keys():
@@ -48,8 +47,10 @@ def validate_suite(suite, routes):
         groups = [set(expected[k]) for k in ['required', 'allowed', 'forbidden']]
         if any(len(group) != len(expected[key]) for group, key in zip(groups, ['required', 'allowed', 'forbidden'])):
             raise ValueError('Duplicate route')
-        if any(a & b for i, a in enumerate(groups) for b in groups[i+1:]) or set.union(*groups) != set(skills):
-            raise ValueError(f"Routes must partition the catalog: {case['id']}")
+        if any(a & b for i, a in enumerate(groups) for b in groups[i+1:]) or not set.union(*groups) <= set(skills):
+            raise ValueError(f"Routes must be disjoint known capabilities: {case['id']}")
+        if any(skills[name].get('support_only') for name in groups[0]):
+            raise ValueError('Support references cannot be required independent routes')
         outcomes = case['outcome_criteria']
         if not outcomes or len(outcomes) != len(set(outcomes)):
             raise ValueError('Outcome criteria required and unique')
@@ -95,6 +96,8 @@ def invocations(observation, skills):
             raise ValueError('Each invocation needs a unique id')
         if call.get('skill') not in skills:
             raise ValueError(f"Unknown skill: {call.get('skill')}")
+        if 'justified' in call and not isinstance(call['justified'], bool):
+            raise ValueError('Invocation justified must be boolean when supplied')
         by_id[call['id']] = call
     for call in calls:
         seen = {call['id']}
@@ -141,16 +144,22 @@ def score(suite, routes, observations):
         actual = [call['skill'] for call in calls]
         required = set(case['expected']['required'])
         acceptable = required | set(case['expected']['allowed'])
-        missing = sorted(required - set(actual)) if routing_observed else None
-        forbidden = sorted(set(actual) - acceptable) if routing_observed else None
+        def justified(call):
+            return bool(call['skill'] in acceptable and call.get('justified', True)
+                        and (call.get('parent') or not skills[call['skill']].get('support_only')))
+        justified_skills = {call['skill'] for call in calls if justified(call)}
+        missing = sorted(required - justified_skills) if routing_observed else None
+        forbidden = sorted({call['skill'] for call in calls if call['skill'] not in acceptable or
+                            (skills[call['skill']].get('support_only') and not call.get('parent'))}) if routing_observed else None
+        unnecessary = [call['id'] for call in calls if call.get('justified') is False] if routing_observed else None
         cost = sum(skills[call['skill']]['cost'] for call in calls if not call.get('parent')) if routing_observed else None
         if routing_observed:
-            # Binary routing classification per task/skill; repeated calls still cost.
+            # Precision counts individual calls; recall counts required task/skill hits.
+            for call in calls:
+                per_skill[call['skill']]['justified' if justified(call) else 'false_positive'] += 1
             for name, counts in per_skill.items():
-                if name in actual:
-                    counts['justified' if name in acceptable else 'false_positive'] += 1
                 if name in required:
-                    counts['required_hit' if name in actual else 'missed'] += 1
+                    counts['required_hit' if name in justified_skills else 'missed'] += 1
         comp = case.get('composition', {})
         sequence_errors = []
         if routing_observed:
@@ -180,11 +189,13 @@ def score(suite, routes, observations):
         if len(set(ids)) != len(ids) or not set(ids) <= set(case.get('human_decisions', [])):
             raise ValueError('Unknown/duplicate human decision')
         for decision in decisions:
-            if decision.get('resolved') is not None and not isinstance(decision['resolved'], bool):
-                raise ValueError('Decision resolved must be boolean or null')
-        unjudged = any(d.get('resolved') is None for d in decisions)
-        resolved = {d['decision_id'] for d in decisions if d.get('resolved') is True and d.get('evidence')}
-        missed = (len(set(case.get('human_decisions', [])) - resolved)
+            if 'resolved' in decision:
+                raise ValueError('Use decision handling, not resolution, to distinguish escalation from guessing')
+            if decision.get('handling') not in {None, 'answered', 'escalated', 'guessed'}:
+                raise ValueError('Decision handling must be answered, escalated, guessed or null')
+        unjudged = any(d.get('handling') is None or not d.get('evidence') for d in decisions)
+        respected = {d['decision_id'] for d in decisions if d.get('handling') in {'answered', 'escalated'} and d.get('evidence')}
+        missed = (len(set(case.get('human_decisions', [])) - respected)
                   if complete and coverage.get('decisions') is True and not unjudged else None)
         actions = obs.get('actions', [])
         for action in actions:
@@ -197,13 +208,14 @@ def score(suite, routes, observations):
             raise ValueError('Duplicate action step')
         steps = (min((a['step'] for a in actions if a.get('useful') is True and a.get('evidence')), default=None)
                  if coverage.get('actions') is True and all(isinstance(a.get('useful'), bool) for a in actions) else None)
-        routing_pass = (not missing and not forbidden and not sequence_errors and cost <= case['ceremony_budget']) if routing_observed else None
+        routing_pass = (not missing and not forbidden and not unnecessary and not sequence_errors and cost <= case['ceremony_budget']) if routing_observed else None
         rows.append({'id': case_id, 'category': case['category'], 'label': obs.get('label', 'unlabelled'),
                      'provenance': obs.get('provenance', 'unspecified'), 'complete': complete,
-                     'routing_pass': routing_pass, 'missing': missing, 'forbidden': forbidden,
+                     'routing_pass': routing_pass, 'missing': missing, 'forbidden': forbidden, 'unnecessary': unnecessary,
                      'sequence_errors': sequence_errors, 'cost': cost, 'budget': case['ceremony_budget'],
                      'ceremony_ratio': ratio(cost, case['ceremony_budget']) if cost is not None else None,
-                     'zero_ceremony': len(calls) == 0 if routing_observed and case['ceremony_budget'] == 0 else None,
+                     'zero_ceremony': outcome is True and routing_pass is True and len(calls) == 0
+                     if routing_observed and outcome is not None and case['ceremony_budget'] == 0 else None,
                      'outcome': outcome, 'avoidable_questions': avoidable, 'missed_decisions': missed,
                      'decision_count': len(case.get('human_decisions', [])), 'first_useful_step': steps})
     for name, counts in per_skill.items():
@@ -256,12 +268,15 @@ def markdown(report):
               '## Per-skill triggers', '', '| Skill | Justified | FP | Required hit | FN | Precision | Recall |', '|---|---:|---:|---:|---:|---:|---:|']
     for name, c in report['per_skill'].items():
         lines.append(f"| {name} | {c['justified']} | {c['false_positive']} | {c['required_hit']} | {c['missed']} | {fmt(c['precision'])} | {fmt(c['recall'])} |")
-    lines += ['', 'Allowed routes count as justified for precision; required cases alone define recall.', '',
+    lines += ['', 'Precision counts individual permitted calls, excluding judge-marked unnecessary calls. '
+              'Recall counts required task/skill hits. Support-only references require a parent. '
+              'Zero-ceremony passes require task success; unanswered escalations are not guessed decisions.', '',
               '## Cases', '', '| Case | Route pass | Outcome | Cost / budget | First useful step | Findings |', '|---|---|---|---:|---:|---|']
     for r in report['cases']:
         findings = []
         if r['missing']: findings.append('missed: ' + ', '.join(r['missing']))
         if r['forbidden']: findings.append('forbidden: ' + ', '.join(r['forbidden']))
+        if r.get('unnecessary'): findings.append('unnecessary calls: ' + ', '.join(r['unnecessary']))
         findings += r['sequence_errors']
         if r['cost'] is not None and r['cost'] > r['budget']: findings.append('ceremony overspend')
         if not r['complete']: findings.append('incomplete run')
@@ -310,7 +325,7 @@ def run_adapter(suite, command, output, label, timeout):
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--suite', type=Path, default=DEFAULT_SUITE)
-    parser.add_argument('--routes', type=Path, default=DEFAULT_ROUTES)
+    parser.add_argument('--ceremony', type=Path, default=DEFAULT_CEREMONY, help='Eval-only costs and supported parent edges')
     sub = parser.add_subparsers(dest='command', required=True)
     sub.add_parser('validate')
     evaluate = sub.add_parser('score')
@@ -332,7 +347,7 @@ def main():
         if args.command == 'compare':
             content = compare(load(args.baseline), load(args.candidate))
         else:
-            suite, routes = load(args.suite), load(args.routes)
+            suite, routes = load(args.suite), load(args.ceremony)
             validate_suite(suite, routes)
             if args.command == 'validate':
                 print(f"Valid: {len(suite['scenarios'])} scenarios, {len(expand(suite))} prompts")

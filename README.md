@@ -103,8 +103,9 @@ Specialists are earned by uncertainty rather than task keywords.
 
 Install `auto-drew` and `setup-auto-drew`, then run setup once in the target
 project. Setup installs selected Matt Pocock and pstack specialists in normal
-skill discovery from a pinned allowlist. Upstream instructions stay
-unchanged and pinned; supporting principles remain references outside discovery.
+skill discovery through `npx skills`, using current upstream instructions to find
+required support dependencies. Upstream skills stay unchanged; installation and
+updates remain owned by the skills CLI.
 
 See [engineering installation](docs/engineering.md) and the
 [first-class eval framework](evals/engineering/README.md). The JSON

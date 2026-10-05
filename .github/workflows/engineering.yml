@@ -37,8 +37,3 @@ jobs:
       - run: python evals/engineering/evaluate.py validate
       - name: Score synthetic contract fixtures (not agent performance)
         run: python evals/engineering/evaluate.py score --observations evals/engineering/fixtures/contract.jsonl --report /tmp/contract-report.md --strict
-      - name: Test pinned network installation and idempotency
-        run: |
-          python skills/engineering/setup-auto-drew/scripts/install.py --project /tmp/auto-drew-install
-          python skills/engineering/setup-auto-drew/scripts/install.py --project /tmp/auto-drew-install --check
-          python skills/engineering/setup-auto-drew/scripts/install.py --project /tmp/auto-drew-install
