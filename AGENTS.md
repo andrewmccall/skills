@@ -25,3 +25,18 @@ python3 /Users/andrewmccall/.codex/skills/.system/plugin-creator/scripts/validat
 
 Also retain the `skills/writing/<skill>/SKILL.md` layout: it is the catalogue used
 by `npx skills`.
+
+## Engineering skills
+
+`skills/engineering/` is the only authored engineering source.
+`plugins/engineering/skills/` is generated; regenerate with
+`bash scripts/package-engineering-plugin.sh`, then run
+`python3 scripts/validate-engineering.py`. Keep upstream capabilities unchanged; setup uses the skills CLI for the selected
+bundle and dependencies discovered from current upstream instructions.
+`auto-drew-eval` owns the runtime eval scripts, rubric assets and reference guides;
+`evals/engineering/` contains repository tests and development dependencies.
+
+Run `python3 -m unittest discover -s evals/engineering/tests -v` and the documented
+contract eval before finishing changes. Synthetic fixture success validates the
+scorer, not actual agent routing. Changes to routing need new boundary cases and
+recorded agent observations before claiming measured improvement.

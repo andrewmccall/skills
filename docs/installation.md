@@ -78,3 +78,10 @@ canonical collection changes. GitHub marketplace sync is separate from `npx skil
 update`: marketplace imports sync from GitHub on their own schedule, while CLI
 installations are updated explicitly in each destination. Availability still depends
 on the ChatGPT plan, workspace controls, role and product surface.
+
+## Engineering collection
+
+Install `auto-drew`, `auto-drew-setup` and `auto-drew-eval`, then run setup in the target project to
+install the selected specialists and current support dependencies. See [Auto Drew installation](engineering.md)
+for normal specialist discovery, support references, conflict preservation and
+validation.

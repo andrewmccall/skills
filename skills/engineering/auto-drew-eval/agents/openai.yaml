@@ -1,0 +1,4 @@
+interface:
+  display_name: "Auto Drew Eval"
+  short_description: "Evaluate sessions and evidence-led improvements"
+  default_prompt: "Use $auto-drew-eval to evaluate this engineering session."

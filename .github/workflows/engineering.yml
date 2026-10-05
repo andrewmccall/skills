@@ -1,0 +1,39 @@
+name: Validate engineering bundle
+on:
+  push:
+    paths:
+      - skills/engineering/**
+      - plugins/engineering/**
+      - evals/engineering/**
+      - scripts/package-engineering-plugin.sh
+      - scripts/validate-engineering.py
+      - .github/workflows/engineering.yml
+      - .agents/plugins/marketplace.json
+  pull_request:
+    paths:
+      - skills/engineering/**
+      - plugins/engineering/**
+      - evals/engineering/**
+      - scripts/package-engineering-plugin.sh
+      - scripts/validate-engineering.py
+      - .github/workflows/engineering.yml
+      - .agents/plugins/marketplace.json
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install -r evals/engineering/requirements-dev.txt
+      - run: bash scripts/package-engineering-plugin.sh
+      - run: git diff --exit-code -- plugins/engineering/skills
+      - run: python scripts/validate-engineering.py
+      - run: python -m unittest discover -s evals/engineering/tests -v
+      - run: python skills/engineering/auto-drew-eval/scripts/evaluate.py validate
+      - name: Score synthetic contract fixtures (not agent performance)
+        run: python skills/engineering/auto-drew-eval/scripts/evaluate.py score --observations skills/engineering/auto-drew-eval/assets/contract.jsonl --report /tmp/contract-report.md --strict
