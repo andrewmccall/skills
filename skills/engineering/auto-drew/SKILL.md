@@ -128,9 +128,17 @@ but this mode does not route to them independently. Consult them only when a
 selected capability needs them. If a skill is missing, explain the gap and use
 ordinary engineering judgement where feasible; use `setup-auto-drew` for setup.
 
-Respect the host's available tools/models. Upstream Cursor/model defaults are not
-proof those models are available. Use supported tools, state any reduced model
-diversity, and preserve the user's model choices. Existing user decisions satisfy
+Respect the host's available tools and explicit user model choices. Upstream
+model suggestions describe intended roles, not proof that those models are available.
+Use the host's currently advertised models and capability information; do not
+maintain a static model list or substitution table. When a suggested model is
+unavailable, choose an available model with comparable capability for the role,
+considering reasoning depth, tools, context needs and appropriate cost/latency.
+Never invent model identifiers or claim identical performance. If capability
+information is insufficient, omit the model override and inherit the parent model
+rather than guessing. Preserve independent reviewer roles even when they use the
+same model family. Report substitutions, their reasons and any lost model diversity
+in the result or an already-active invocation trace. Existing user decisions satisfy
 upstream confirmation steps when they actually resolve that decision.
 
 ## Evidence and checkpoints
