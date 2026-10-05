@@ -98,7 +98,8 @@ The workflows are generic. `setup-writing` carries the initial Andrew McCall pro
 
 [Auto Drew](skills/engineering/auto-drew/SKILL.md) is the engineering entry point:
 minimum sufficient systems, an adaptive Understand → Define Done → Choose Work →
-Change ↔ Verify loop, Markdown TODO state when needed, and evidence of completion.
+Change → Verify loop that returns to Choose Work until done, Markdown TODO state
+when needed, and evidence of completion.
 Specialists are earned by uncertainty rather than task keywords.
 
 Install `auto-drew` and `setup-auto-drew`, then run setup once in the target

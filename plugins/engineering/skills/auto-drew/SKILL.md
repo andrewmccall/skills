@@ -50,10 +50,27 @@ routine choices can stay in the work and its verification evidence.
 
 ## Adaptive loop
 
-**Understand → Define Done → Choose Work → Change ↔ Verify.** These are decisions,
-not mandatory phases or documents. Collapse them for obvious work; revisit them
-when evidence changes the problem. The first action should reduce relevant
-uncertainty or move the task toward done.
+```text
+UNDERSTAND
+    ↓
+DEFINE DONE
+    ↓
+CHOOSE WORK
+    ↓
+CHANGE
+    ↓
+VERIFY
+    │
+    ├── not done → CHOOSE WORK
+    │
+    └── done → DONE
+```
+
+These are decisions, not mandatory phases or documents. Collapse them for obvious
+work; revisit understanding or done criteria when evidence changes the problem.
+After verification, compare the evidence with the done criteria. If any remain
+unmet, choose the next useful slice; finish when all are evidenced. The first
+action should reduce relevant uncertainty or move the task toward done.
 
 - **Understand:** inspect the relevant source, neighbouring patterns, tests and
   runtime evidence. Reproduce bugs; measure performance before choosing a fix.
