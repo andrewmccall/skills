@@ -1,17 +1,31 @@
 # Session evidence and checkpoints
 
-Use the host's saved session as the detailed activity record. Keep the active
-Markdown TODO across sessions of the same task; retain completed slices, decisions
-and verification references. At pickup, verify that its claims still hold in the
-current checkout. Before reusing the active TODO for another task, retain its final
-version beside the old task's review artifacts (for example,
-`.engineering/tasks/<task-id>/TODO.md`). An archive is a historical artifact, not
-another active plan. Repository conventions take precedence over these paths.
+Use the host's saved session as the detailed activity record. Keep one active
+Markdown TODO per task across its sessions. Multiple tasks can share one session;
+never use session ID as task ID or treat the latest/unchecked TODO as active.
+At pickup, match the task's goal to the request and verify its claims against the
+current checkout. Forgotten TODOs remain separate until their actual work is
+resumed or reviewed; an uncleared checkbox is not evidence of current work.
+Repository conventions take precedence over the default task-file paths.
 
-The TODO answers what was intended, what changed, why and what remains. It is
-not a transcript. Saved public messages/tool records establish action history;
-Git commits or retained worktrees establish code state. A checked box without
-verification evidence establishes neither success nor reproducibility.
+Update at the work boundaries specified in `auto-drew`, then use its bundled
+`task.py` to retain that version, reason and explicit session link. It writes
+`history.jsonl` and content-addressed Markdown versions in
+`~/.agent/auto-drew/<project-id>/<task-id>/`, independently of disposable worktrees.
+The TODO itself links to this history. Keep the same task ID and history binding
+on continuation. Each task history has one writer; separate concurrent tasks
+have separate files. This is a small file helper, not an automatic host hook.
+
+Eval's `session.py --history /absolute/task/history.jsonl` loads that task's
+retained versions and linked sessions. A known `--from-line` records a task-start
+hint; each checkpoint also records the source length then. These are review
+pointers, not a guarantee that every event between them belongs to the task.
+Review start/end boundaries and interleaved work before judging coverage.
+
+No past TODO versions are invented. Missing links/files or changes after the last
+checkpoint leave gaps; retain saved sessions if their host retention is temporary.
+History retains TODO copies, not transcript copies or dirty code. A checked box
+without verification evidence establishes neither success nor reproducibility.
 
 ## Review after the work
 

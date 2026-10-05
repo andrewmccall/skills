@@ -115,12 +115,81 @@ def extract(path, format):
             'events': events, 'skipped_records': dict(skipped), 'warnings': sorted(warnings)}
 
 
-def prepare(paths, format, case, label, todos=()):
+def read_history(path):
+    """Read one task's retained state; unavailable evidence remains an explicit gap."""
+    path = path.expanduser().resolve()
+    records, states, gaps, sessions = [], [], [], {}
+    task_id = project = None
+    for line, text in enumerate(path.read_text().splitlines(), 1):
+        record = json.loads(text)
+        if not isinstance(record, dict) or record.get('schema_version') != 1:
+            raise ValueError(f'{path}:{line}: unsupported history schema')
+        if task_id is None:
+            task_id, project = record['task_id'], record['project']
+            if not re.fullmatch(r'[a-z0-9][a-z0-9-]{0,63}', task_id) or not Path(project).is_absolute():
+                raise ValueError('History needs a valid task id and absolute project')
+        if record['task_id'] != task_id or record['project'] != project:
+            raise ValueError('History mixes tasks or projects')
+        link, snapshot = record['session'], record['snapshot']
+        if not isinstance(link, dict) or not isinstance(snapshot, dict):
+            raise ValueError('History session and snapshot must be objects')
+        if link['format'] not in {'rollout', 'exec'} or not link['id'] or not Path(link['path']).is_absolute():
+            raise ValueError('Invalid history session link')
+        start, end = link.get('from_line'), link['captured_through_line']
+        if type(end) is not int or end < 1 or (start is not None and (type(start) is not int or not 1 <= start <= end)):
+            raise ValueError('Invalid history session bounds')
+        key = str(Path(link['path']).resolve())
+        if key in sessions and (sessions[key]['id'], sessions[key]['format']) != (link['id'], link['format']):
+            raise ValueError('Conflicting identities for one session path')
+        sessions[key] = link
+        relative = Path(snapshot['path'])
+        digest = snapshot['sha256']
+        if not re.fullmatch(r'[a-f0-9]{64}', digest) or relative != Path('todo') / (digest + '.md'):
+            raise ValueError('Invalid snapshot reference')
+        retained = (path.parent / relative).resolve()
+        if not retained.is_relative_to(path.parent):
+            raise ValueError('Snapshot escapes task history')
+        if retained.exists():
+            data = retained.read_bytes()
+            if hashlib.sha256(data).hexdigest() != digest:
+                raise ValueError(f'{retained}: snapshot hash mismatch')
+            states.append({'path': str(retained), 'sha256': digest, 'text': data.decode(),
+                           'captured_at': record['recorded_at'], 'reason': record['reason'],
+                           'session_id': link['id'], 'evidence': f'{path}:{line}',
+                           'scope': 'Retained TODO at this checkpoint; not every intermediate edit.'})
+        else:
+            gaps.append(f'Missing retained TODO: {retained}')
+        records.append(record)
+    if not records:
+        raise ValueError('Task history is empty')
+    return {'path': str(path), 'task_id': task_id, 'project': project, 'records': records,
+            'todo_snapshots': states, 'sessions': list(sessions.values()), 'gaps': gaps}
+
+
+def prepare(paths, format, case, label, todos=(), history=None):
     if len({p.resolve() for p in paths}) != len(paths):
         raise ValueError('Duplicate session path')
     sources = [extract(path, format) for path in paths]
+    gaps = list(history['gaps']) if history else []
+    if history:
+        for link in history['sessions']:
+            path = Path(link['path'])
+            source = next((s for s in sources if s['path'] == str(path.resolve())), None)
+            if not path.exists():
+                gaps.append(f"Missing linked session {link['id']}: {path}")
+                continue
+            if source is None:
+                source = extract(path, link['format'])
+                sources.append(source)
+            ids = [e.get('id') or e.get('session_id') for e in source['events'] if e['kind'] == 'session_meta']
+            ids += [e.get('thread_id') for e in source['events'] if e['kind'] == 'thread.started']
+            if source['format'] != link['format'] or link['id'] not in ids:
+                raise ValueError(f'{path}: linked session identity/format mismatch')
+            count = len(path.read_text().splitlines())
+            if any(r['session']['captured_through_line'] > count for r in history['records'] if r['session']['path'] == link['path']):
+                gaps.append(f'Linked session is shorter than its recorded checkpoint: {path}')
     captured = datetime.datetime.now(datetime.timezone.utc).isoformat()
-    states = []
+    states = list(history['todo_snapshots']) if history else []
     for path in todos:
         data = path.read_bytes()
         states.append({'path': str(path.resolve()), 'captured_at': captured,
@@ -133,8 +202,12 @@ def prepare(paths, format, case, label, todos=()):
                               'Source line numbers are evidence references, not useful-action steps.',
                               'Coverage and task boundaries require review, including any child sessions.',
                               'No historical code or environment snapshot is created.']}
+    if history:
+        packet['task_history'] = {k: history[k] for k in ['path', 'task_id', 'project', 'records']}
+        packet['limitations'].append('A session can contain several tasks; checkpoint bounds are hints, not proof of task membership or completion.')
+    packet['gaps'] = gaps
     observation = {'case_id': case['id'], 'label': label,
-                   'provenance': 'session-review:' + ','.join(str(p.resolve()) for p in paths),
+                   'provenance': 'session-review:' + ','.join(s['path'] for s in sources),
                    'complete': False,
                    'coverage': {k: False for k in ['invocations', 'actions', 'questions', 'decisions']},
                    'invocations': [], 'actions': [], 'questions': [], 'decisions': [],
@@ -144,13 +217,14 @@ def prepare(paths, format, case, label, todos=()):
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('--session', type=Path, action='append', required=True, help='Repeat for task continuations/child sessions, in review order')
-    parser.add_argument('--format', choices=['rollout', 'exec'], required=True)
+    parser.add_argument('--session', type=Path, action='append', default=[], help='Repeat for task continuations/child sessions, in review order')
+    parser.add_argument('--format', choices=['rollout', 'exec'], help='Required for explicit --session paths')
+    parser.add_argument('--history', type=Path, help="One task's history.jsonl; loads its TODO versions and linked sessions")
     parser.add_argument('--suite', type=Path, default=DEFAULT_SUITE)
     parser.add_argument('--case-id', required=True)
     parser.add_argument('--label', required=True)
     parser.add_argument('--todo', type=Path, action='append', default=[])
-    parser.add_argument('--project', type=Path, default=Path.cwd(), help='Target project identity; defaults to the working directory')
+    parser.add_argument('--project', type=Path, help='Target project identity; defaults to history project or working directory')
     parser.add_argument('--store', type=Path, help='Artifact store; defaults to ~/.agent/auto-drew')
     parser.add_argument('--output', type=Path, help='Explicit new review directory, overriding the store layout; never overwritten')
     args = parser.parse_args()
@@ -158,9 +232,18 @@ def main():
         cases = [c for c in expand(load(args.suite)) if c['id'] == args.case_id]
         if len(cases) != 1:
             raise ValueError('Case id must identify exactly one scenario in the supplied suite')
-        packet, observation = prepare(args.session, args.format, cases[0], args.label, args.todo)
-        output = args.output.expanduser() if args.output else review_directory(args.project, args.case_id, args.label, args.store)
-        packet['project'] = str(args.project.expanduser().resolve())
+        if not args.history and not args.session:
+            raise ValueError('Supply --history or --session')
+        if args.session and not args.format:
+            raise ValueError('Explicit sessions require --format')
+        history = read_history(args.history) if args.history else None
+        project = (args.project or (Path(history['project']) if history else Path.cwd())).expanduser().resolve()
+        if history and str(project) != history['project']:
+            raise ValueError('Project does not match task history')
+        packet, observation = prepare(args.session, args.format, cases[0], args.label, args.todo, history)
+        task_id = history['task_id'] if history else args.case_id
+        output = args.output.expanduser() if args.output else review_directory(project, task_id, args.label, args.store)
+        packet['project'] = str(project)
         output.mkdir(parents=True, exist_ok=False)
         for name, value in [('evidence.json', packet), ('observation.json', observation)]:
             (output / name).write_text(json.dumps(value, indent=2) + '\n')
