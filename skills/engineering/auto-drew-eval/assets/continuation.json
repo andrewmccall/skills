@@ -1,0 +1,585 @@
+{
+  "schema_version": 1,
+  "scenarios": [
+    {
+      "id": "spec-led-first-proof",
+      "category": "boundary",
+      "prompt": "Implement the first integration slice in the supplied spec. Its acceptance section requires the actual CLI to call the new endpoint and a denied direct upstream connection. Unit tests now pass; the already-authorised disposable environment is available.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "tdd",
+          "principle-prove-it-works"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "domain-modeling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "slice_acceptance_traced_to_source",
+        "actual_cli_and_direct_denial_proven_or_real_blocker_evidenced",
+        "authorised_proof_continued_without_human_restart"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement",
+        "Confidence / verification cost"
+      ],
+      "notes": "A plan naming live proof as a next step does not satisfy acceptance. A later real blocker is distinct from ending before attempting the authorised proof."
+    },
+    {
+      "id": "mcp-destination-after-proof",
+      "category": "boundary",
+      "prompt": "Continue implementing the spec's MCP integration direction. The first native Kubernetes endpoint has just passed acceptance. The spec also calls for approved external server connections and run-local configuration; portable executors and agent loops are separate future directions.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "codebase-design",
+          "domain-modeling",
+          "tdd",
+          "principle-redesign-from-first-principles",
+          "principle-foundational-thinking",
+          "principle-experience-first"
+        ],
+        "forbidden": [
+          "arena",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 6,
+      "outcome_criteria": [
+        "native_proof_retained_as_partial_evidence",
+        "remaining_mcp_questions_and_dependencies_retained",
+        "next_authorised_mcp_slice_attempted_or_dependency_evidenced",
+        "unrelated_runtime_work_kept_out_of_completion_scope"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Momentum / understanding",
+        "Completion / refinement"
+      ],
+      "notes": "No material system-shape choice is established at this decision point. New evidence can earn a separately frozen architecture case; absence of architect alone is not failure."
+    },
+    {
+      "id": "established-mcp-contract",
+      "category": "boundary",
+      "prompt": "Add approved third-party MCP integration. There is currently one native server, and the installed SDK supports the selected connection form. The requirement is to connect another conforming server through trusted configuration without adding another service-specific server implementation. Keep existing run authorisation guarantees.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "codebase-design",
+          "domain-modeling",
+          "tdd",
+          "principle-redesign-from-first-principles",
+          "principle-model-the-domain",
+          "principle-boundary-discipline",
+          "principle-type-system-discipline",
+          "principle-prove-it-works"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 6,
+      "outcome_criteria": [
+        "existing_protocol_and_sdk_contract_investigated",
+        "two_distinct_server_definitions_proven_through_configuration",
+        "second_server_needs_no_service_specific_implementation",
+        "actual_calls_and_run_isolation_verified",
+        "protocol_compatibility_does_not_inflate_authorisation_guarantee"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Reuse / abstraction",
+        "Reversibility / extensibility"
+      ],
+      "notes": "A standard contract supplies reuse evidence outside the checkout. Discovery filtering alone does not prove call mediation. Unsupported protocol features must remain explicit."
+    },
+    {
+      "id": "actionable-question-versus-fog",
+      "category": "boundary",
+      "prompt": "Continue the integration work after the connection proof. Configuration placement can be resolved from the repository's existing ownership rules and two supplied consumer examples. Later managed-server lifecycle variation is still unspecified and depends on selecting a concrete deployment.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "codebase-design",
+          "domain-modeling"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "precise_configuration_question_and_next_investigation_recorded",
+        "discoverable_ownership_resolved_without_human_question",
+        "unspecified_lifecycle_area_kept_coarse_with_dependency",
+        "next_action_and_routing_reassessed_after_proof"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Momentum / understanding",
+        "Autonomy / human ownership"
+      ],
+      "notes": "A precise unanswered or blocked question is actionable knowledge, not anonymous fog. A coarse map belongs in the existing task TODO; no complete implementation plan is required."
+    },
+    {
+      "id": "configuration-selects-authority",
+      "category": "boundary",
+      "prompt": "The integration currently uses trusted launch flags. Add support for selecting approved implementations and rendering their connections for two supplied clients. The repository already defines what administrators approve and what task authors may request, but configuration representation and ownership between modules are unresolved.",
+      "expected": {
+        "required": [
+          "codebase-design"
+        ],
+        "allowed": [
+          "how",
+          "domain-modeling",
+          "tdd",
+          "principle-experience-first",
+          "principle-foundational-thinking",
+          "principle-boundary-discipline"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 6,
+      "outcome_criteria": [
+        "user_and_administrator_configuration_examples_examined",
+        "request_approval_preparation_and_rendering_owners_identified",
+        "representation_serves_concrete_consumers",
+        "task_data_cannot_select_broader_authority"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Reuse / abstraction",
+        "Autonomy / human ownership"
+      ],
+      "notes": "Configuration representation and module ownership are the explicit unresolved interface problem, so codebase-design is earned. This does not require architect or a universal integration registry."
+    },
+    {
+      "id": "explicitly-bounded-first-slice",
+      "category": "negative",
+      "prompt": "Implement only the first native adapter and its specified acceptance checks from the larger integration design. Stop after that proof; retain the remaining roadmap for a later task. Existing interfaces cover this adapter.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "authorised_adapter_and_acceptance_complete",
+        "remaining_destination_retained_as_later_work",
+        "no_unrequested_follow_on_implementation"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement"
+      ],
+      "notes": "Parent destination retention does not expand explicit first-slice authorisation."
+    },
+    {
+      "id": "narrow-integration-validation-fix",
+      "category": "negative",
+      "prompt": "Fix the reproduced namespace-validation defect in the existing integration tool. The validation boundary and expected policy are already documented; no other integration behaviour is requested.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "validation_defect_fixed_at_responsible_boundary",
+        "regression_and_existing_policy_verified",
+        "no_unrelated_configuration_or_roadmap_study"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Local fix / root cause",
+        "Completion / refinement"
+      ],
+      "notes": "The broader integration topic does not earn parent-design ceremony for this settled local fix."
+    },
+    {
+      "id": "distinct-acceptance-contract",
+      "category": "boundary",
+      "prompt": "Prove the new read/model-only connection and cancellation behaviour. The existing acceptance test publishes an external PR and requires successful completion. The new run must deliberately cancel, and its grant excludes publication. Existing verification commands own cluster preflight and evidence output.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "domain-modeling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "different_acceptance_contract_preserved",
+        "no_grant_expansion_or_external_publication",
+        "new_scenario_discoverable_through_existing_verification",
+        "shared_prerequisites_compared_before_helper_extraction"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Reuse / abstraction",
+        "Simplicity / sufficiency"
+      ],
+      "notes": "A separate scenario can be correct. Forcing publication merely to reuse a test violates this task's contract. Share responsibilities only when their semantics agree."
+    },
+    {
+      "id": "verification-revision-boundary",
+      "category": "boundary",
+      "prompt": "Finish the integration gate after the successful live run. Failure cleanup was changed after that run, and the final script passes syntax checks. A controlled failure fixture is available to exercise the changed cleanup path.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd",
+          "principle-prove-it-works",
+          "principle-make-operations-idempotent",
+          "principle-test-behavior-not-implementation"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "tested_revision_and_live_coverage_stated",
+        "changed_cleanup_path_exercised_with_failure_fixture",
+        "earlier_live_pass_not_used_to_certify_later_failure_handling"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Confidence / verification cost"
+      ],
+      "notes": "A focused failure proof can establish the changed path without repeating paid inference. Compilation or syntax checks alone cannot establish cleanup behaviour."
+    },
+    {
+      "id": "unresolved-integration-guarantee",
+      "category": "boundary",
+      "prompt": "Add the approved remote integration. Inspection shows its protocol is compatible but its operations cannot currently be mapped to the product's strongest enforcement guarantee. The product owner has not chosen whether a weaker guarantee is acceptable or whether to wait for a reviewed mapping.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "how",
+          "domain-modeling",
+          "grilling"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "compatible_protocol_and_enforcement_limits_distinguished",
+        "accepted_guarantee_choice_put_to_human_owner",
+        "available_independent_work_continues_or_its_absence_is_evidenced",
+        "no_silent_guarantee_downgrade"
+      ],
+      "human_decisions": [
+        "accepted-integration-guarantee"
+      ],
+      "tensions": [
+        "Autonomy / human ownership",
+        "Simplicity / sufficiency"
+      ],
+      "notes": "Established protocol reuse does not settle accepted product risk. Grilling is permitted for this human-owned choice, rather than required for every integration."
+    },
+    {
+      "id": "integration-concepts-before-slicing",
+      "category": "positive",
+      "prompt": "Implement approved remote integration from the supplied design. In its glossary, capability means both requested authority and a server protocol feature; connection sometimes means an approved integration and sometimes one live run session. The native adapter works, but those conflicting meanings leave revocation and ownership undefined for remote connections.",
+      "expected": {
+        "required": [
+          "domain-modeling"
+        ],
+        "allowed": [
+          "how",
+          "codebase-design",
+          "tdd"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "interrogate",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 6,
+      "outcome_criteria": [
+        "authority_protocol_feature_and_run_connection_distinguished",
+        "ownership_and_revocation_invariants_resolved_or_human_dependency_evidenced",
+        "concepts_recorded_in_existing_domain_documents",
+        "next_slice_chosen_against_resolved_model"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Momentum / understanding",
+        "Autonomy / human ownership"
+      ],
+      "notes": "This case deliberately makes contradictory concepts material to the authorised result. Routing is earned before another easy adapter, even if that adapter can compile without resolving them. Do not invent product policy to resolve contradictions."
+    },
+    {
+      "id": "integration-shape-before-next-adapter",
+      "category": "positive",
+      "prompt": "Implement the approved integration direction. Two viable shapes remain in the supplied design: per-run server preparation, or a shared broker preparing isolated run connections. Measured startup costs, credential ownership and revocation constraints are provided, and neither shape has been selected. The first native adapter already passes its tests.",
+      "expected": {
+        "required": [
+          "architect"
+        ],
+        "allowed": [
+          "how",
+          "why",
+          "arena",
+          "interrogate",
+          "tdd",
+          "principle-exhaust-the-design-space",
+          "principle-foundational-thinking",
+          "principle-outcome-oriented-execution",
+          "principle-redesign-from-first-principles",
+          "principle-fix-root-causes",
+          "principle-subtract-before-you-add",
+          "principle-separate-before-serializing-shared-state",
+          "principle-prove-it-works",
+          "principle-encode-lessons-in-structure",
+          "principle-boundary-discipline",
+          "principle-laziness-protocol",
+          "principle-make-operations-idempotent",
+          "principle-minimize-reader-load"
+        ],
+        "forbidden": [
+          "grilling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 7,
+      "outcome_criteria": [
+        "material_shapes_compared_against_supplied_constraints",
+        "ownership_and_revocation_consequences_evidenced",
+        "chosen_shape_guides_next_implementation_slice",
+        "native_adapter_success_not_used_to_settle_unexamined_shape"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Existing shape / required behaviour",
+        "Sharing / coordination"
+      ],
+      "notes": "The competing current shapes and their empirical constraints earn architect. No new topology is required in neighbouring cases where the authorised result fits a settled interface."
+    },
+    {
+      "id": "typed-connection-state",
+      "category": "positive",
+      "prompt": "Implement the resolved connection lifecycle. The glossary already settles approved integration and run connection meanings. Current code repeats prepared/active/revoked booleans and optional identity fields across handlers, admitting active connections without identity and revoked connections that are still usable. The statically typed model and its state transitions are the unresolved implementation work.",
+      "expected": {
+        "required": [
+          "principle-model-the-domain",
+          "principle-type-system-discipline"
+        ],
+        "allowed": [
+          "principle-foundational-thinking",
+          "principle-boundary-discipline",
+          "codebase-design",
+          "tdd"
+        ],
+        "forbidden": [
+          "domain-modeling",
+          "architect",
+          "arena",
+          "grilling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 4,
+      "outcome_criteria": [
+        "full_selected_principle_context_applied_to_representation",
+        "invalid_connection_states_eliminated_by_construction",
+        "transition_behaviour_verified_at_real_interface",
+        "settled_concept_meanings_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "Principles guide implementation directly without requiring an unrelated domain-discussion workflow. Reading a leaf without changing the representation or a check is not application."
+    },
+    {
+      "id": "idempotent-connection-cleanup",
+      "category": "positive",
+      "prompt": "Fix connection preparation and cancellation so retrying after partial creation or after a crash converges to the intended state. The existing ownership and service topology are settled. A disposable fixture supports repeated preparation, repeated cancellation and interruptions between lifecycle mutations.",
+      "expected": {
+        "required": [
+          "principle-make-operations-idempotent"
+        ],
+        "allowed": [
+          "principle-fix-root-causes",
+          "principle-prove-it-works",
+          "principle-separate-before-serializing-shared-state",
+          "tdd"
+        ],
+        "forbidden": [
+          "domain-modeling",
+          "architect",
+          "arena",
+          "grilling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "full_idempotence_context_applied_to_lifecycle",
+        "repeat_and_partial_failure_paths_exercised",
+        "authority_and_resource_cleanup_converge",
+        "existing_ownership_preserved"
+      ],
+      "human_decisions": [],
+      "notes": "A successful happy-path run and a general simplicity statement do not establish crash/retry convergence."
+    },
+    {
+      "id": "configuration-experience-alternatives",
+      "category": "positive",
+      "prompt": "Choose the user-facing connection configuration for the approved integration. Trust rules and backend topology are settled, but no configuration precedent exists. Inline client options and a named approved connection are both viable. Operators must understand defaults, denied combinations and which settings task authors control.",
+      "expected": {
+        "required": [
+          "principle-experience-first",
+          "principle-exhaust-the-design-space"
+        ],
+        "allowed": [
+          "codebase-design",
+          "how",
+          "principle-boundary-discipline"
+        ],
+        "forbidden": [
+          "domain-modeling",
+          "architect",
+          "arena",
+          "grilling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "full_principle_context_applied_to_user_contract",
+        "distinct_concrete_configuration_examples_compared",
+        "defaults_denials_and_ownership_exercised",
+        "choice_explained_from_consumer_and_maintainer_examples"
+      ],
+      "human_decisions": [],
+      "notes": "This is a configuration interface decision with settled product policy, not an unresolved system topology or a human preference quiz."
+    },
+    {
+      "id": "unobserved-routing-number",
+      "category": "boundary",
+      "prompt": "Assess the saved engineering report. It shows zero routing-observed cases, two evidenced skill applications and 101 outer tool calls; invocation coverage is incomplete. Its perfect contract result comes from synthetic scorer fixtures, and there is no fresh candidate run.",
+      "expected": {
+        "required": [
+          "principle-explain-the-number"
+        ],
+        "allowed": [
+          "principle-prove-it-works"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "full_measurement_context_applied_to_claim",
+        "zero_observed_denominator_distinguished_from_zero_calls",
+        "synthetic_contract_distinguished_from_agent_performance",
+        "no_candidate_improvement_inferred_from_rescoring"
+      ],
+      "human_decisions": [],
+      "notes": "The measurement explanation belongs wherever a numeric claim is interpreted, even when auto-drew-eval is not invoked."
+    },
+    {
+      "id": "instruction-pointer-review",
+      "category": "positive",
+      "prompt": "Review and fix this agent skill. Its summary paraphrases a specialist rule, but the full reference containing the rule constraints is only loaded after the decision it should govern. Preserve the canonical source and keep mechanical edits lightweight.",
+      "expected": {
+        "required": [
+          "writing-for-agents"
+        ],
+        "allowed": [
+          "principle-encode-lessons-in-structure",
+          "principle-minimize-reader-load",
+          "principle-laziness-protocol"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "grilling",
+          "domain-modeling",
+          "reflect"
+        ]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "pointer_trigger_reaches_context_before_decision",
+        "full_constraints_preserved_without_duplicate_authored_rule",
+        "instructions_preserve_existing_scope_and_authorisation"
+      ],
+      "human_decisions": [],
+      "notes": "Writing-for-agents is earned by the instruction review itself. It does not require an enclosing retro invocation."
+    }
+  ]
+}

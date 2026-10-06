@@ -123,11 +123,55 @@ class EvaluationTests(unittest.TestCase):
 
     def test_support_dependency_is_not_an_independent_route(self):
         suite, o = self.only('retro-without-reflect')
+        routes = copy.deepcopy(self.routes)
+        routes['skills']['writing-for-agents']['support_only'] = True
         o['invocations'].append({'id': 'standalone', 'skill': 'writing-for-agents'})
-        report = evalmod.score(suite, self.routes, [o])
+        report = evalmod.score(suite, routes, [o])
         self.assertIn('writing-for-agents', report['cases'][0]['forbidden'])
         self.assertFalse(report['cases'][0]['routing_pass'])
         self.assertEqual(report['per_skill']['writing-for-agents']['false_positive'], 1)
+
+    def test_earned_principle_can_be_direct_and_missing_context_fails_routing(self):
+        suite = evalmod.load(SKILL / 'assets/continuation.json')
+        case = copy.deepcopy(next(c for c in suite['scenarios']
+                                  if c['id'] == 'idempotent-connection-cleanup'))
+        suite['scenarios'] = [case]
+        observation = {
+            'case_id': case['id'], 'complete': True,
+            'coverage': {'invocations': True},
+            'invocations': [{'id': 'convergence',
+                             'skill': 'principle-make-operations-idempotent'}],
+        }
+        report = evalmod.score(suite, self.routes, [observation])
+        self.assertTrue(report['cases'][0]['routing_pass'])
+        self.assertEqual(report['cases'][0]['cost'], 0)
+        self.assertEqual(report['per_skill']['principle-make-operations-idempotent']['required_hit'], 1)
+        self.assertIsNone(report['summary']['task_success_rate'])
+        observation['invocations'] = []
+        row = evalmod.score(suite, self.routes, [observation])['cases'][0]
+        self.assertEqual(row['missing'], ['principle-make-operations-idempotent'])
+        self.assertFalse(row['routing_pass'])
+
+    def test_unearned_principle_is_forbidden_even_with_zero_cost(self):
+        suite, observation = self.only('readme-typo')
+        observation['invocations'] = [{'id': 'unneeded', 'skill': 'principle-model-the-domain'}]
+        report = evalmod.score(suite, self.routes, [observation])
+        self.assertEqual(report['cases'][0]['forbidden'], ['principle-model-the-domain'])
+        self.assertEqual(report['per_skill']['principle-model-the-domain']['false_positive'], 1)
+        self.assertEqual(report['summary']['zero_ceremony_pass_rate'], 0)
+
+    def test_writing_for_agents_can_be_direct_without_losing_nested_accounting(self):
+        suite, observation = self.only('retro-without-reflect')
+        observation['invocations'] = [{'id': 'retro', 'skill': 'retro'},
+                                     {'id': 'writing', 'skill': 'writing-for-agents'}]
+        suite['scenarios'][0]['ceremony_budget'] = 3
+        report = evalmod.score(suite, self.routes, [observation])
+        self.assertTrue(report['cases'][0]['routing_pass'])
+        self.assertEqual(report['cases'][0]['cost'], 3)
+        observation['invocations'][1]['parent'] = 'retro'
+        report = evalmod.score(suite, self.routes, [observation])
+        self.assertTrue(report['cases'][0]['routing_pass'])
+        self.assertEqual(report['cases'][0]['cost'], 2)
 
     def test_unlisted_route_is_forbidden_without_exhaustive_catalog(self):
         suite, o = self.only('readme-typo')

@@ -17,6 +17,10 @@ negative, 14 positive, 15 boundary and 5 composition cases. The JSON format work
 without dependencies. YAML suites/observations also work with PyYAML installed
 with `python3 -m pip install PyYAML`.
 
+The instruction-rewrite boundary case earns `writing-for-agents` directly. Older
+rubrics forbade that route; compare candidate behaviour only with a matching frozen
+rubric, rather than interpreting this contract correction as agent improvement.
+
 Each case has a realistic prompt, required/allowed/forbidden route lists, a numeric
 ceremony budget, outcome criteria and any human-owned decisions. Unlisted
 capabilities default to forbidden. Decision cases name the active tension and include an outcome criterion
@@ -91,7 +95,11 @@ Observation format (criterion names are scenario-specific):
 ```
 
 Invocation ids and parents form a validated forest. Only catalogued dependency
-edges may receive a nested cost discount. Support-only references need a parent invocation and are not independent routes.
+edges may receive a nested cost discount. The principle leaves and
+`writing-for-agents` may be direct earned applications or nested support. Principle
+reads have zero relative workflow cost here; actual applications still undergo
+route checks and prevent a claim of no-capability ceremony. Any reference marked
+`support_only` in an eval-specific catalogue still needs a parent invocation.
 Record every actual invocation,
 including repeats and support calls. A tool reading a reference is a support call
 only when it actually consulted that capability, not merely mentioned its name.
