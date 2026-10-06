@@ -37,5 +37,7 @@ jobs:
       - run: python scripts/validate-engineering.py
       - run: python -m unittest discover -s evals/engineering/tests -v
       - run: python skills/engineering/auto-drew-eval/scripts/evaluate.py validate
+      - name: Validate prospective routing and context cases
+        run: python skills/engineering/auto-drew-eval/scripts/evaluate.py --suite skills/engineering/auto-drew-eval/assets/continuation.json validate
       - name: Score synthetic contract fixtures (not agent performance)
         run: python skills/engineering/auto-drew-eval/scripts/evaluate.py score --observations skills/engineering/auto-drew-eval/assets/contract.jsonl --report /tmp/contract-report.md --strict

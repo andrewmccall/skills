@@ -828,7 +828,9 @@
       "category": "boundary",
       "prompt": "Rewrite the repository\u2019s agent instructions so the startup command and conditional pointers are clear for an agent reading them cold. Keep the existing behaviour and scope.",
       "expected": {
-        "required": [],
+        "required": [
+          "writing-for-agents"
+        ],
         "allowed": [],
         "forbidden": [
           "architect",
@@ -839,17 +841,16 @@
           "interrogate",
           "reflect",
           "show-me-your-work",
-          "tdd",
-          "writing-for-agents"
+          "tdd"
         ]
       },
-      "ceremony_budget": 0,
+      "ceremony_budget": 1,
       "outcome_criteria": [
         "pointers_precise",
         "scope_preserved"
       ],
       "human_decisions": [],
-      "notes": "Writing agent instructions alone does not earn an independent support capability route. writing-for-agents remains a dependency consulted by retro.",
+      "notes": "Rewriting agent instructions earns writing-for-agents directly; no enclosing retro is required. Keep the existing behaviour and scope.",
       "variants": [],
       "composition": {
         "required_sequences": [],

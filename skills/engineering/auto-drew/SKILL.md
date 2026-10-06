@@ -21,10 +21,19 @@ itself as well as the system being changed:
 - Make tomorrow's change cheap through reversibility; do not implement tomorrow's
   requirement or speculative extensibility. Prefer duplication until concrete
   implementations or change history demonstrate a stable common concept.
+  An established protocol or SDK can already supply that evidence outside this
+  checkout. Reuse its supported contract when it meets the current requirement;
+  verify application guarantees separately from protocol compatibility.
 - Let evidence settle empirical questions; reserve human questions for product
   intent, preferences, priorities and accepted risk.
 - Encode repeated lessons in tests, types, schemas, tooling or repository structure
   before adding prose or a skill.
+
+For material design, implementation and verification decisions, use the
+[principle routing index](references/principles.md) and read the relevant upstream
+leaf skills in full before deciding. The summaries here establish this mode's
+priorities; the leaves supply context, concrete checks and limits. Principles can
+guide ordinary engineering directly as well as support a specialist workflow.
 
 ## Tensions that require a choice
 
@@ -75,18 +84,33 @@ action should reduce relevant uncertainty or move the task toward done.
 - **Understand:** inspect the relevant source, neighbouring patterns, tests and
   runtime evidence. Reproduce bugs; measure performance before choosing a fix.
   Investigate facts available in code, docs, history or experiments yourself.
+  When configuration selects authority, behaviour or implementation, inspect
+  its user-facing contract and ownership before choosing a shared interface.
   Stop once you understand enough for the next useful decision.
 - **Define Done:** translate the request into observable behaviour and constraints.
+  For spec-led work, derive slice criteria from the source acceptance scenarios,
+  retaining source references and justified exclusions. Distinguish the slice's
+  proof from the requested destination. A first proof settles only the questions
+  it exercises; the user's scope determines which remaining work is authorised.
+  These criteria govern delivery. `auto-drew-eval` can assess the work afterward;
+  invoking it or obtaining a rubric score is not a delivery requirement.
   Use the user's existing criteria when sufficient. Ask about consequential
   requirements, preferences or trade-offs only when they belong to the human and
   remain unresolved. Carry forward prior answers and authorization.
 - **Choose Work:** take the smallest useful, verifiable slice. Avoid detailed
-  speculative plans while uncertainty is high. Route only the
-  uncertainty blocking that slice. Continue independent work while a decision
-  waits; never invent a human-owned decision to keep moving.
+  speculative plans while uncertainty is high. Before narrowing the work, identify
+  unresolved decisions that could invalidate the slice or prevent the requested
+  outcome. Select specialist help using the routing criteria below. After each
+  proof, revisit the remaining authorised destination and reassess which
+  uncertainty and capability now matter. Continue independent work while a
+  decision waits; never invent a human-owned decision to keep moving.
 - **Change ↔ Verify:** make the smallest coherent change toward done, exercise the
-  actual changed surface, inspect the result, and revise. Match verification to consequence. Test behaviour at
-  real interfaces; use existing checks before inventing new infrastructure.
+  actual changed surface, inspect the result, and revise. Match verification to
+  consequence. Test behaviour at real interfaces; use existing checks before
+  inventing new infrastructure. When a new acceptance scenario is needed, compare
+  existing test contracts before choosing to extend, alter or separate it. Keep
+  required permissions and terminal behaviour intact; integrate the scenario
+  with existing verification entry points and share only matching prerequisites.
   A failed experiment may send you back to Understand or Define Done.
 
 ## Durable state
@@ -117,6 +141,15 @@ Goal and observable done criteria.
 ## Sessions
 - Session ID → saved session path and relevant task-start/end references
 ```
+
+For a slice within a broader design, keep a coarse map in this same TODO of
+resolved questions, remaining questions and dependencies. Record a precise
+unanswered question with its owner and next investigation or decision, even when
+blocked. Keep genuinely unspecified in-scope areas as fog until evidence makes
+them actionable. Update the map after each proof; deferred work needs a reason
+and a revisit trigger. Keep out-of-scope directions separate. This preserves the
+destination without inventing a complete implementation plan or extending a
+request that authorises only one slice.
 
 At pickup, match the goal to the current request, read that task's state and check
 its claims against current code/evidence. Reopen invalidated work with the reason,
@@ -154,20 +187,29 @@ Git supply detailed action and code history.
 
 ## Specialist routing
 
-Ordinary work often needs **none**. This mode owns engineering routing; upstream
-descriptions advertise capability, not an obligation to invoke it. Read a selected
-skill through normal discovery and consult only its needed references. Apply the
-same criteria to nested calls; a support reference is not a second full session.
+Choose capabilities against the authorised outcome and its unresolved decisions,
+before committing to an implementation slice. Specialists can expose
+missing concepts, alternatives and dependencies as well as resolve known ones;
+invoke one once its decision problem is clear and let its work supply the missing
+evidence. A slice that avoids an unresolved decision does not establish that
+the decision or its specialist is unnecessary. Resolve it when it affects the
+current choice, or retain why and when it can be deferred in the task TODO.
+
+Ordinary work with settled concepts and interfaces often needs no specialist.
+This mode owns engineering routing; upstream descriptions advertise capability,
+not an obligation to invoke it. Read a selected skill through normal discovery and
+consult only its needed references. Apply the same criteria to nested calls; a
+support reference is not a second full session.
 
 | Capability | Earned when | Skip when |
 |---|---|---|
 | `how` | Understanding an existing implementation blocks the next decision or is the requested outcome. Use explanatory grounding. | A neighbouring-file read answers it; architectural critique is not the default. |
 | `why` | Historical rationale or constraints matter to the existing shape. It composes with `how`. | Runtime behaviour alone is the question; do not independently duplicate `how`. |
 | `grilling` | A consequential unresolved decision needs human-owned intent, preference, priority or accepted risk. | Source, docs, history, experiments or runtime can answer it, or prior answers settle it. |
-| `domain-modeling` | Concepts, terminology, states, relationships or invariants are themselves blocking implementation. | Business nouns exist but their meaning is established. |
-| `codebase-design` | Module boundaries, interfaces, seams or responsibility placement are the material problem. | The change fits established boundaries. |
+| `domain-modeling` | Concepts, terminology, states, relationships or invariants must be resolved to choose or validate the requested result. | Business nouns exist but their meaning is established. |
+| `codebase-design` | Module interfaces, seams or responsibility placement are material to the requested result, including configuration and ownership beyond the first adapter. | Established interfaces contain the requested outcome, not merely its easiest slice. |
 | `tdd` | Specifying behaviour first provides useful leverage for a bug, rule, algorithm or behavioural change. | Mechanical edits or ritual tests; TDD does not establish completion by itself. |
-| `architect` | Evidence establishes a consequential choice between materially different system shapes. It composes with `how`, conditional `why`, and `arena`. | Architecture is merely affected, a local seam suffices, or performance remains unmeasured. |
+| `architect` | Current requirements or evidence establish a consequential system-shape decision; use it to discover and compare viable shapes. It composes with `how`, conditional `why`, and `arena`. | Architecture is merely affected, a local seam suffices for the requested outcome, or a performance-driven shape change lacks measurements. |
 | `arena` | Independent competing solutions materially improve an important non-architecture choice; normally reached through `architect`. | Routine alternatives or an independent duplicate of architecture's internal arena. |
 | `interrogate` | An existing high-consequence result earns independent adversarial review: what did we miss? | Default review of every edit or no result to review. |
 | `create-verification-skill` | Repeated project verification needs non-obvious driving knowledge that existing checks do not capture. | A trivial repository, sufficient existing checks or a one-off check. |
@@ -178,10 +220,11 @@ same criteria to nested calls; a support reference is not a second full session.
 
 Explicit requests for a specialist specify the capability the user wants. Honour
 that scope and existing permissions; do not expand it into an unrelated workflow.
-Installation alone never earns invocation. Support dependencies such as
-`writing-for-agents` and upstream principle references may join normal discovery,
-but this mode does not route to them independently. Consult them only when a
-selected capability needs them. If a skill is missing, explain the gap and use
+Installation alone never earns invocation. Apply `writing-for-agents` when writing
+or reviewing agent instructions. Select principle context through the index above
+even when no workflow specialist is needed. Reading a leaf earns a claim of
+application only when it changes a concrete decision or check; report that effect
+in the ordinary work evidence. If a skill is missing, explain the gap and use
 ordinary engineering judgement where feasible; use `auto-drew-setup` for setup.
 Use `auto-drew-eval` for requested session evaluations or harness comparisons;
 ordinary completion checks remain part of Change ↔ Verify.
@@ -211,9 +254,10 @@ has concrete value. A TODO or dirty-tree reference alone cannot restore earlier
 code, and a Git reference cannot rewind a model's hidden state.
 
 Declare completion against done criteria, with what changed, verification evidence
-and material limitations. A plan, generated test, green build or another agent's
-summary alone does not prove user-visible behaviour. Report unverified criteria
-honestly.
+and material limitations. Record the tested revision; exercise failure handling
+changed after a successful run with a focused failure check or a controlled rerun.
+A plan, generated test, green build or another agent's summary alone does not
+prove user-visible behaviour. Report unverified criteria honestly.
 
 ## Improve from evidence
 

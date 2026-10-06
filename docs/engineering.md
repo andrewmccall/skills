@@ -1,48 +1,58 @@
 # Auto Drew installation
 
-Install the mode, setup and evaluation skills using the skills CLI:
+First install the entry skills through the skills CLI:
 
 ```sh
 npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew auto-drew-setup auto-drew-eval --yes
 ```
 
-Use a local repository path during development. The marketplace package exposes
-the same three skills, generated from the canonical source. Invoke
-`$auto-drew-setup` in the target project to inspect the current upstream README,
-selected skills and supporting references, then install the selected bundle and
-its required dependencies with `npx skills`. Installation requires local tools and
-network access. Add `--global` only when global installation is requested.
+Then invoke `$auto-drew-setup`. It asks whether to install locally for the current
+project or globally for all projects, unless you already chose a scope. Setup
+installs the engineering specialists, all current Poteto principle skills and
+support such as `writing-for-agents`, then verifies that they are readable.
+The initial CLI command installs locally; add `--global` if you want the entry
+skills themselves available everywhere before invoking setup.
 
-The selected user-facing capabilities are:
+The marketplace package provides the same entry skills and bundled setup script.
+When using the CLI from a local checkout, replace `andrewmccall/skills` with the
+checkout path. Use the same persistent checkout as the script's `--source` during
+local development.
 
-- [Matt Pocock](https://github.com/mattpocock/skills): `grilling`, `domain-modeling`, `codebase-design`, `tdd`, `retro`.
-- [pstack standalone mirror](https://github.com/backnotprop/pstack): `how`, `why`, `architect`, `arena`, `interrogate`, `reflect`, `show-me-your-work`, `create-verification-skill`, `maintain-verification-skill`.
+You can also run the script directly. Use the installed skill's actual path:
 
-Support dependencies such as Matt's `writing-for-agents` and the pstack principles
-named in selected skills' references are discovered from the current upstream
-source. They join normal discovery, but Auto Drew only consults them through a
-selected capability. The setup skill documents the commands and dependency
-inspection. Upstream files remain unchanged; the CLI owns installation and update
-metadata. There is no additional Auto Drew dependency lock or installation map.
+```sh
+bash /installed/auto-drew-setup/scripts/setup.sh install --project /path/to/project
+bash /installed/auto-drew-setup/scripts/setup.sh install --global
+```
+
+Without a scope flag, an interactive run asks local or global and defaults to the
+current project. Non-interactive runs require a scope flag. `--agent` selects a
+host other than the default Codex, and `--dry-run` shows the discovered commands
+without installing. Run `--help` for source overrides and other options.
 
 ## Updating
 
-Read the latest upstream instructions for changed dependencies, then update the
-bundle's installed names with:
+Invoke `$auto-drew-setup` and request an update, or run the same script with
+`update` and your chosen scope:
 
 ```sh
-npx skills@latest update <installed-bundle-names...> --project --yes
+bash /installed/auto-drew-setup/scripts/setup.sh update --project /path/to/project
+bash /installed/auto-drew-setup/scripts/setup.sh update --global
 ```
 
-Use `--global` for a global installation. Add newly required support names through
-`npx skills@latest add <source> --skill <names...>`. Preserve unrelated installed
-skills and local edits. Check the selected names with `npx skills@latest list
---agent codex`, in the matching scope, and inspect that needed references resolve.
+Each run inspects current upstream sources, discovers every `principle-*` leaf and
+follows skill references for support. Both installation and updates reapply the
+selected `skills add` commands, refreshing existing contents and adding new
+principles or dependencies. Unrelated skills and agents are outside the selection.
+Updates replace the selected skill contents, so preserve any local edits first.
 
-Auto Drew's trigger/exclusion table is in its `SKILL.md`. Discovery remains
-available; invocation is earned by the task. Evaluate actual routing collisions
-before changing upstream descriptions. Eval costs and nested accounting are
-internal to `skills/engineering/auto-drew-eval/assets/ceremony.json`.
+The script uses [Matt Pocock's skills](https://github.com/mattpocock/skills) and
+[Poteto's pstack mirror](https://github.com/backnotprop/pstack). It installs upstream
+files unchanged through the skills CLI, which owns installation paths and update
+metadata. No additional dependency lock or installation database is maintained.
+Competing top-level modes are excluded. Auto Drew reads full principle context
+through its [principle index](../skills/engineering/auto-drew/references/principles.md)
+when the work earns it.
 
 ## Repository validation
 

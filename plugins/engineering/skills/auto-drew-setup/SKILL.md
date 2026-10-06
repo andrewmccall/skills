@@ -1,47 +1,42 @@
 ---
 name: auto-drew-setup
-description: Set up or update Auto Drew's selected engineering capabilities using the skills CLI and current upstream dependencies. Use when the user asks for installation or setup, not during ordinary engineering work.
+description: Set up or update Auto Drew's engineering skills, full upstream principles and support using the skills CLI. Ask for local or global scope when unspecified. Use for installation and updates, not ordinary engineering work.
 ---
 
 # Set up Auto Drew
 
-Use `npx skills@latest` in the requested project; use global scope only when the
-user requests it. Let the CLI own installation, locations and update metadata.
-Keep upstream skills unchanged and available through normal discovery.
+The user first installs the entry skills with the skills CLI, then invokes this
+skill. Ask whether setup should be **local to this project** or **global for all
+projects**, unless their current request or prior answer already specifies scope.
+Use the current project for a local setup unless another path is supplied. Carry
+the same choice into updates; scope is the user's decision.
 
-Read the current README and selected `SKILL.md` files from
-[Matt Pocock's skills](https://github.com/mattpocock/skills) and
-[pstack's standalone mirror](https://github.com/backnotprop/pstack). Follow their
-supporting references and named cross-skill calls to identify required dependencies,
-including principle references in candidate prompts. A temporary shallow checkout
-is useful when web views omit files. Inspect the latest source; do not pin commits
-or maintain our own dependency manifest, copier or installation database.
-
-Install the user-facing bundle with the existing CLI:
+Run the bundled [setup.sh](scripts/setup.sh) by its absolute discovered path:
 
 ```sh
-npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew auto-drew-setup auto-drew-eval --yes
-npx skills@latest add mattpocock/skills --agent codex --skill grilling domain-modeling codebase-design tdd retro --yes
-npx skills@latest add backnotprop/pstack --agent codex --skill how why architect arena interrogate reflect show-me-your-work create-verification-skill maintain-verification-skill --yes
+bash /installed/auto-drew-setup/scripts/setup.sh install --project /project
+bash /installed/auto-drew-setup/scripts/setup.sh install --global
 ```
 
-Adjust the agent flag to the host and add `--global` only for requested global
-setup. Use a local source path for the authored bundle during development.
-Install the dependency names found in the current upstream source with the same
-`add <source> --skill <names...>` command. For example, Matt's `retro` needs
-`writing-for-agents`; pstack's `architect` needs `arena`, `how`, and the principle
-skills named by its body and runner prompt. Follow dependency references until
-the selected skills' required support is available. Do not install competing
-top-level modes or routers; inspect conditional references against this scope.
+Use `update` instead of `install` for refresh. Both use targeted
+`npx skills@latest add` commands to refresh this bundle and add newly discovered dependencies. Pass
+`--agent` for another host, and `--source /persistent/skills-checkout` when developing
+the authored collection locally. `--dry-run` discovers and prints the commands
+without changing installation. The script also asks local/global when a person
+runs it interactively without a scope flag. Agent runs should pass the chosen flag.
 
-Support skills participate in normal discovery but are not independent Auto Drew
-routes. Do not fork upstream frontmatter or hide capabilities to pre-empt
-unmeasured trigger collisions. Preserve unrelated installations and local edits;
-use the CLI's normal install/update behaviour rather than a second ownership layer.
+The script inspects current upstream skill instructions and references, installs
+the selected specialists, every current pstack `principle-*` leaf and discovered
+support through the CLI, then verifies the scoped installed list and readable
+leaves. CLI-owned locations and metadata remain authoritative. There is no second
+installation database or maintained transitive dependency list.
 
-For refresh, inspect current upstream dependencies again, update only this bundle
-with `npx skills@latest update <installed-names...> --project --yes`, and install
-any newly required support skills with `add`. Use `--global` for a global bundle.
-Check `npx skills@latest list --agent codex` in the matching scope and verify
-selected skills and needed references are readable. Report installed skills,
-support dependencies and any gaps; suggest `$auto-drew` in a fresh task.
+Use the script's failure output to investigate missing names or upstream changes;
+review the affected upstream instructions before changing selection. Upstream
+skills stay unchanged. Keep competing top-level modes outside this bundle and
+preserve unrelated installations. An update refreshes selected skill contents;
+inspect known local edits before replacing them.
+
+Report the chosen scope, installed principle/support counts and any verification
+gaps. Suggest `$auto-drew` in a fresh task. Installation provides context; the
+task still earns its actual routing.

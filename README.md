@@ -102,11 +102,13 @@ Change → Verify loop that returns to Choose Work until done, Markdown TODO sta
 when needed, and evidence of completion.
 Specialists are earned by uncertainty rather than task keywords.
 
-Install `auto-drew`, `auto-drew-setup` and `auto-drew-eval`, then run setup once in the target
-project. Setup installs selected Matt Pocock and pstack specialists in normal
-skill discovery through `npx skills`, using current upstream instructions to find
-required support dependencies. Upstream skills stay unchanged; installation and
-updates remain owned by the skills CLI.
+Install `auto-drew`, `auto-drew-setup` and `auto-drew-eval` with the skills CLI,
+then invoke `$auto-drew-setup`. Setup asks whether to install locally for the
+project or globally for all projects. Its bundled shell script installs selected
+Matt Pocock and pstack specialists, every current principle skill and support
+discovered from upstream instructions. Run setup again for updates, or use the
+script's `update` command with the same scope. The skills CLI owns installation
+and metadata; upstream files stay unchanged.
 
 Use `$auto-drew-eval` to review sessions, run its bundled scripts and invoke
 retro/reflect when the evidence earns them.

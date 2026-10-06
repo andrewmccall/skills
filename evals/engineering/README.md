@@ -15,6 +15,8 @@ From the repository root:
 ```sh
 python3 -m unittest discover -s evals/engineering/tests -v
 python3 skills/engineering/auto-drew-eval/scripts/evaluate.py validate
+python3 skills/engineering/auto-drew-eval/scripts/evaluate.py \
+  --suite skills/engineering/auto-drew-eval/assets/continuation.json validate
 python3 skills/engineering/auto-drew-eval/scripts/evaluate.py score \
   --observations skills/engineering/auto-drew-eval/assets/contract.jsonl \
   --report /tmp/contract.md --json /tmp/contract.json --strict
@@ -23,3 +25,12 @@ python3 skills/engineering/auto-drew-eval/scripts/evaluate.py score \
 The 66-prompt contract is synthetic scorer validation, not measured agent
 performance. CI also validates that generated marketplace skills equal the
 canonical collection. Real-session scores require judged evidence and coverage.
+
+The separate [continuation suite](../../skills/engineering/auto-drew-eval/assets/continuation.json)
+retains prospective regression and scope cases from the reviewed MCP session.
+It includes material interface, conflicting domain-concept and system-shape cases
+that require the corresponding specialist, beside settled-slice negative cases.
+It also covers direct principle application, full-context checks and instruction
+review through `writing-for-agents`. Principle reads are not inferred invocations.
+It has no synthetic success observations or live fixtures. Use fresh paired runs
+to measure instruction changes; its validation checks only rubric structure.
