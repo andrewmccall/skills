@@ -64,8 +64,12 @@ routing improvement.
 
 ## Review sessions and improve the harness
 
-Keep the active Markdown TODO across sessions of the same task. Retain its final
-state and verification/session references before replacing it for unrelated work.
+Keep one Markdown TODO per task across its sessions. Multiple TODOs may share a
+session; pick the matching goal, preserve uncleared files and use a separate task
+ID for unrelated work. Auto Drew updates/checkpoints at useful work boundaries.
+Its `task.py` retains versions and session links under `~/.agent/auto-drew/`;
+`auto-drew-eval` imports the selected task with `session.py --history <path>`.
+Missing old checkpoints or session files remain explicit coverage gaps.
 Use saved sessions for detailed history and Git references for recoverable code;
 the TODO alone cannot recreate every action or earlier dirty code.
 

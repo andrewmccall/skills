@@ -9,26 +9,32 @@ harness. No extra logging call is needed for every skill invocation.
 
 ## Keep task state across sessions
 
-Use the repository's Markdown TODO, or `.engineering/TODO.md`, for a multi-step
-task. Keep it across sessions of that task. Include the goal, observable done
-criteria, completed and remaining slices, consequential choices, unresolved human
-decisions, and criterion → verification/artifact/result pointers. Add a session
-id/path or commit reference when it connects a handoff or completed slice to
-evidence. Ordinary conversation/tool records supply the detailed sequence.
+Keep one Markdown TODO per task, using the matching repository file or
+`.engineering/tasks/<task-id>/TODO.md`. One task can span several sessions;
+one session can contain several tasks and TODOs. Select the task by its goal and
+stable ID, not file recency or unchecked boxes. Preserve completed and unfinished
+files when moving to unrelated work.
 
-On resumption, inspect the TODO and current code before relying on old evidence.
-Changed code may invalidate a completed criterion. Reopen it with the reason;
-retain the earlier result as historical evidence. Before starting an unrelated
-task in the same active file, save its final version, for example at
-`.engineering/tasks/fix-queue/TODO.md`, with session and verification references.
-An archive is historical evidence, not another active plan or a growing backlog
-to load into the next task.
+`auto-drew` defines update points: before substantive changes, after verified
+slices, on requirements/decisions/blockers changing, and before handoff/completion.
+Its bundled `task.py` adds explicit session/history links and retains Markdown
+versions at those boundaries. History lives at
+`~/.agent/auto-drew/<project-id>/<task-id>/history.jsonl`, with content-addressed
+copies in `todo/`. Each row records the task, project, capture time, reason,
+active TODO path, session identity/path/format and observed source length. A
+known task-start line is optional. No global active-task registry is needed.
 
-The default `.engineering/` folder is private/gitignored in this repository.
-Share or version selected TODOs and safe artifacts according to the target
-repository's conventions. Gitignored files do not survive a lost worktree or
-machine; retain artifacts outside a disposable worktree when that matters.
-Private session logs do not need to be committed.
+On resumption, inspect the matching TODO and current code. Reopen invalidated
+criteria while retaining earlier results. Link the new session to the same task;
+use a different task ID/TODO for unrelated work even within the same session.
+Do not silently rebind a TODO to a different history/store.
+
+History is cooperative, not a host-enforced hook. It cannot recover intermediate
+edits never checkpointed, versions predating installation or abrupt interruption
+after the last update. State these limits. Shared history preserves TODO copies
+outside a worktree; session links still depend on the saved logs being retained.
+Private session logs need not be committed. Follow the target repository's
+conventions for sharing safe task state; `.engineering/` is gitignored here.
 
 | Evidence | Establishes | Cannot establish alone |
 |---|---|---|
@@ -91,7 +97,27 @@ python3 /installed/auto-drew-eval/scripts/session.py \
   --label auto-drew-baseline --project /project --todo /project/.engineering/TODO.md
 ```
 
-Repeat `--session` for continuations/child sessions in review order, and `--todo`
+With retained task history, use:
+
+```sh
+python3 /installed/auto-drew-eval/scripts/session.py \
+  --history ~/.agent/auto-drew/project-id/fix-queue/history.jsonl \
+  --suite ~/.agent/auto-drew/project-id/fix-queue/suite.json --case-id fix-queue \
+  --label auto-drew-baseline
+```
+
+This loads only the selected task's TODO history, deduplicates its linked session
+paths and preserves checkpoint chronology, reasons and source-bound hints.
+Mixed task/project histories, conflicting session identities and altered snapshot
+hashes are rejected. Unavailable snapshots/logs and shortened logs appear in
+`gaps`; coverage remains false. Current code/artifacts still need outcome checks.
+A shared session may contain other tasks: explicitly identify which events belong
+to the selected task, including later continuations and child runs. Task links and
+checkpoint spans do not automatically classify events or prove coverage.
+History supplies the project identity and task directory even when the rubric's
+case ID differs. An explicit `--project` must match it.
+
+Repeat `--session` for additional continuations/child sessions, and `--todo`
 for retained state files. Identify task start/end evidence in the review if a
 source contains several tasks. Cross-file order is reviewer supplied, not a merged
 chronological action count.
@@ -104,7 +130,8 @@ collide. `--store` selects another shared root; `--output` selects an exact new
 directory. It refuses overwrites, makes no model calls and changes no source
 files or Git state.
 Source paths, SHA-256 hashes and line references connect the packet to captured
-bytes. TODO snapshots are current at extraction time, not historical snapshots.
+bytes. Explicit `--todo` files are current at extraction time. `--history` copies carry
+their original checkpoint times; neither recovers unrecorded intermediate state.
 Extract after a session stops writing, or retain a stable copy.
 
 Two formats are explicit:

@@ -92,12 +92,16 @@ action should reduce relevant uncertainty or move the task toward done.
 ## Durable state
 
 For work spanning several steps, interruptions or handoffs, keep one Markdown
-TODO (use the repository's existing file, otherwise `.engineering/TODO.md`). For
-a trivial edit, conversation state is sufficient. Record only:
+TODO **per task**. Reuse a repository TODO only when its goal matches this request;
+otherwise use `.engineering/tasks/<task-id>/TODO.md`. Several TODOs can belong to
+one session, and one task can span several sessions. An unchecked or recently
+modified file does not establish which task is active. For a trivial edit,
+conversation state is sufficient. Record only:
 
 ```markdown
-# Task
-Task identity, goal and observable done criteria.
+# Task: descriptive name
+Task ID: `stable-task-id`
+Goal and observable done criteria.
 
 - [ ] Next verifiable slice
 - [ ] Remaining work
@@ -109,16 +113,44 @@ Task identity, goal and observable done criteria.
 ## Decisions / blockers
 - Active tension → choice → supporting evidence
 - Unresolved human decision or observed blocker; independent work available
+
+## Sessions
+- Session ID → saved session path and relevant task-start/end references
 ```
 
-Update it as evidence arrives, mark items done only with evidence, and use it to
-resume across sessions. Read it at pickup and check its claims against current
-code and evidence; reopen work invalidated by later changes. Keep completed items
-and consequential decisions until the task is reviewed. Before replacing it with
-an unrelated task, retain the completed TODO with that task's session/artifact
-references. Keep one active source of task state; specialist phase lists belong
-inside it. The TODO explains progress and intent; session records and Git history
-supply the detailed action and code history.
+At pickup, match the goal to the current request, read that task's state and check
+its claims against current code/evidence. Reopen invalidated work with the reason,
+retaining earlier evidence. Preserve unrelated and completed TODOs; never clear
+or overwrite them just because a new session or task starts. Each task has one
+active source; specialist phase lists belong inside it. Concurrent agents use
+separate task files unless one writer is explicitly established.
+
+Create/update the TODO before the first substantive change, after a verified
+slice, when requirements/decisions/blockers change, and before handing off or
+reporting completion. Mark items done only with evidence. Then run this skill's
+[task.py](scripts/task.py) at those boundaries, using its absolute discovered path:
+
+```sh
+python3 /installed/auto-drew/scripts/task.py \
+  --todo /project/.engineering/tasks/fix-queue/TODO.md --task-id fix-queue \
+  --project /project --session /absolute/path/to/session.jsonl --format rollout \
+  --reason 'Verified retry behaviour; remaining failure case recorded'
+```
+
+The helper adds Task history and Sessions links to the TODO and retains its
+versions plus checkpoint reasons under `~/.agent/auto-drew/<project-id>/<task-id>/`.
+Use the same task ID/project/store on continuation; one session may appear in
+several tasks' histories. Supply `--from-line` only for a known task-start line;
+omit rather than guess. `--store` overrides the shared root. Read
+[session evidence guidance](references/tracing.md) for recovery and limitations.
+This runs at useful state boundaries, not after every skill or tool call.
+
+Use only an explicitly available session identity/path; do not scan unrelated
+sessions to guess it. If saved sessions or the helper are unavailable, maintain
+the Markdown state and available session references, and state that retained
+history is incomplete. Cooperative updates cannot capture changes after an
+abrupt interruption. The TODO explains progress and intent; saved sessions and
+Git supply detailed action and code history.
 
 ## Specialist routing
 
