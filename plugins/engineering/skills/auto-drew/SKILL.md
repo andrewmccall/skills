@@ -92,6 +92,9 @@ action should reduce relevant uncertainty or move the task toward done.
   retaining source references and justified exclusions. Distinguish the slice's
   proof from the requested destination. A first proof settles only the questions
   it exercises; the user's scope determines which remaining work is authorised.
+  Include repository-required documentation and decision records in done criteria.
+  Reconcile retained alternatives, reviews and implementation changes with the
+  project's durable records, preserving material tradeoffs and revisit conditions.
   These criteria govern delivery. `auto-drew-eval` can assess the work afterward;
   invoking it or obtaining a rubric score is not a delivery requirement.
   Use the user's existing criteria when sufficient. Ask about consequential
@@ -253,8 +256,12 @@ Retain a Git commit or worktree reference when resuming or comparing that point
 has concrete value. A TODO or dirty-tree reference alone cannot restore earlier
 code, and a Git reference cannot rewind a model's hidden state.
 
-Declare completion against done criteria, with what changed, verification evidence
-and material limitations. Record the tested revision; exercise failure handling
+Before declaring completion, reconcile the requested outcome with every jointly
+authorised task TODO, retaining each task's identity and evidence. Continue each
+unfinished in-scope criterion; defer it only when the user changes scope or an
+observed blocker prevents progress. Continue independent work around blockers.
+Keep unrelated tasks separate. Report what changed, verification evidence and
+material limitations. Record the tested revision; exercise failure handling
 changed after a successful run with a focused failure check or a controlled rerun.
 A plan, generated test, green build or another agent's summary alone does not
 prove user-visible behaviour. Report unverified criteria honestly.

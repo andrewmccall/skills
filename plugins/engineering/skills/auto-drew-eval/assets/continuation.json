@@ -580,6 +580,94 @@
       ],
       "human_decisions": [],
       "notes": "Writing-for-agents is earned by the instruction review itself. It does not require an enclosing retro invocation."
+    },
+    {
+      "id": "joint-mcp-completion",
+      "category": "boundary",
+      "prompt": "Resume native and configurable MCP together. Native verifier hardening remains unchecked; configurable bridge local checks pass. Complete both authorised TODOs, deployed acceptance and docs.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd",
+          "domain-modeling"
+        ],
+        "forbidden": []
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "both_todo_criteria_verified_before_handoff",
+        "deployed_proof_completed",
+        "documentation_and_decisions_reconciled"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement"
+      ]
+    },
+    {
+      "id": "explicit-single-slice",
+      "category": "boundary",
+      "prompt": "Implement only local configurable MCP mediation. Leave the unrelated native verifier task untouched and defer live deployment as expressly instructed.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "tdd"
+        ],
+        "forbidden": []
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "only_authorized_slice_completed",
+        "unrelated_task_preserved",
+        "no_unrequested_live_deployment"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement"
+      ]
+    },
+    {
+      "id": "architecture-decision-coverage",
+      "category": "boundary",
+      "prompt": "Implement a selected registry design. Existing candidates compare dynamic resources, direct routing and stable budget identity; review changed schema and credential boundaries. Complete required current docs and ADR. Link checker is green but README still calls this planned.",
+      "expected": {
+        "required": [],
+        "allowed": [
+          "domain-modeling"
+        ],
+        "forbidden": []
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "current_claims_match_implementation",
+        "meaningful_alternatives_and_costs_preserved",
+        "rejected_proposals_not_promoted",
+        "revisit_conditions_recorded"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement"
+      ]
+    },
+    {
+      "id": "routine-no-adr",
+      "category": "boundary",
+      "prompt": "Correct a local timeout typo within established boundaries. The project only requires ADRs for significant architectural choices.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": []
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "behavior_corrected",
+        "affected_documentation_current_if_needed",
+        "no_unnecessary_adr_or_architecture_workflow"
+      ],
+      "human_decisions": [],
+      "tensions": [
+        "Completion / refinement"
+      ]
     }
   ]
 }

@@ -34,3 +34,10 @@ It also covers direct principle application, full-context checks and instruction
 review through `writing-for-agents`. Principle reads are not inferred invocations.
 It has no synthetic success observations or live fixtures. Use fresh paired runs
 to measure instruction changes; its validation checks only rubric structure.
+
+The suite also retains four frozen boundary cases from the joint-delivery review:
+joint TODO completion, an explicitly local-only slice, current documentation and
+decision coverage, and a routine change requiring no ADR. Their source is
+`~/.agent/auto-drew/sproozi-915d7831/mcp-joint-delivery/regression-suite.json`.
+The saved review motivates the instruction changes; these prospective cases do
+not establish improved candidate behaviour.
