@@ -135,7 +135,7 @@ def score(suite, routes, observations):
     skills = validate_suite(suite, routes)
     cases = {c['id']: c for c in expand(suite)}
     seen = set()
-    per_skill = {name: {'justified': 0, 'false_positive': 0, 'required_hit': 0, 'missed': 0} for name in skills}
+    per_skill = {name: {'observed_invocations': 0, 'assessed_invocations': 0, 'justified': 0, 'false_positive': 0, 'required_hit': 0, 'missed': 0} for name in skills}
     rows = []
     for obs in observations:
         case_id = obs.get('case_id')
@@ -149,6 +149,8 @@ def score(suite, routes, observations):
             raise ValueError('Coverage flags must be boolean')
         complete = obs.get('complete') is True
         routing_observed = coverage.get('invocations') is True and complete
+        for call in calls:
+            per_skill[call['skill']]['observed_invocations'] += 1
         actual = [call['skill'] for call in calls]
         required = set(case['expected']['required'])
         acceptable = required | set(case['expected']['allowed'])
@@ -164,6 +166,7 @@ def score(suite, routes, observations):
         if routing_observed:
             # Precision counts individual calls; recall counts required task/skill hits.
             for call in calls:
+                per_skill[call['skill']]['assessed_invocations'] += 1
                 per_skill[call['skill']]['justified' if justified(call) else 'false_positive'] += 1
             for name, counts in per_skill.items():
                 if name in required:
@@ -226,9 +229,15 @@ def score(suite, routes, observations):
                      if routing_observed and outcome is not None and case['ceremony_budget'] == 0 else None,
                      'outcome': outcome, 'avoidable_questions': avoidable, 'missed_decisions': missed,
                      'decision_count': len(case.get('human_decisions', [])), 'first_useful_step': steps})
+    inventory_complete = len(seen) == len(cases) and all(r['routing_pass'] is not None for r in rows)
+    any_assessed = any(r['routing_pass'] is not None for r in rows)
     for name, counts in per_skill.items():
+        counts['inventory_complete'] = inventory_complete
         counts['precision'] = ratio(counts['justified'], counts['justified'] + counts['false_positive'])
         counts['recall'] = ratio(counts['required_hit'], counts['required_hit'] + counts['missed'])
+        if not any_assessed:
+            for key in ('justified', 'false_positive', 'required_hit', 'missed'):
+                counts[key] = None
     routed = [r for r in rows if r['routing_pass'] is not None]
     zero = [r for r in rows if r['zero_ceremony'] is not None]
     positive_budget = [r for r in routed if r['budget'] > 0]
@@ -236,7 +245,11 @@ def score(suite, routes, observations):
     question_rows = [r for r in rows if r['avoidable_questions'] is not None]
     decision_rows = [r for r in rows if r['missed_decisions'] is not None]
     useful = [r['first_useful_step'] for r in rows if r['first_useful_step'] is not None]
-    summary = {'expected_cases': len(cases), 'observed_cases': len(rows), 'routing_observed': len(routed),
+    summary = {'observed_invocations': sum(c['observed_invocations'] for c in per_skill.values()),
+               'assessed_invocations': sum(c['assessed_invocations'] for c in per_skill.values()),
+               'distinct_skills_observed': sum(c['observed_invocations'] > 0 for c in per_skill.values()),
+               'invocation_inventory_complete': inventory_complete,
+               'expected_cases': len(cases), 'observed_cases': len(rows), 'routing_observed': len(routed),
                'missing_observations': sorted(set(cases) - seen),
                'routing_pass_rate': ratio(sum(r['routing_pass'] for r in routed), len(routed)),
                'task_success_rate': ratio(sum(r['outcome'] for r in outcomes), len(outcomes)),
@@ -273,10 +286,11 @@ def markdown(report):
               'Question and decision metrics require complete classification coverage. Ceremony excludes nested supported '
               'calls from cost, but all calls remain visible to route classification. Zero-budget cases are reported '
               'separately. Latency steps are producer-observed harness steps, not elapsed time.', '',
-              '## Per-skill triggers', '', '| Skill | Justified | FP | Required hit | FN | Precision | Recall |', '|---|---:|---:|---:|---:|---:|---:|']
+              '## Per-skill triggers', '', '| Skill | Observed | Assessed | Justified | FP | Required hit | FN | Precision | Recall |', '|---|---:|---:|---:|---:|---:|---:|---:|---:|']
     for name, c in report['per_skill'].items():
-        lines.append(f"| {name} | {c['justified']} | {c['false_positive']} | {c['required_hit']} | {c['missed']} | {fmt(c['precision'])} | {fmt(c['recall'])} |")
-    lines += ['', 'Precision counts individual permitted calls, excluding judge-marked unnecessary calls. '
+        observed = str(c['observed_invocations']) + ('' if c['inventory_complete'] else '+')
+        lines.append(f"| {name} | {observed} | {c['assessed_invocations']} | {fmt(c['justified'])} | {fmt(c['false_positive'])} | {fmt(c['required_hit'])} | {fmt(c['missed'])} | {fmt(c['precision'])} | {fmt(c['recall'])} |")
+    lines += ['', 'Observed counts include all recorded applications, including interrupted attempts. A trailing + marks a known minimum because invocation coverage is incomplete. Skill-file reads alone are not applications. Assessed counts include only completed runs with complete invocation coverage; precision and recall use that same population. N/A classification counts mean unassessed, not zero. ', '', 'Precision counts individual permitted calls, excluding judge-marked unnecessary calls. '
               'Recall counts required task/skill hits. Support-only references require a parent. '
               'Zero-ceremony passes require task success; unanswered escalations are not guessed decisions.', '',
               '## Cases', '', '| Case | Route pass | Outcome | Cost / budget | First useful step | Findings |', '|---|---|---|---:|---:|---|']

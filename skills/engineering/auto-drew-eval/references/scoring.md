@@ -118,8 +118,10 @@ success, avoidable questions, missed decisions or absent useful-action evidence.
 
 ## Metrics
 
-- **Per-skill precision:** justified required/allowed invocations divided by all observed invocations, counting each call, including repeats. A judge can mark a permitted but unnecessary call with `justified: false`; it becomes a false positive and a routing failure.
-- **Per-skill required recall:** required hits divided by required hits plus misses. Allowed invocations never inflate recall.
+- **Observed invocations:** every recorded application, including repeats, nested support calls and interrupted attempts. Skill-file reads alone are not applications. Summary counts also report the total and number of distinct skills observed. A trailing `+` in the per-skill table marks a known minimum. The inventory is complete only when every suite case has a completed run with complete invocation coverage.
+- **Assessed invocations:** calls in completed runs with complete invocation coverage. Partial runs contribute to observed counts, but not routing classifications. When no run is assessed, justified, false-positive, required-hit and missed counts are `null`, rendered as `N/A`.
+- **Per-skill precision:** justified required/allowed invocations divided by all assessed invocations, counting each call, including repeats. A judge can mark a permitted but unnecessary call with `justified: false`; it becomes a false positive and a routing failure.
+- **Per-skill required recall:** required hits divided by required hits plus misses, using completed runs with complete invocation coverage. Allowed invocations never inflate recall. Classification counts in a mixed report describe only the assessed population.
 - **Zero-ceremony pass rate:** fully observed zero-budget cases that succeeded, met routing expectations and used no capability calls. Failed tasks fail this metric; unverified outcomes are N/A.
 - **Ceremony ratio:** summed root workflow cost / summed positive case budgets. Costs are a rough relative model from eval-only `ceremony.json`, not dollars or tokens. The operating mode does not read this data. Nested supported calls cost once; repeated independent calls cost again. Every call still undergoes route checks.
 - **Task success:** evidenced success on all scenario criteria, among complete outcome-observed runs. Report coverage alongside it.
