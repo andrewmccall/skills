@@ -42,6 +42,13 @@ def validate():
     matches=[p for p in catalog['plugins'] if p['name']=='engineering']
     if len(matches)!=1 or matches[0]['source']['path']!='./plugins/engineering':
         raise ValueError('Engineering marketplace entry missing or ambiguous')
+    claude=json.loads((package/'.claude-plugin/plugin.json').read_text())
+    if claude!={k:manifest[k] for k in claude} or claude['name']!='engineering':
+        raise ValueError('Claude engineering plugin manifest differs from plugin.json')
+    catalog=json.loads((ROOT/'.claude-plugin/marketplace.json').read_text())
+    matches=[p for p in catalog['plugins'] if p['name']=='engineering']
+    if len(matches)!=1 or matches[0]['source']!='./plugins/engineering':
+        raise ValueError('Claude engineering marketplace entry missing or ambiguous')
     count=sum(p.is_dir() and (p/'SKILL.md').is_file() for p in source.iterdir())
     print(f'Validated {count} authored skills, generated package and manifests')
 

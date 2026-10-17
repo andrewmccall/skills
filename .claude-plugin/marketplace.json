@@ -1,0 +1,24 @@
+{
+  "name": "andrewmccall-skills",
+  "owner": {
+    "name": "Andrew McCall",
+    "url": "https://github.com/andrewmccall"
+  },
+  "metadata": {
+    "description": "Writing and Auto Drew engineering skills by Andrew McCall."
+  },
+  "plugins": [
+    {
+      "name": "writing",
+      "source": "./plugins/writing",
+      "description": "Composable writing workflows for developing ideas, drafting, reviewing, editing and preserving author voice.",
+      "category": "productivity"
+    },
+    {
+      "name": "engineering",
+      "source": "./plugins/engineering",
+      "description": "Auto Drew: minimum sufficient engineering, specialist setup and evidence-led session evaluations.",
+      "category": "productivity"
+    }
+  ]
+}

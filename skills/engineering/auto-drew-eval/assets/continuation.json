@@ -2,6 +2,52 @@
   "schema_version": 1,
   "scenarios": [
     {
+      "id": "designed-architecture-diagram",
+      "category": "positive",
+      "prompt": "Create a self-contained HTML/SVG architecture diagram for the supplied service topology and brand profile. The topology is settled; explain the trust boundaries visually without changing the system design.",
+      "expected": {
+        "required": ["diagram-design"],
+        "allowed": [],
+        "forbidden": ["architect", "arena", "domain-modeling"]
+      },
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "diagram_matches_supplied_topology_and_profile",
+        "artifact_rendered_and_visually_checked",
+        "settled_system_design_preserved"
+      ],
+      "notes": "Prospective routing case; no recorded agent outcome yet."
+    },
+    {
+      "id": "diagram-unnecessary-for-simple-fact",
+      "category": "negative",
+      "prompt": "Explain in one sentence that the CLI sends its request to the API gateway. The answer only needs this single relationship.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": ["diagram-design"]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": ["single_relationship_explained_concisely"],
+      "notes": "Prospective routing case; no recorded agent outcome yet."
+    },
+    {
+      "id": "preserve-repository-mermaid-diagram",
+      "category": "boundary",
+      "prompt": "Add the new worker to the existing Mermaid architecture diagram in the README. The repository uses Mermaid for diagrams, and the established format meets this request.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": ["diagram-design", "architect", "arena"]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "existing_mermaid_diagram_updated",
+        "repository_diagram_format_preserved"
+      ],
+      "notes": "Prospective routing case; no recorded agent outcome yet."
+    },
+    {
       "id": "spec-led-first-proof",
       "category": "boundary",
       "prompt": "Implement the first integration slice in the supplied spec. Its acceptance section requires the actual CLI to call the new endpoint and a denied direct upstream connection. Unit tests now pass; the already-authorised disposable environment is available.",

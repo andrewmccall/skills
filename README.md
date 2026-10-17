@@ -50,6 +50,18 @@ npx skills@latest add /absolute/path/to/skills
 
 See [Installation](docs/installation.md) for scopes, individual skills and local development.
 
+## Install from the Claude Code plugin marketplace
+
+```text
+/plugin marketplace add andrewmccall/skills
+/plugin install writing@andrewmccall-skills
+/plugin install engineering@andrewmccall-skills
+```
+
+The manifest is `.claude-plugin/marketplace.json`, and each plugin has a
+`.claude-plugin/plugin.json` next to its Codex manifest. See
+[Installation](docs/installation.md#claude-code-plugin-marketplace).
+
 ## Install from a ChatGPT plugin marketplace
 
 This repository also provides a GitHub-importable marketplace at
@@ -133,6 +145,7 @@ Keep each skill focused on one job. Use a setup skill only when a collection nee
 skills/
 |-- README.md
 |-- .agents/plugins/marketplace.json
+|-- .claude-plugin/marketplace.json
 |-- skills/
 |   `-- writing/
 |       |-- README.md
@@ -145,6 +158,7 @@ skills/
 |   `-- writing/
 |       |-- plugin.json
 |       |-- .codex-plugin/plugin.json
+|       |-- .claude-plugin/plugin.json
 |       `-- skills/
 `-- examples/
     `-- writing/

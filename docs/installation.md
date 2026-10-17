@@ -34,7 +34,9 @@ Install `writing-itch` and `writing-interview` for idea development, and `writin
 npx skills@latest add andrewmccall/skills --global
 ```
 
-The CLI chooses the appropriate global directory for each selected agent. You can constrain installation with `--agent codex`, `--agent claude-code` or another supported agent identifier.
+The CLI chooses the appropriate global directory for each selected agent. You can constrain installation with `--agent codex`, `--agent claude-code` or another supported agent identifier, or name several: `--agent codex claude-code`.
+
+Each agent reads only its own directories. Codex reads `~/.agents/skills/`; Claude Code reads `~/.claude/skills/` and the project's `.claude/skills/`. To add Claude Code to skills already installed for Codex, rerun `add` with `--agent claude-code`. The CLI links the existing copy instead of duplicating it. `npx skills list --global --json` shows which agents receive each skill.
 
 A globally installed skill can still use a project-local `.writing/` profile. The project profile wins, which lets one installation serve several repositories with different writing conventions.
 
@@ -61,6 +63,18 @@ Use `npx skills@latest add andrewmccall/skills --list` to inspect the repository
 ## Other compatible tools
 
 The source format is still ordinary `SKILL.md`. If a host is not supported by the CLI, copy an individual directory under `skills/writing/` into the host's skill discovery directory. Run `setup-writing` or copy its bundled profile asset to `.writing/` separately.
+
+## Claude Code plugin marketplace
+
+The repository is also a Claude Code marketplace, defined in `.claude-plugin/marketplace.json`:
+
+```text
+/plugin marketplace add andrewmccall/skills
+/plugin install writing@andrewmccall-skills
+/plugin install engineering@andrewmccall-skills
+```
+
+Plugin skills are namespaced, for example `/engineering:auto-drew`. The plugins ship the same generated packages as the ChatGPT marketplace. Use either the plugin or `npx skills` for a given skill, not both, or Claude Code will list it twice.
 
 ## ChatGPT plugin marketplace
 

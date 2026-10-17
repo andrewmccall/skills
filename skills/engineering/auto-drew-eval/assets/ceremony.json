@@ -36,6 +36,10 @@
         "how"
       ]
     },
+    "diagram-design": {
+      "cost": 1,
+      "children": []
+    },
     "architect": {
       "cost": 5,
       "children": [
