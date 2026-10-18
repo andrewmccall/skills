@@ -2,6 +2,7 @@
 """Discover the current Auto Drew bundle, then let the skills CLI install it."""
 import argparse
 import json
+import os
 import re
 import shlex
 import subprocess
@@ -14,6 +15,7 @@ ENTRY = ('auto-drew', 'auto-drew-setup', 'auto-drew-eval')
 MATT = ('grilling', 'domain-modeling', 'codebase-design', 'tdd', 'retro', 'writing-for-agents')
 PSTACK = ('how', 'why', 'architect', 'arena', 'interrogate', 'reflect',
           'show-me-your-work', 'create-verification-skill', 'maintain-verification-skill')
+DIAGRAM = ('diagram-design',)
 EXCLUDED = {'poteto-mode', 'setup-pstack', 'setup-matt-pocock-skills', 'figure-it-out', 'orchestrate'}
 CLI = ('npx', '--yes', 'skills@latest')
 
@@ -69,7 +71,7 @@ def discover(trees):
     if not principles:
         raise ValueError('The pstack source has no principle skills')
     selected = {}
-    seeds = (ENTRY, MATT, (*PSTACK, *sorted(principles)))
+    seeds = (ENTRY, MATT, (*PSTACK, *sorted(principles)), DIAGRAM)
     for owner, names in enumerate(seeds):
         for name in names:
             if name not in catalogs[owner]:
@@ -87,7 +89,7 @@ def discover(trees):
             dependency_owner = owner if owner in choices else choices[0]
             selected[dependency] = dependency_owner
             pending.append(dependency)
-    return [sorted(name for name, owner in selected.items() if owner == i) for i in range(3)]
+    return [sorted(name for name, owner in selected.items() if owner == i) for i in range(len(catalogs))]
 
 
 def choose_scope(args):
@@ -107,6 +109,10 @@ def choose_scope(args):
     if choice in {'2', 'global'}:
         return True, Path.cwd()
     raise ValueError('Expected local/1 or global/2')
+
+
+def host_agent():
+    return 'claude-code' if os.environ.get('CLAUDECODE') == '1' else 'codex'
 
 
 def verify(cwd, agent, global_scope, names):
@@ -133,30 +139,35 @@ def main(argv=None):
     scope = parser.add_mutually_exclusive_group()
     scope.add_argument('--project', nargs='?', const='.', metavar='PATH', help='Local project, default current directory')
     scope.add_argument('--global', dest='global_scope', action='store_true', help='Global installation')
-    parser.add_argument('--agent', default='codex', help='Target skills CLI agent, default codex')
+    parser.add_argument('--agent', dest='agents', action='append', metavar='AGENT',
+                        help='Target skills CLI agent; repeat for several. Default: the running host, '
+                             'claude-code inside Claude Code, otherwise codex')
     parser.add_argument('--source', default='andrewmccall/skills', help='Authored bundle source, or a persistent local checkout')
     parser.add_argument('--matt-source', default='mattpocock/skills', help='Override Matt source for local development')
     parser.add_argument('--pstack-source', default='backnotprop/pstack', help='Override pstack source for local development')
+    parser.add_argument('--diagram-source', default='cathrynlavery/diagram-design', help='Override diagram source for local development')
     parser.add_argument('--dry-run', action='store_true', help='Discover current dependencies and print commands without installing')
     args = parser.parse_args(argv)
+    agents = args.agents or [host_agent()]
     global_scope, cwd = choose_scope(args)
     sources = [str(Path(source).expanduser().resolve()) if Path(source).expanduser().is_dir() else source
-               for source in [args.source, args.matt_source, args.pstack_source]]
+               for source in [args.source, args.matt_source, args.pstack_source, args.diagram_source]]
     with tempfile.TemporaryDirectory(prefix='auto-drew-setup-') as temporary:
         trees = [source_tree(source, Path(temporary) / str(i)) for i, source in enumerate(sources)]
         groups = discover(trees)
         names = set().union(*map(set, groups))
-        print(f'Auto Drew {args.action}: {"global" if global_scope else "local"} for {args.agent}, {cwd}')
+        print(f'Auto Drew {args.action}: {"global" if global_scope else "local"} for {", ".join(agents)}, {cwd}')
         print(f'Discovered {sum(name.startswith("principle-") for name in names)} principles; {len(names)} skills total.')
         for source, skills in zip(sources, groups):
-            command = [*CLI, 'add', source, '--agent', args.agent, '--skill', *skills, '--yes']
+            command = [*CLI, 'add', source, '--agent', *agents, '--skill', *skills, '--yes']
             if global_scope:
                 command.append('--global')
             print(shlex.join(command), flush=True)
             if not args.dry_run:
                 subprocess.run(command, cwd=cwd, check=True)
         if not args.dry_run:
-            verify(cwd, args.agent, global_scope, names)
+            for agent in agents:
+                verify(cwd, agent, global_scope, names)
 
 
 if __name__ == '__main__':

@@ -19,14 +19,18 @@ bash /installed/auto-drew-setup/scripts/setup.sh install --global
 ```
 
 Use `update` instead of `install` for refresh. Both use targeted
-`npx skills@latest add` commands to refresh this bundle and add newly discovered dependencies. Pass
-`--agent` for another host, and `--source /persistent/skills-checkout` when developing
+`npx skills@latest add` commands to refresh this bundle and add newly discovered dependencies.
+`@latest` selects the CLI version; installed skills refresh only when an add or
+update command runs. The target agent defaults to the running host: `claude-code`
+inside Claude Code, otherwise `codex`. Pass `--agent` for another host, repeating it
+to install for several at once, and `--source /persistent/skills-checkout` when developing
 the authored collection locally. `--dry-run` discovers and prints the commands
 without changing installation. The script also asks local/global when a person
 runs it interactively without a scope flag. Agent runs should pass the chosen flag.
 
 The script inspects current upstream skill instructions and references, installs
-the selected specialists, every current pstack `principle-*` leaf and discovered
+the selected specialists, including `diagram-design` from
+`cathrynlavery/diagram-design`, every current pstack `principle-*` leaf and discovered
 support through the CLI, then verifies the scoped installed list and readable
 leaves. CLI-owned locations and metadata remain authoritative. There is no second
 installation database or maintained transitive dependency list.

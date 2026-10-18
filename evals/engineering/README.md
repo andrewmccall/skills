@@ -41,3 +41,8 @@ decision coverage, and a routine change requiring no ADR. Their source is
 `~/.agent/auto-drew/sproozi-915d7831/mcp-joint-delivery/regression-suite.json`.
 The saved review motivates the instruction changes; these prospective cases do
 not establish improved candidate behaviour.
+
+Diagram Design has prospective cases for a designed architecture artifact, a
+single relationship better explained in prose, and an existing Mermaid diagram
+whose format already meets the request. These have no recorded agent outcomes;
+suite validation does not establish a routing improvement.

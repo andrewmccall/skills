@@ -23,8 +23,8 @@ class SetupTests(unittest.TestCase):
         self.root = Path(self.temporary.name)
         self.project = self.root / 'project with spaces'
         self.project.mkdir()
-        self.sources = [self.root / name for name in ['authored', 'matt', 'pstack']]
-        for root, names in zip(self.sources, [setup.ENTRY, setup.MATT, setup.PSTACK]):
+        self.sources = [self.root / name for name in ['authored', 'matt', 'pstack', 'diagram']]
+        for root, names in zip(self.sources, [setup.ENTRY, setup.MATT, setup.PSTACK, setup.DIAGRAM]):
             for name in names:
                 self.leaf(root, name)
         self.leaf(self.sources[1], 'tdd', 'Use `code-review`.')
@@ -66,7 +66,8 @@ else:
     sys.exit(8)
 ''')
         fake.chmod(0o755)
-        self.env = {**os.environ, 'PATH': str(self.bin) + os.pathsep + os.environ['PATH'],
+        host = {key: value for key, value in os.environ.items() if key != 'CLAUDECODE'}
+        self.env = {**host, 'PATH': str(self.bin) + os.pathsep + os.environ['PATH'],
                     'AUTO_DREW_TEST_ROOT': str(self.root)}
 
     def leaf(self, source, name, body='Fixture body.'):
@@ -79,7 +80,8 @@ else:
         return subprocess.run(['bash', str(script or SKILL / 'scripts/setup.sh'), *args,
                                '--source', str(self.sources[0]),
                                '--matt-source', str(self.sources[1]),
-                               '--pstack-source', str(self.sources[2])],
+                               '--pstack-source', str(self.sources[2]),
+                               '--diagram-source', str(self.sources[3])],
                               cwd=self.project, env=env or self.env,
                               capture_output=True, text=True)
 
@@ -100,12 +102,15 @@ else:
         self.assertFalse((installed / 'setup-matt-pocock-skills').exists())
         self.assertFalse((installed / 'poteto-mode').exists())
         self.assertIn('Use `code-review`.', (installed / 'tdd/SKILL.md').read_text())
+        self.assertIn('Fixture body.', (installed / 'diagram-design/SKILL.md').read_text())
         self.leaf(self.sources[2], 'principle-first', 'Updated upstream context.')
         self.leaf(self.sources[2], 'principle-new', 'New upstream principle.')
+        self.leaf(self.sources[3], 'diagram-design', 'Updated upstream diagram instructions.')
         result = self.run_setup('update', '--project', str(self.project))
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('Updated upstream context.', (installed / 'principle-first/SKILL.md').read_text())
         self.assertIn('New upstream principle.', (installed / 'principle-new/SKILL.md').read_text())
+        self.assertIn('Updated upstream diagram instructions.', (installed / 'diagram-design/SKILL.md').read_text())
         self.assertEqual((unrelated / 'SKILL.md').read_text(), 'untouched')
         self.assertFalse((self.root / 'global').exists())
         self.assertTrue(all('--global' not in call['args'] for call in self.calls()))
@@ -114,10 +119,34 @@ else:
         result = self.run_setup('update', '--global', '--agent', 'cursor')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue((self.root / 'global/principle-first/SKILL.md').is_file())
+        self.assertTrue((self.root / 'global/diagram-design/SKILL.md').is_file())
         self.assertFalse((self.project / '.agents').exists())
         for call in self.calls():
             self.assertIn('--global', call['args'])
             self.assertEqual(call['args'][call['args'].index('--agent') + 1], 'cursor')
+
+    def agents(self, call):
+        args = call['args'][call['args'].index('--agent') + 1:]
+        return args[:next(i for i, arg in enumerate(args) if arg.startswith('-'))]
+
+    def test_default_agent_follows_running_host(self):
+        result = self.run_setup('--global')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertTrue(all(self.agents(call) == ['codex'] for call in self.calls()))
+        (self.root / 'calls.jsonl').unlink()
+        result = self.run_setup('--global', env={**self.env, 'CLAUDECODE': '1'})
+        self.assertEqual(result.returncode, 0, result.stderr)
+        self.assertIn('global for claude-code', result.stdout)
+        self.assertTrue(all(self.agents(call) == ['claude-code'] for call in self.calls()))
+
+    def test_repeated_agent_installs_once_and_verifies_each(self):
+        result = self.run_setup('--global', '--agent', 'codex', '--agent', 'claude-code')
+        self.assertEqual(result.returncode, 0, result.stderr)
+        adds = [call for call in self.calls() if 'add' in call['args']]
+        lists = [call for call in self.calls() if 'list' in call['args']]
+        self.assertEqual(len(adds), 4)
+        self.assertTrue(all(self.agents(call) == ['codex', 'claude-code'] for call in adds))
+        self.assertEqual([self.agents(call) for call in lists], [['codex'], ['claude-code']])
 
     def test_packaged_script_runs_outside_repository(self):
         installed = self.root / 'installed setup'
@@ -125,11 +154,13 @@ else:
         result = self.run_setup('--project', str(self.project), script=installed / 'scripts/setup.sh')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertTrue((self.project / '.agents/skills/auto-drew/SKILL.md').is_file())
+        self.assertTrue((self.project / '.agents/skills/diagram-design/SKILL.md').is_file())
 
     def test_dry_run_discovers_support_without_calling_installer(self):
         result = self.run_setup('--global', '--dry-run')
         self.assertEqual(result.returncode, 0, result.stderr)
         self.assertIn('support-check', result.stdout)
+        self.assertIn('diagram-design', result.stdout)
         self.assertEqual(self.calls(), [])
         self.assertFalse((self.root / 'global').exists())
 
@@ -151,6 +182,13 @@ else:
         self.assertIn('Choose local or global setup', result.stderr)
         result = self.run_setup('--global', '--project', str(self.project))
         self.assertEqual(result.returncode, 2)
+        self.assertEqual(self.calls(), [])
+
+    def test_missing_diagram_skill_fails_before_mutation(self):
+        shutil.rmtree(self.sources[3] / 'skills/diagram-design')
+        result = self.run_setup('--project', str(self.project))
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn('Required skill diagram-design', result.stderr)
         self.assertEqual(self.calls(), [])
 
     def test_interactive_choice_selects_global_or_default_local(self):

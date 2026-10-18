@@ -11,6 +11,7 @@ on:
       - scripts/validate-engineering.py
       - .github/workflows/engineering.yml
       - .agents/plugins/marketplace.json
+      - .claude-plugin/marketplace.json
   pull_request:
     paths:
       - skills/engineering/**
@@ -20,6 +21,7 @@ on:
       - scripts/validate-engineering.py
       - .github/workflows/engineering.yml
       - .agents/plugins/marketplace.json
+      - .claude-plugin/marketplace.json
   workflow_dispatch:
 permissions:
   contents: read

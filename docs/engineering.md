@@ -3,13 +3,18 @@
 First install the entry skills through the skills CLI:
 
 ```sh
-npx skills@latest add andrewmccall/skills --agent codex --skill auto-drew auto-drew-setup auto-drew-eval --yes
+npx skills@latest add andrewmccall/skills --agent codex claude-code --skill auto-drew auto-drew-setup auto-drew-eval --yes
 ```
+
+Name only the agents you use. Each agent reads its own skill directory, so a skill
+installed for Codex alone is invisible to Claude Code.
 
 Then invoke `$auto-drew-setup`. It asks whether to install locally for the current
 project or globally for all projects, unless you already chose a scope. Setup
-installs the engineering specialists, all current Poteto principle skills and
-support such as `writing-for-agents`, then verifies that they are readable.
+installs the engineering specialists including `diagram-design`, all current
+Poteto principle skills and support such as `writing-for-agents`, then verifies
+that they are readable. Setup targets the agent it runs in (`claude-code` inside
+Claude Code, otherwise `codex`); pass `--agent` once per agent to cover several.
 The initial CLI command installs locally; add `--global` if you want the entry
 skills themselves available everywhere before invoking setup.
 
@@ -46,9 +51,15 @@ selected `skills add` commands, refreshing existing contents and adding new
 principles or dependencies. Unrelated skills and agents are outside the selection.
 Updates replace the selected skill contents, so preserve any local edits first.
 
-The script uses [Matt Pocock's skills](https://github.com/mattpocock/skills) and
-[Poteto's pstack mirror](https://github.com/backnotprop/pstack). It installs upstream
-files unchanged through the skills CLI, which owns installation paths and update
+`skills@latest` selects the latest CLI release for that invocation. It does not
+enable background updates of installed skills. Rerun setup to refresh this bundle
+and discover new dependencies, or use `npx skills@latest update diagram-design`
+with `--global` or `--project` to refresh just that installed skill.
+
+The script uses [Matt Pocock's skills](https://github.com/mattpocock/skills),
+[Poteto's pstack mirror](https://github.com/backnotprop/pstack), and
+[Cathryn Lavery's Diagram Design](https://github.com/cathrynlavery/diagram-design).
+It installs upstream files unchanged through the skills CLI, which owns installation paths and update
 metadata. No additional dependency lock or installation database is maintained.
 Competing top-level modes are excluded. Auto Drew reads full principle context
 through its [principle index](../skills/engineering/auto-drew/references/principles.md)
