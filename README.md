@@ -125,6 +125,13 @@ and metadata; upstream files stay unchanged.
 Use `$auto-drew-eval` to review sessions, run its bundled scripts and invoke
 retro/reflect when the evidence earns them.
 
+Use [QA Lead](skills/engineering/qa/SKILL.md) to select about five relevant personas
+and run them through your app or tool. Supply a goal or prompt to focus their
+journeys, or let the lead choose from the product's promises. It consolidates bugs,
+friction and unmet claims into prioritized findings with evidence.
+Install `qa` separately with the skills CLI or use the
+engineering marketplace plugin; see [QA usage](docs/engineering.md#qa).
+
 See [engineering installation](docs/engineering.md) and the
 [first-class eval framework](evals/engineering/README.md). The JSON
 scenario corpus includes positive, negative, boundary and composition cases; the
