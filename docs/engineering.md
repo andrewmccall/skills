@@ -78,7 +78,7 @@ consumer app. See the [persona pool](../skills/engineering/qa/references/persona
 Install it independently through the skills CLI, using the agents you need:
 
 ```sh
-npx skills@latest add andrewmccall/skills --agent codex claude-code --skill qa --yes
+npx skills@latest add andrewmccall/skills --agent claude-code codex github-copilot --skill qa --yes
 ```
 
 Add `--global` for all projects, or replace the source with the local checkout

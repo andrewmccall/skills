@@ -1,5 +1,22 @@
 # Repository guidance
 
+## Agent compatibility
+
+Andrew uses Claude Code, OpenAI Codex and GitHub Copilot. Skills and supporting
+workflows should be agent agnostic. Keep essential instructions in portable
+`SKILL.md` files and shared resources rather than relying on one host's tools,
+paths or metadata. Host-specific UI metadata may supplement the shared workflow.
+
+When a feature requires host-specific configuration, include the required setup
+for all three hosts and document how each uses the shared skill. Keep shared
+instructions canonical rather than maintaining separate copies per host. Discover
+the current host's available capabilities instead of assuming another host's tool
+names or configuration. Document any unsupported capability explicitly.
+
+Verify new host-specific instructions against current official documentation and
+separate documented compatibility from execution evidence. Skills CLI examples
+for this user's full selection use `--agent claude-code codex github-copilot`.
+
 ## Writing skills
 
 `skills/writing/` is the only authored source for the writing collection. Keep its
