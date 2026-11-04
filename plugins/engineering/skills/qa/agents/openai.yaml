@@ -1,0 +1,4 @@
+interface:
+  display_name: "QA Lead"
+  short_description: "Run relevant personas through your app or tool"
+  default_prompt: "Use $qa as my QA lead: select about five relevant personas, run them through the app, and prioritize the findings."
