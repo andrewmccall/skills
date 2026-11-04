@@ -65,6 +65,40 @@ Competing top-level modes are excluded. Auto Drew reads full principle context
 through its [principle index](../skills/engineering/auto-drew/references/principles.md)
 when the work earns it.
 
+## QA
+
+The [QA lead](../skills/engineering/qa/SKILL.md) selects about five relevant personas
+and runs them through the actual app or tool. An optional goal or prompt focuses
+their journeys; otherwise, the lead chooses a main task from the product's promises.
+Personas include the impatient one, skeptic, cautious one, distracted one, returning
+user, power user, junior practitioner and keyboard user. Selection follows the
+audience and task: a junior practitioner fits an OSS tool rather than an ordinary
+consumer app. See the [persona pool](../skills/engineering/qa/references/personas.md).
+
+Install it independently through the skills CLI, using the agents you need:
+
+```sh
+npx skills@latest add andrewmccall/skills --agent codex claude-code --skill qa --yes
+```
+
+Add `--global` for all projects, or replace the source with the local checkout
+while developing. QA is also included in the engineering marketplace package.
+Auto Drew setup's selected bundle is unchanged; the CLI command above adds QA.
+
+Example requests:
+
+```text
+Use $qa as my QA lead and run relevant personas through this app.
+Use $qa with this goal: create an account, plan a trip, and share it with a friend.
+Use $qa on this OSS tool, focusing on installation and the first useful command.
+```
+
+The lead consolidates evidence into one report: selected personas and outcomes,
+prioritized defects and friction, what to fix first, and coverage gaps. These are
+agent-driven exploratory tests, not a study of real users. Independent persona
+agents use isolated sessions; shared interfaces are driven serially. Fixing defects
+follows the task's existing authorization.
+
 ## Repository validation
 
 ```sh
