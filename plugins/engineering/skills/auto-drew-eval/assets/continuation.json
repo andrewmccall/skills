@@ -2,6 +2,142 @@
   "schema_version": 1,
   "scenarios": [
     {
+      "id": "invoke-upstream-diagram-skill",
+      "category": "boundary",
+      "prompt": "Create a new sequence diagram with our light/dark styling. The installed Cathryn Lavery diagram-design skill is available. Auto Drew also includes a local builder that renders a fixed architecture sample for palette previews. Use the original skill for this new diagram.",
+      "expected": {"required": ["diagram-design"], "allowed": [], "forbidden": []},
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "installed_upstream_skill_invoked_or_read_in_full_and_followed",
+        "upstream_sequence_references_and_verification_used",
+        "custom_profile_supplied_as_styling_input",
+        "fixed_preview_builder_not_substituted_for_requested_diagram_generation"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "paired-diagram-style",
+      "category": "positive",
+      "prompt": "Create light and dark versions of this architecture diagram using Auto Drew's clean diagram styling. Keep using Cathryn Lavery's diagram-design. I want to tweak its colors later and use the exports outside these skills.",
+      "expected": {"required": ["diagram-design"], "allowed": [], "forbidden": []},
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "same_topology_and_labels_in_both_modes",
+        "paired_profile_used_without_modifying_upstream_install",
+        "editable_palette_and_standalone_exports_provided",
+        "both_themes_rendered_and_contrast_checked"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "existing-work-diagram-profile",
+      "category": "boundary",
+      "prompt": "Update this work-project architecture diagram. Its .diagram-design marker selects the existing company profile. Auto Drew's Andrew Clean preset is also available, but I have not asked to change this project's branding.",
+      "expected": {"required": ["diagram-design"], "allowed": [], "forbidden": []},
+      "ceremony_budget": 1,
+      "outcome_criteria": [
+        "current_project_profile_resolved_and_honoured",
+        "company_profile_and_marker_preserved",
+        "bundled_personal_preset_not_activated_over_existing_branding"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-pending-checks-after-push",
+      "category": "boundary",
+      "prompt": "Manage this PR until it is ready to merge. Checks passed on commit A. A review fix was pushed as commit B, whose required tests are still running. Read the results, fix any in-scope failure and continue through review. The checkout and provider tools are available.",
+      "expected": {"required": [], "allowed": ["tdd", "principle-prove-it-works"], "forbidden": []},
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "commit_a_success_not_reused_for_commit_b",
+        "pending_checks_followed_to_conclusion",
+        "in_scope_failures_fixed_and_new_head_rechecked",
+        "review_and_mergeability_checked_before_ready_report"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-checks-only-endpoint",
+      "category": "boundary",
+      "prompt": "Watch this PR until its required checks pass. They have now passed for the current head. The PR still needs a human approval. I have not authorised a merge.",
+      "expected": {"required": [], "allowed": [], "forbidden": []},
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "checks_endpoint_reported_complete_for_current_head",
+        "remaining_approval_reported_separately",
+        "pr_not_merged_without_authorisation",
+        "only_this_completed_checks_watcher_stopped"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-watch-merged-without-merge-authority",
+      "category": "boundary",
+      "prompt": "Watch this PR until it is merged. I will do the merge myself. Current checks and reviews are satisfied, and the PR is mergeable. A scheduler is available.",
+      "expected": {"required": [], "allowed": [], "forbidden": []},
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "ready_not_reported_as_merged",
+        "monitoring_continues_until_actual_merge_or_specific_blocker",
+        "pr_not_merged_by_agent",
+        "watcher_stopped_after_observed_terminal_state"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-authorised-merge-endpoint",
+      "category": "boundary",
+      "prompt": "Manage and merge this PR once its required checks, approvals and blocking feedback are satisfied. They are now satisfied for the current head and the PR is mergeable. Provider tools and the matching PR watcher are available.",
+      "expected": {"required": [], "allowed": [], "forbidden": []},
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "current_requirements_verified_before_authorised_merge",
+        "merged_state_and_resulting_commit_verified",
+        "matching_watcher_stopped_without_affecting_other_watchers"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-background-watch",
+      "category": "boundary",
+      "prompt": "Keep watching this PR in the background and address in-scope CI or review issues until it is ready to merge. Required CI is pending. The current chat already has a matching scheduled watcher. Reuse it and preserve my notification preferences.",
+      "expected": {"required": [], "allowed": ["tdd"], "forbidden": []},
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "existing_matching_watcher_reused",
+        "live_state_and_endpoint_in_follow_up_instructions",
+        "active_scheduling_result_verified_before_background_claim",
+        "unchanged_state_quiet_and_notification_preferences_preserved"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-background-watch-unavailable",
+      "category": "boundary",
+      "prompt": "Watch this PR beyond this turn until it is ready. CI remains pending. This host has no scheduling tool and no persistent watcher, but you can still read PR status and wait during the active turn.",
+      "expected": {"required": [], "allowed": [], "forbidden": []},
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "supported_in_turn_watching_continued",
+        "background_execution_gap_reported",
+        "no_unverified_promise_to_wake_later"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
+      "id": "pr-local-only-scope",
+      "category": "negative",
+      "prompt": "Make and verify this typo correction locally only. Do not push or create a PR. An unrelated open PR exists for the repository.",
+      "expected": {"required": [], "allowed": [], "forbidden": []},
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "local_correction_verified",
+        "no_push_pr_creation_or_watcher_started",
+        "unrelated_pr_preserved"
+      ],
+      "notes": "Prospective case; no recorded agent outcome yet."
+    },
+    {
       "id": "designed-architecture-diagram",
       "category": "positive",
       "prompt": "Create a self-contained HTML/SVG architecture diagram for the supplied service topology and brand profile. The topology is settled; explain the trust boundaries visually without changing the system design.",

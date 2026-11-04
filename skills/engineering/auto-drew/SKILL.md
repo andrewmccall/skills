@@ -208,7 +208,7 @@ support reference is not a second full session.
 |---|---|---|
 | `how` | Understanding an existing implementation blocks the next decision or is the requested outcome. Use explanatory grounding. | A neighbouring-file read answers it; architectural critique is not the default. |
 | `why` | Historical rationale or constraints matter to the existing shape. It composes with `how`. | Runtime behaviour alone is the question; do not independently duplicate `how`. |
-| `diagram-design` | A designed architecture, flow, sequence or state diagram helps explain the requested result, or the user requests a diagram artifact. | A sentence or table is clearer, or the repository's existing diagram format already meets the need. |
+| `diagram-design` | A designed architecture, flow, sequence or state diagram helps explain the requested result, or the user requests a diagram artifact. Invoke the installed skill from `cathrynlavery/diagram-design`, with the [styling reference](references/diagram-styling.md) as profile input. | A sentence or table is clearer, or the repository's existing diagram format already meets the need. |
 | `grilling` | A consequential unresolved decision needs human-owned intent, preference, priority or accepted risk. | Source, docs, history, experiments or runtime can answer it, or prior answers settle it. |
 | `domain-modeling` | Concepts, terminology, states, relationships or invariants must be resolved to choose or validate the requested result. | Business nouns exist but their meaning is established. |
 | `codebase-design` | Module interfaces, seams or responsibility placement are material to the requested result, including configuration and ownership beyond the first adapter. | Established interfaces contain the requested outcome, not merely its easiest slice. |
@@ -247,6 +247,13 @@ in the ordinary result. Existing user decisions satisfy
 upstream confirmation steps when they actually resolve that decision.
 
 ## Evidence and checkpoints
+
+After creating or updating a PR for the task, retain ownership through CI and
+review until its agreed completion condition or a specific human blocker. Read
+[PR follow-through](references/pr-follow-through.md) when publishing a PR or asked
+to manage or watch one. Recheck the latest revision after every push. Use a real
+watcher or scheduled follow-up for background monitoring and verify it is active
+before reporting that watching will continue. Honour explicitly local-only work.
 
 Use saved sessions, the TODO and verification artifacts as the normal evidence.
 Explain consequential capability choices and results in ordinary work updates;

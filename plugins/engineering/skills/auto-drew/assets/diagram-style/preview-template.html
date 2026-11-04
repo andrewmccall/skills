@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Andrew Clean · diagram styling</title>
+<style>
+*{box-sizing:border-box}body{margin:0;padding:32px;background:#f2f2f0;color:#17232e;font:15px/1.5 Arial,Helvetica,sans-serif}main{max-width:1080px;margin:auto}h1{font-size:28px;font-weight:600;margin:0 0 8px}p{margin:0 0 24px;color:#50606d}header{margin-bottom:24px}.controls{display:flex;flex-wrap:wrap;gap:16px 24px;align-items:end;padding:20px 0;border-top:1px solid #c9cdd0;border-bottom:1px solid #c9cdd0}label{display:flex;flex-direction:column;gap:6px;font-size:13px}input,select,button{font:inherit}input[type=color]{width:60px;height:36px;padding:3px;border:1px solid #89949e;border-radius:4px;background:transparent}input[type=range]{width:120px;min-height:32px}select,button{padding:8px 12px;border:1px solid #89949e;border-radius:4px;background:#fff;color:#17232e}button:disabled{opacity:.45}button{cursor:pointer}.actions{display:flex;gap:12px;flex-wrap:wrap;margin:20px 0}.check{flex-direction:row;align-items:center;padding-bottom:8px}section{margin:28px 0}h2{font-size:13px;letter-spacing:1.2px;font-weight:600}.canvas{overflow-x:auto}svg{display:block;width:100%;min-width:960px;height:auto}#status{min-height:24px;font-size:13px;margin:12px 0;color:#354b5e}#status[data-invalid=true]{color:#972c24}details{margin-top:24px}summary{cursor:pointer}pre{white-space:pre-wrap;font:12px/1.6 ui-monospace,monospace}.note{font-size:13px}a{color:#23618b}:focus-visible{outline:3px solid #23618b;outline-offset:3px}@media(max-width:600px){body{padding:16px}.controls{gap:16px}button,select{min-height:44px}}
+</style></head><body><main>
+<header><h1>Andrew Clean</h1><p>Warm light. Quiet dark. The same diagram in both.</p></header>
+<div class="controls">
+<label>Palette<select id="palette"><option value="light">Light</option><option value="dark">Dark</option></select></label>
+<label>Canvas<input id="paper" type="color" aria-label="Canvas color"></label>
+<label>Accent<input id="accent" type="color" aria-label="Accent color"></label>
+<label>Accent fill<input id="accent-tint" type="color" aria-label="Accent fill color"></label>
+<label>Node corners <output id="radius-value">6px</output><input id="radius" type="range" min="0" max="8" step="1" value="6"></label>
+<label>Headings<select id="headings"><option value="clean">Clean sans</option><option value="handwritten">Handwritten</option></select></label>
+<label class="check"><input id="compare" type="checkbox" checked>Compare both</label>
+</div>
+<div id="status" role="status" aria-live="polite"></div>
+<div class="actions"><button id="save-profile" type="button">Save style profile</button><button id="save-light" type="button">Export light SVG</button><button id="save-dark" type="button">Export dark SVG</button><button id="reset" type="button">Reset</button></div>
+<section id="light-panel"><h2>LIGHT</h2><div class="canvas" id="light-canvas"></div></section>
+<section id="dark-panel"><h2>DARK</h2><div class="canvas" id="dark-canvas"></div></section>
+<p class="note">Changes stay in this page until you save a profile. Handwritten headings use an installed system font, with a cursive fallback. This example illustrates task routing.</p>
+<details><summary>Current profile</summary><pre id="profile-text"></pre></details>
+</main>
+<script id="style-data" type="application/json">{{data}}</script>
+<script>
+(() => {
+  const initial=JSON.parse(document.getElementById('style-data').textContent);
+  let state=structuredClone(initial);
+  const $=id=>document.getElementById(id);
+  const template=initial.svg;
+  const textRoles=['ink','muted','soft','accent','link'];
+  const surfaces=['paper','paper-2','accent-tint'];
+  function luminance(hex){const rgb=hex.slice(1).match(/../g).map(v=>parseInt(v,16)/255).map(v=>v<=.04045?v/12.92:((v+.055)/1.055)**2.4);return rgb[0]*.2126+rgb[1]*.7152+rgb[2]*.0722;}
+  function ratio(a,b){const x=luminance(a),y=luminance(b);return (Math.max(x,y)+.05)/(Math.min(x,y)+.05);}
+  function failures(){const out=[];for(const mode of ['light','dark']){const p=state.palettes[mode];for(const role of textRoles)for(const bg of surfaces)if(ratio(p[role],p[bg])<4.5)out.push(`${mode}: ${role} on ${bg}`);if(ratio(p['ink-strong'],p.accent)<4.5)out.push(`${mode}: ink-strong on accent`);}return out;}
+  function values(mode){return {...state.palettes[mode],...state.geometry,...state.typography,...Object.fromEntries(Object.entries(state.fonts).map(([k,v])=>['font-'+k,v]))};}
+  function svg(mode){const v=values(mode);return template.replace(/var\(--([a-z0-9-]+)\)/g,(_,key)=>v[key]).replace(/id="([^"]+)"/g,(_,id)=>`id="${mode}-${id}"`).replace(/url\(#([^\)]+)\)/g,(_,id)=>`url(#${mode}-${id})`).replace('aria-labelledby="title desc"',`aria-labelledby="${mode}-title ${mode}-desc"`);}
+  function profile(){return state.profile.split('\n').map(line=>{const cells=line.split('|').map(s=>s.trim());if(cells.length<4)return line;const role=cells[1].replaceAll('`','');if(role in state.palettes.light){cells[3]='`'+state.palettes.light[role]+'`';cells[4]='`'+state.palettes.dark[role]+'`';return cells.join(' | ').trim();}if(role in state.fonts){cells[2]=state.fonts[role];return cells.join(' | ').trim();}if(role in state.geometry){cells[2]='`'+state.geometry[role]+'`';return cells.join(' | ').trim();}return line;}).join('\n');}
+  function render(){for(const mode of ['light','dark']){$(mode+'-canvas').innerHTML=svg(mode);$(mode+'-panel').hidden=!$('compare').checked&&$('palette').value!==mode;}$('radius-value').textContent=state.geometry['radius-md']+'px';$('profile-text').textContent=profile();const errors=failures();$('status').dataset.invalid=String(errors.length>0);$('status').textContent=errors.length?'Adjust colors before export. Contrast below 4.5:1: '+errors.join('; '):'Both palettes pass the profile text-contrast checks.';for(const id of ['save-profile','save-light','save-dark'])$(id).disabled=errors.length>0;}
+  function sync(){for(const role of ['paper','accent','accent-tint'])$(role).value=state.palettes[$('palette').value][role];$('radius').value=state.geometry['radius-md'];$('headings').value=state.fonts.title.includes('Chalkboard')?'handwritten':'clean';}
+  function download(name,text,type){const url=URL.createObjectURL(new Blob([text],{type}));const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),1000);}
+  for(const role of ['paper','accent','accent-tint'])$(role).addEventListener('input',()=>{state.palettes[$('palette').value][role]=$(role).value;render();});
+  $('palette').addEventListener('change',()=>{sync();render();});$('compare').addEventListener('change',render);
+  $('radius').addEventListener('input',()=>{state.geometry['radius-md']=Number($('radius').value);render();});
+  $('headings').addEventListener('change',()=>{for(const role of ['title','callout'])state.fonts[role]=$('headings').value==='handwritten'?'Chalkboard, Comic Sans MS, cursive':initial.fonts[role];render();});
+  $('reset').addEventListener('click',()=>{state=structuredClone(initial);sync();render();});
+  $('save-profile').addEventListener('click',()=>download('andrew-clean.md',profile(),'text/markdown'));
+  for(const mode of ['light','dark'])$('save-'+mode).addEventListener('click',()=>download('diagram-'+mode+'.svg',svg(mode),'image/svg+xml'));
+  sync();render();
+})();
+</script></body></html>

@@ -46,3 +46,17 @@ Diagram Design has prospective cases for a designed architecture artifact, a
 single relationship better explained in prose, and an existing Mermaid diagram
 whose format already meets the request. These have no recorded agent outcomes;
 suite validation does not establish a routing improvement.
+
+PR follow-through has prospective cases for pending checks after a new push,
+checks-only completion, watching a human-owned merge, an authorised merge,
+reusing a background watcher, unavailable scheduling and explicitly local-only
+work. These cover completion and permission boundaries, with no recorded agent
+outcomes or claim of measured improvement.
+
+Two further prospective diagram cases cover paired editable light/dark output
+and preservation of an existing work-project profile. The preview builder has
+repository tests for standalone exports, saved-profile edits and contrast
+rejection. A further prospective case requires invoking the installed upstream
+skill for a new sequence diagram rather than substituting the fixed style-preview
+builder. These test artifacts and define routing expectations, not measured agent
+routing quality.

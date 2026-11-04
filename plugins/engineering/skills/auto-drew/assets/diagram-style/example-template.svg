@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="600" viewBox="0 0 960 600" role="img" aria-labelledby="title desc">
+<title id="title">One task. Three runtimes.</title>
+<desc id="desc">An application submits a task to one interface, which selects Codex, Claude Code or Hermes and persists sessions and files. This is an illustrative architecture.</desc>
+<style>
+  text { fill:var(--ink); font-family:var(--font-node-name); }
+  .headline { font-family:var(--font-title); font-size:var(--size-title); font-weight:var(--weight-title); }
+  .callout { font-family:var(--font-callout); font-size:var(--size-callout); font-weight:var(--weight-callout); fill:var(--muted); }
+  .name { font-size:var(--size-node-name); font-weight:var(--weight-node-name); }
+  .detail { font-family:var(--font-sublabel); font-size:var(--size-sublabel); font-weight:var(--weight-sublabel); fill:var(--muted); }
+  .eyebrow { font-family:var(--font-eyebrow); font-size:var(--size-eyebrow); font-weight:var(--weight-eyebrow); letter-spacing:1.5px; fill:var(--soft); }
+  .edge-label { font-family:var(--font-arrow-label); font-size:var(--size-arrow-label); font-weight:var(--weight-arrow-label); fill:var(--muted); }
+  .edge { fill:none; stroke:var(--muted); stroke-width:var(--stroke-default); marker-end:url(#arrow); }
+  .node { fill:var(--paper); stroke:var(--muted); stroke-width:var(--stroke-default); }
+</style>
+<defs><marker id="arrow" viewBox="0 0 8 8" markerWidth="8" markerHeight="8" refX="8" refY="4" orient="auto" markerUnits="userSpaceOnUse"><path d="M1,1 L7,4 L1,7" fill="none" stroke="var(--muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></marker></defs>
+<rect width="960" height="600" fill="var(--paper)"/>
+<text class="eyebrow" x="48" y="44">ILLUSTRATIVE ARCHITECTURE</text>
+<text class="headline" x="48" y="92">One task. Three runtimes.</text>
+<text class="callout" x="48" y="124">Keep the interface stable. Choose the runtime for the work.</text>
+<rect x="664" y="156" width="248" height="352" rx="var(--radius-lg)" fill="var(--paper-2)" stroke="var(--rule-solid)" stroke-width="var(--stroke-thin)" stroke-dasharray="4 4"/>
+<text class="eyebrow" x="688" y="184">EXECUTION</text>
+<path class="edge" d="M248,304 H352"/>
+<rect x="268" y="268" width="64" height="20" fill="var(--paper)"/>
+<text class="edge-label" x="300" y="284" text-anchor="middle">SUBMIT</text>
+<path class="edge" d="M560,280 H592 Q600,280 600,272 V248 Q600,240 608,240 H688"/>
+<path class="edge" d="M560,304 H616 Q624,304 624,312 V336 Q624,344 632,344 H688"/>
+<path class="edge" d="M560,328 H584 Q592,328 592,336 V440 Q592,448 600,448 H688"/>
+<path class="edge" d="M460,360 V432" stroke-dasharray="4 4"/>
+<rect x="476" y="388" width="72" height="20" fill="var(--paper)"/>
+<text class="edge-label" x="484" y="404">PERSIST</text>
+<rect class="node" x="64" y="256" width="176" height="96" rx="var(--radius-md)"/>
+<text class="name" x="152" y="296" text-anchor="middle">Application</text>
+<text class="detail" x="152" y="324" text-anchor="middle">API client</text>
+<rect x="360" y="256" width="200" height="96" rx="var(--radius-md)" fill="var(--accent-tint)" stroke="var(--accent)" stroke-width="var(--stroke-strong)"/>
+<text class="name" x="460" y="296" text-anchor="middle" style="fill:var(--accent)">Task interface</text>
+<text class="detail" x="460" y="324" text-anchor="middle">submit · stream</text>
+<rect class="node" x="696" y="208" width="184" height="64" rx="var(--radius-md)"/>
+<text class="name" x="788" y="247" text-anchor="middle">Codex</text>
+<rect class="node" x="696" y="312" width="184" height="64" rx="var(--radius-md)"/>
+<text class="name" x="788" y="351" text-anchor="middle">Claude Code</text>
+<rect class="node" x="696" y="416" width="184" height="64" rx="var(--radius-md)"/>
+<text class="name" x="788" y="455" text-anchor="middle">Hermes</text>
+<rect x="360" y="440" width="200" height="72" rx="var(--radius-md)" fill="var(--paper-2)" stroke="var(--muted)" stroke-width="var(--stroke-default)"/>
+<text class="name" x="460" y="472" text-anchor="middle">Sessions + files</text>
+<text class="detail" x="460" y="496" text-anchor="middle">state · artifacts</text>
+<path d="M48,552 H912" stroke="var(--rule)" stroke-width="1"/>
+<text class="callout" x="48" y="580">One focal point. Clear boundaries. Room to read.</text>
+</svg>

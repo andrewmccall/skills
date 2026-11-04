@@ -65,6 +65,34 @@ Competing top-level modes are excluded. Auto Drew reads full principle context
 through its [principle index](../skills/engineering/auto-drew/references/principles.md)
 when the work earns it.
 
+## Diagram styling
+
+Auto Drew invokes the installed `diagram-design` skill from
+`cathrynlavery/diagram-design` to generate diagrams. Setup installs that dependency
+through the skills CLI. Customization adds an editable
+[Andrew Clean profile](../skills/engineering/auto-drew/assets/diagram-style/profile.md)
+with light and dark palettes as input to the upstream workflow. Existing project
+branding takes precedence. The
+[styling reference](../skills/engineering/auto-drew/references/diagram-styling.md)
+explains customization, standalone exports and persistent profile installation.
+To preview and tweak the preset from this checkout:
+
+```sh
+python3 skills/engineering/auto-drew/scripts/build-diagram-style.py --output /tmp/diagram-preview
+```
+
+Open `/tmp/diagram-preview/index.html`. Preview changes are temporary until you
+save the profile. Upstream skill updates leave separately saved profiles intact.
+
+## PR follow-through
+
+Auto Drew retains ownership after publishing a PR, through CI, review feedback
+and its agreed completion condition. It rechecks the latest revision after every
+push and distinguishes ready to merge from merged. Watching beyond a turn uses
+the host's supported scheduling tools; the skill alone cannot wake later. See
+[PR follow-through](../skills/engineering/auto-drew/references/pr-follow-through.md)
+for endpoints, merge authority and watcher lifecycle.
+
 ## Repository validation
 
 ```sh
