@@ -28,7 +28,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_contract_is_synthetic_and_full(self):
         report = evalmod.score(self.suite, self.routes, self.observations)
-        self.assertEqual(report['summary']['expected_cases'], 66)
+        self.assertEqual(report['summary']['expected_cases'], 71)
         self.assertEqual(report['summary']['routing_pass_rate'], 1)
         self.assertEqual(report['summary']['zero_ceremony_pass_rate'], 1)
         self.assertIn('not measured agent performance', evalmod.markdown(report))
@@ -270,7 +270,7 @@ class EvaluationTests(unittest.TestCase):
 
     def test_missing_observations_are_explicit(self):
         report=evalmod.score(self.suite,self.routes,[])
-        self.assertEqual(len(report['summary']['missing_observations']),66)
+        self.assertEqual(len(report['summary']['missing_observations']),71)
         self.assertIsNone(report['summary']['routing_pass_rate'])
 
     def test_route_overlap_and_budget_validation(self):

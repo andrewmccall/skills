@@ -14,7 +14,8 @@ from pathlib import Path
 ENTRY = ('auto-drew', 'auto-drew-setup', 'auto-drew-eval')
 MATT = ('grilling', 'domain-modeling', 'codebase-design', 'tdd', 'retro', 'writing-for-agents')
 PSTACK = ('how', 'why', 'architect', 'arena', 'interrogate', 'reflect',
-          'show-me-your-work', 'create-verification-skill', 'maintain-verification-skill')
+          'show-me-your-work', 'create-verification-skill', 'maintain-verification-skill',
+          'create-formal-verification-skill', 'maintain-formal-verification-skill')
 DIAGRAM = ('diagram-design',)
 EXCLUDED = {'poteto-mode', 'setup-pstack', 'setup-matt-pocock-skills', 'figure-it-out', 'orchestrate'}
 CLI = ('npx', '--yes', 'skills@latest')
