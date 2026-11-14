@@ -23,6 +23,14 @@ def contrast(first, second):
     return (values[1] + .05) / (values[0] + .05)
 
 
+def metadata(profile):
+    header = re.match(r'\A<!-- diagram-design-profile\n(.*?)\n-->', profile, re.S)
+    fields = dict(line.split(':', 1) for line in header[1].splitlines() if ':' in line) if header else {}
+    fields = {key.strip(): value.strip() for key, value in fields.items()}
+    return {'name': fields.get('name', 'Diagram style'), 'slug': fields.get('slug', 'diagram-style'),
+            'notes': fields.get('notes', '')}
+
+
 def build(output, profile_path):
     profile = profile_path.read_text()
     palettes = {'light': {}, 'dark': {}}
@@ -46,7 +54,7 @@ def build(output, profile_path):
         typography['size-' + role.strip('`')] = size
         typography['weight-' + role.strip('`')] = weight
     data = {'profile': profile, 'palettes': palettes, 'geometry': geometry,
-            'fonts': fonts, 'typography': typography}
+            'fonts': fonts, 'typography': typography, 'meta': metadata(profile)}
     svg = (ASSETS / 'example-template.svg').read_text()
     data['svg'] = svg
     template = (ASSETS / 'preview-template.html').read_text()
@@ -66,6 +74,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--output', type=Path, default=Path.cwd() / 'diagram-style-preview')
     parser.add_argument('--profile', type=Path, default=ASSETS / 'profile.md',
-                        help='Use a separately saved profile instead of the bundled preset')
+                        help='Profile to preview: the default Andrew Clean preset, the bundled '
+                             'andrewmccall-site.md or a separately saved profile')
     args = parser.parse_args()
     build(args.output.expanduser().resolve(), args.profile.expanduser().resolve())

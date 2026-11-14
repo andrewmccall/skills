@@ -71,8 +71,9 @@ Auto Drew invokes the installed `diagram-design` skill from
 `cathrynlavery/diagram-design` to generate diagrams. Setup installs that dependency
 through the skills CLI. Customization adds an editable
 [Andrew Clean profile](../skills/engineering/auto-drew/assets/diagram-style/profile.md)
-with light and dark palettes as input to the upstream workflow. Existing project
-branding takes precedence. The
+with light and dark palettes as input to the upstream workflow, plus an
+[andrewmccall.com profile](../skills/engineering/auto-drew/assets/diagram-style/andrewmccall-site.md)
+for diagrams published on that site. Existing project branding takes precedence. The
 [styling reference](../skills/engineering/auto-drew/references/diagram-styling.md)
 explains customization, standalone exports and persistent profile installation.
 To preview and tweak the preset from this checkout:
@@ -80,6 +81,9 @@ To preview and tweak the preset from this checkout:
 ```sh
 python3 skills/engineering/auto-drew/scripts/build-diagram-style.py --output /tmp/diagram-preview
 ```
+
+Add `--profile skills/engineering/auto-drew/assets/diagram-style/andrewmccall-site.md`
+to preview the site profile instead.
 
 Open `/tmp/diagram-preview/index.html`. Preview changes are temporary until you
 save the profile. Upstream skill updates leave separately saved profiles intact.
