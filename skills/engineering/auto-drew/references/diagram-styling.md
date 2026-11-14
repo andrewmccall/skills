@@ -20,6 +20,16 @@ palette. Keep the same diagram content and geometry in both. Prefer clean sans
 labels, thin strokes, generous spacing and one focal accent. Handwritten headings
 are an option, with component names and technical details remaining readable.
 
+## Site profile
+
+The bundled [andrewmccall.com profile](../assets/diagram-style/andrewmccall-site.md)
+is a second preset, not a replacement default. Use it when the diagram is for
+andrewmccall.com: work in the site's repository, or a diagram for a post or page
+published there. Its dark theme is the site stylesheet, and it is the primary
+theme for those diagrams. A project marker or explicit choice of another profile
+still takes precedence. It also defines chart series colours that keep the site
+accent as the only bright colour.
+
 For style review, regenerate the fixed sample in both modes with this preview:
 
 ```sh
@@ -30,8 +40,9 @@ Open the resulting `index.html`. Its controls edit each palette, node radius and
 heading treatment. They export an updated complete profile and standalone SVGs;
 contrast failures disable export. Changes stay in that page until exported.
 For other changes, edit the profile's semantic-role, typography or geometry tables
-and regenerate. Pass `--profile /project/andrew-clean.md` to preview a separately
-saved profile without editing the bundled preset. The sample topology is
+and regenerate. Pass `--profile /installed/auto-drew/assets/diagram-style/andrewmccall-site.md`
+to preview the site preset, or `--profile /project/andrew-clean.md` to preview a
+separately saved profile without editing a bundled preset. The sample topology is
 illustrative; apply the style to the requested diagram rather than copying its
 components. The preview builder reviews the preset's appearance; use the invoked
 upstream skill to create or edit the actual requested diagram. If that skill is
@@ -39,7 +50,7 @@ missing, use `auto-drew-setup` with the user's chosen installation scope.
 
 Profiles belong outside managed skill installations. Follow the current upstream
 `references/profiles.md` when saving a named profile or binding a project with a
-`.diagram-design` marker. The preset already supplies its name and slug. Use
+`.diagram-design` marker. Each preset already supplies its name and slug. Use
 existing user authorisation for activation and overwrites, and preserve existing
 profiles unless replacing them is requested. Ordinary diagram generation must
 leave the installed upstream `style-guide.md` unchanged.

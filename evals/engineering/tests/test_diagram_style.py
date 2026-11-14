@@ -42,6 +42,17 @@ class DiagramStyleTests(unittest.TestCase):
         self.assertEqual([e.text for e in diagrams[0].findall('s:text', namespace)],
                          [e.text for e in diagrams[1].findall('s:text', namespace)])
 
+    def test_site_profile_builds_with_its_own_identity(self):
+        result = self.build('--profile', str(self.skill / 'assets/diagram-style/andrewmccall-site.md'))
+        self.assertEqual(result.returncode, 0, result.stderr)
+        namespace = {'s': 'http://www.w3.org/2000/svg'}
+        fills = [ET.parse(self.output / f'diagram-{mode}.svg').getroot().find('s:rect', namespace).attrib['fill']
+                 for mode in ['light', 'dark']]
+        self.assertEqual(fills, ['#f5f5f5', '#101312'])
+        page = (self.output / 'index.html').read_text()
+        self.assertIn('"slug": "andrewmccall-site"', page)
+        self.assertIn('"name": "andrewmccall.com"', page)
+
     def test_profile_edits_reach_secondary_fill_and_node_geometry(self):
         profile = self.root / 'saved-profile.md'
         source = self.skill / 'assets/diagram-style/profile.md'
