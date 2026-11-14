@@ -65,6 +65,19 @@ Competing top-level modes are excluded. Auto Drew reads full principle context
 through its [principle index](../skills/engineering/auto-drew/references/principles.md)
 when the work earns it.
 
+## Testing and formal verification
+
+End-to-end checks through the real entry point are Auto Drew's evidence of done.
+`tdd` is reserved for narrow edges, rules or algorithms that path cannot reach
+cheaply, or for explicit test-first requests. When a promise depends on event
+ordering, concurrency or retries, pstack's beta `create-formal-verification-skill`
+models it, usually in TLA+, and its `statechart` dependency draws the result.
+Counterexamples are replayed through the real entry point and kept as end-to-end
+regression checks. `maintain-formal-verification-skill` rechecks the model after
+covered code changes. The
+[model-backed verification reference](../skills/engineering/auto-drew/references/formal-verification.md)
+sets the order of evidence.
+
 ## Diagram styling
 
 Auto Drew invokes the installed `diagram-design` skill from

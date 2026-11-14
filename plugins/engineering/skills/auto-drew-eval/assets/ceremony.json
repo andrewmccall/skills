@@ -213,6 +213,16 @@
         "principle-boundary-discipline",
         "principle-encode-lessons-in-structure"
       ]
+    },
+    "create-formal-verification-skill": {
+      "cost": 4,
+      "children": [
+        "maintain-formal-verification-skill"
+      ]
+    },
+    "maintain-formal-verification-skill": {
+      "cost": 3,
+      "children": []
     }
   }
 }

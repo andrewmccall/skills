@@ -1648,6 +1648,189 @@
         "Reversibility / extensibility"
       ],
       "notes": "Make the current format change at the existing seam; speculative plug-in infrastructure is not earned."
+    },
+    {
+      "id": "formal-notification-race",
+      "category": "positive",
+      "prompt": "Users report phones buzzing for messages they already read on a laptop, and laptops still showing chats as unread after waking. Each flow passes its end-to-end test on its own. Find the event orderings across devices that break \"a read message never alerts again\" and fix them.",
+      "expected": {
+        "required": [
+          "create-formal-verification-skill"
+        ],
+        "allowed": [
+          "diagram-design",
+          "maintain-formal-verification-skill"
+        ],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect",
+          "show-me-your-work",
+          "tdd"
+        ]
+      },
+      "ceremony_budget": 5,
+      "outcome_criteria": [
+        "invariant_checked_across_orderings",
+        "counterexample_replayed_end_to_end",
+        "verify_skill_rerunnable"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "formal-drift",
+      "category": "positive",
+      "prompt": "We refactored the job lease renewal code that the verify-lease-model formal check covers. Make sure the model still describes the code and its promise still holds before we merge.",
+      "expected": {
+        "required": [
+          "maintain-formal-verification-skill"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect",
+          "show-me-your-work",
+          "tdd",
+          "create-formal-verification-skill"
+        ]
+      },
+      "ceremony_budget": 3,
+      "outcome_criteria": [
+        "model_matches_code",
+        "check_rerun",
+        "outcome_reported"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
+    },
+    {
+      "id": "profile-field-no-formal",
+      "category": "negative",
+      "prompt": "Add an optional nickname to the profile settings form and save it through the existing update endpoint.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect",
+          "show-me-your-work",
+          "tdd",
+          "create-formal-verification-skill"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "done_criteria_met",
+        "no_regression",
+        "real_entry_point_exercised"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Simplicity / sufficiency"
+      ]
+    },
+    {
+      "id": "e2e-covered-tests",
+      "category": "boundary",
+      "prompt": "Add tests for the new CSV export. The existing Playwright journey already downloads the file, so extend that rather than duplicating it.",
+      "expected": {
+        "required": [],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect",
+          "show-me-your-work",
+          "tdd",
+          "create-formal-verification-skill"
+        ]
+      },
+      "ceremony_budget": 0,
+      "outcome_criteria": [
+        "export_behaviour_proved_end_to_end",
+        "no_internal_coupled_tests",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      },
+      "tensions": [
+        "Confidence / verification cost"
+      ]
+    },
+    {
+      "id": "unreachable-edge-tdd",
+      "category": "positive",
+      "prompt": "Currency conversion should round half-even, but the checkout journey only uses whole-pound prices, so end-to-end runs never hit a half-penny. Pin the rounding edges with focused tests before changing the rounding function.",
+      "expected": {
+        "required": [
+          "tdd"
+        ],
+        "allowed": [],
+        "forbidden": [
+          "architect",
+          "arena",
+          "codebase-design",
+          "domain-modeling",
+          "grilling",
+          "interrogate",
+          "reflect",
+          "show-me-your-work",
+          "create-formal-verification-skill"
+        ]
+      },
+      "ceremony_budget": 2,
+      "outcome_criteria": [
+        "red_observed",
+        "rounding_edges_correct",
+        "no_regression"
+      ],
+      "human_decisions": [],
+      "notes": "",
+      "variants": [],
+      "composition": {
+        "required_sequences": [],
+        "forbidden_sequences": []
+      }
     }
   ]
 }
