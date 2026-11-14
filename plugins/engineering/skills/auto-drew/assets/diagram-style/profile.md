@@ -1,10 +1,10 @@
 <!-- diagram-design-profile
 name: Andrew Clean
 slug: andrew-clean
-source-url: https://x.com/akshay_pachaar/status/2100888166219886818
+source-url: https://andrewmccall.com
 created: 2026-11-04
-updated: 2026-11-04
-notes: Warm paper and restrained technical styling, paired light and dark themes
+updated: 2026-11-14
+notes: andrewmccall.com dark palette with a matching light theme
 -->
 # Style Guide
 
@@ -19,17 +19,30 @@ tables, then run the bundled build script to regenerate the preview.
 
 | Role | Purpose | Light | Dark |
 |---|---|---|---|
-| `paper` | Canvas | `#f7f4eb` | `#111820` |
-| `paper-2` | Quiet grouping and secondary nodes | `#eeece3` | `#1b2530` |
-| `ink` | Primary text | `#17232e` | `#edf2f7` |
-| `ink-strong` | Text on opaque accent fill | `#ffffff` | `#111820` |
-| `muted` | Secondary text and essential connectors | `#50606d` | `#b7c4d1` |
-| `soft` | Small labels | `#596874` | `#a1b1c1` |
-| `rule` | Decorative dividers | `#d8d5cc` | `#354350` |
-| `rule-solid` | Decorative group boundaries | `#b3b6b3` | `#596d80` |
-| `accent` | One focal node or path | `#23618b` | `#91c8ec` |
-| `accent-tint` | Quiet focal fill | `#e2edf2` | `#203548` |
-| `link` | External call or protocol label | `#23618b` | `#91c8ec` |
+| `paper` | Canvas | `#f5f5f5` | `#101312` |
+| `paper-2` | Quiet grouping and secondary nodes | `#ececec` | `#151918` |
+| `ink` | Primary text | `#2d3142` | `#e7e9e3` |
+| `ink-strong` | Text on opaque accent fill | `#ffffff` | `#101312` |
+| `muted` | Secondary text and essential connectors | `#4f5d75` | `#9ba59f` |
+| `soft` | Small labels | `#5a6580` | `#87928c` |
+| `rule` | Decorative dividers | `#dddde0` | `#303632` |
+| `rule-solid` | Decorative group boundaries | `#bfc0c0` | `#4a524d` |
+| `accent` | One focal node or path | `#17704a` | `#9cffcb` |
+| `accent-tint` | Quiet focal fill | `#e3eae7` | `#1e2b24` |
+| `link` | External call or protocol label | `#17704a` | `#9cffcb` |
+
+### Palette sources
+
+The dark palette is andrewmccall.com's stylesheet, so diagrams sit on the site
+without a visible frame: `--bg`, `--rail`, `--text`, `--muted`, `--line` and
+`--accent` map to `paper`, `paper-2`, `ink`, `muted`, `rule` and `accent`. The
+site's `--faint` (`#737e78`) is below 4.5:1 for small labels, so `soft` lightens
+it within the same hue. `accent-tint` is the accent at 10% over `paper`.
+
+The light palette keeps the upstream diagram-design neutrals, resolved to opaque
+hex, and replaces its orange with a deep green from the site accent's hue so
+both modes share one accent. The site has a single accent, so `link` uses it too;
+distinguish external calls with labels and line treatment rather than hue.
 
 ### Contrast contract
 
@@ -108,6 +121,7 @@ procedures. Honour a project's existing profile or explicit brand requirements.
 
 ## Visual references
 
-- [Akshay Pachaar's article](https://x.com/akshay_pachaar/status/2100888166219886818): warm paper, approachable labels and simple relationships. The figure was inspected through a public article mirror because X did not load directly.
+- [andrewmccall.com](https://andrewmccall.com): source of the dark palette and the shared accent.
+- [Akshay Pachaar's article](https://x.com/akshay_pachaar/status/2100888166219886818): approachable labels and simple relationships. The figure was inspected through a public article mirror because X did not load directly.
 - [Bybit SVG Diagram](https://github.com/bybit-exchange/svg-diagram): restrained fills, clear hierarchy, consistent spacing and readable technical diagrams.
 - [Diagram Design](https://github.com/cathrynlavery/diagram-design): retained diagram engine, type selection and layout checks.

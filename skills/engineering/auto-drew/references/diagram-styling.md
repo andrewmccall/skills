@@ -15,9 +15,9 @@ already applies. Resolve project styling again for every task. Leave work-projec
 profiles and other clients' choices intact.
 
 Treat this bundled preset as a supplied style guide for the current task, not an
-already installed named profile. It has a warm light palette and a separate dark
-palette. Keep the same diagram content and geometry in both. Prefer clean sans
-labels, thin strokes, generous spacing and one focal accent. Handwritten headings
+already installed named profile. Its dark palette matches andrewmccall.com and
+its light palette shares that accent. Keep the same diagram content and geometry
+in both. Prefer clean sans labels, thin strokes, generous spacing and one focal accent. Handwritten headings
 are an option, with component names and technical details remaining readable.
 
 For style review, regenerate the fixed sample in both modes with this preview:
@@ -51,6 +51,6 @@ tokens so they open independently. System fonts keep files offline; their exact
 appearance depends on the viewer's installed fonts. For pixel-stable sharing,
 render a PNG after verifying the final typography.
 
-The X article informed warmth and approachable labeling. Bybit's gallery informed
+andrewmccall.com supplies the colours. The X article informed approachable labeling. Bybit's gallery informed
 spacing and restrained fills. These are visual references; keep the original
 diagram-design engine and connector grammar.
